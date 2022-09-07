@@ -146,7 +146,7 @@ public class SimpleToolPaint extends Application {
         g.setFill(Color.WHITE);
         g.fillRect(width - 53, height - 53, 50, 50);
         g.setFill(Color.BLACK);
-        g.fillText("CLEAR", width - 48, height - 23);
+        g.fillText("CLEAR CANVAS", width - 48, height - 23);
     }
 
     /**
