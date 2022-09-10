@@ -113,13 +113,7 @@ public class SimpleToolPaint extends Application {
         g.setFill(Color.GRAY);
         g.fillRect(width - 56, 0, 56, height);
 
-        /* Draw the "Clear button" as a 50-by-50 white rectangle in the lower right
-             corner of the canvas, allowing for a 3-pixel border. */
-
-        g.setFill(Color.WHITE);
-        g.fillRect(width-53,  height-53, 50, 50);
-        g.setFill(Color.BLACK);
-        g.fillText("CLEAR", width-48, height-23); 
+        clearCanvas(width, height); 
 
         /* Draw the seven color rectangles. */
         
@@ -137,6 +131,19 @@ public class SimpleToolPaint extends Application {
 
     } // end clearAndDrawPalette()
 
+    /**
+     * Draw the "Clear button" as a 50-by-50 white rectangle in the lower right
+     * corner of the canvas, allowing for a 3-pixel border.
+     * 
+     * @param width
+     * @param height
+     */
+    private void clearCanvas(int width, int height) {
+        g.setFill(Color.WHITE);
+        g.fillRect(width - 53, height - 53, 50, 50);
+        g.setFill(Color.BLACK);
+        g.fillText("CLEAR", width - 48, height - 23);
+    }
 
     /**
      * Change the drawing color after the user has clicked the
