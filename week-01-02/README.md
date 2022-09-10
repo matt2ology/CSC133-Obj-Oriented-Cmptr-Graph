@@ -50,3 +50,7 @@ I will discuss how to do this briefly in class.
 
 ![](readme-sources/original_simple_paint.png)
 ![](readme-sources/modified_simple_tool_paint.png)
+
+### Resouces
+
+[Doc Player: Computer Programming Fundamentals](https://docplayer.net/221539921-Computer-programming-fundamentals.html)
