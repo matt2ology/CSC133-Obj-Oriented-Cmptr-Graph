@@ -61,7 +61,7 @@ public class SimpleToolPaint extends Application {
      */
     public void start(Stage stage) {
 
-        /* Create the canvans and draw its content for the first time. */
+        /* Create the canvas and draw its content for the first time. */
 
         canvas = new Canvas(600, 400);
         g = canvas.getGraphicsContext2D();
