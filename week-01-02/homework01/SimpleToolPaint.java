@@ -115,21 +115,32 @@ public class SimpleToolPaint extends Application {
 
         clearCanvas(width, height); 
 
-        /* Draw the seven color rectangles. */
-        
-        for (int N = 0; N < 7; N++) {
-            g.setFill( palette[N] );
-            g.fillRect(width-53, 3 + N*colorSpacing, 50, colorSpacing-3);
+        drawPalette(width, colorSpacing);
+
+    } // end clearAndDrawPalette()
+
+    /**
+     * Draw the seven color rectangles.
+     * 
+     * @param width
+     * @param colorSpacing
+     */
+    private void drawPalette(int width, int colorSpacing) {
+
+        for (int N = 0; N < palette.length; N++) {
+            g.setFill(palette[N]);
+            g.fillRect(width - 53, 3 + N * colorSpacing, 50, colorSpacing - 3);
         }
 
-        /* Draw a 2-pixel white border around the color rectangle
-             of the current drawing color. */
+        /*
+         * Draw a 2-pixel white border around the color rectangle
+         * of the current drawing color.
+         */
 
         g.setStroke(Color.WHITE);
         g.setLineWidth(2);
-        g.strokeRect(width-54, 2 + currentColorNum*colorSpacing, 52, colorSpacing-1);
-
-    } // end clearAndDrawPalette()
+        g.strokeRect(width - 54, 2 + currentColorNum * colorSpacing, 52, colorSpacing - 1);
+    }
 
     /**
      * Draw the "Clear button" as a 50-by-50 white rectangle in the lower right
