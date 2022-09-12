@@ -8,12 +8,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 /**
- * A simple program where the user can sketch curves in a variety of
- * colors. A color palette is shown along the right edge of the canvas.
- * The user can select a drawing color by clicking on a color in the
- * palette. Under the colors is a "Clear button" that the user
- * can click to clear the sketch. The user draws by clicking and
- * dragging in a large white area that occupies most of the canvas.
+ * A program where the user can sketch in a variety of colors and tools.
+ * A color palette list of paint tools is shown along the right edge of the
+ * canvas. The user can select a drawing color by clicking on a color in the
+ * palette, and in the column to the left (of the color palette) a set of
+ * drawing tools. Under the color palette is a "Clear button" that the user
+ * can click to clear the sketch. The user draws, with the selected tool, by
+ * clicking and dragging in a large white area that occupies most of the
+ * canvas.
  */
 public class SimpleToolPaint extends Application {
     public static void main(String[] args) {
@@ -22,12 +24,17 @@ public class SimpleToolPaint extends Application {
 
     /*
      * Array of colors corresponding to available colors in the palette.
-     * (The last color is a slightly darker version of yellow for
-     * better visibility on a white background.)
      */
     private final Color[] palette = {
-            Color.BLACK, Color.RED, Color.GREEN, Color.BLUE,
-            Color.CYAN, Color.MAGENTA, Color.color(0.95, 0.9, 0)
+            Color.BLACK,
+            Color.RED,
+            Color.GREEN,
+            Color.BLUE,
+            Color.CYAN,
+            Color.MAGENTA,
+            // The last color is a slightly darker version of yellow for
+            // better visibility on a white background.
+            Color.color(0.95, 0.9, 0)
     };
 
     private int currentColorNum = 0; // The currently selected drawing color,
@@ -38,8 +45,9 @@ public class SimpleToolPaint extends Application {
     private double prevX, prevY; // The previous location of the mouse, when
                                  // the user is drawing by dragging the mouse.
 
-    private double initalX, initalY; // The previous location of the mouse, when
-                                     // the user is drawing by dragging the mouse.
+    // The previous location of the mouse, when
+    // the user has clicked down the mouse in the drawing canvas.
+    private double initalX, initalY;
 
     private boolean dragging; // This is set to true while the user is drawing.
 
@@ -59,7 +67,10 @@ public class SimpleToolPaint extends Application {
         g = canvas.getGraphicsContext2D();
         clearAndDrawPalletteAndTools();
 
-        /* Respond to mouse events on the canvas, by calling methods in this class. */
+        /*
+         * Respond to mouse events on the canvas,
+         * by calling methods in this class.
+         */
 
         canvas.setOnMousePressed(e -> mousePressed(e));
         canvas.setOnMouseDragged(e -> mouseDragged(e));
@@ -77,8 +88,8 @@ public class SimpleToolPaint extends Application {
 
     /**
      * Fills the canvas with white and draws the color palette and (simulated)
-     * "Clear" button on the right edge of the canvas. This method is called when
-     * the canvas is created and when the user clicks "Clear."
+     * "Clear" button on the right edge of the canvas. This method is called
+     * when the canvas is created and when the user clicks "Clear."
      */
     public void clearAndDrawPalletteAndTools() {
 
@@ -88,7 +99,7 @@ public class SimpleToolPaint extends Application {
         g.setFill(Color.WHITE);
         g.fillRect(0, 0, width, height);
 
-        // Distance between the top of one tool rectangle in the drawTool 
+        // Distance between the top of one tool rectangle in the drawTool
         // function and the top of the rectangle below it. The height of the
         // rectangle will be toolSpacing - 3. There are 8 tool rectangles,
         // so the available space is divided by 8.
@@ -130,10 +141,14 @@ public class SimpleToolPaint extends Application {
      * @param colorSpacing
      */
     private void drawPalette(int width, int colorSpacing) {
-
+        // Draw the color palette buttons
         for (int N = 0; N < palette.length; N++) {
             g.setFill(palette[N]);
-            g.fillRect(width - 53, 3 + N * colorSpacing, 50, colorSpacing - 3);
+            g.fillRect(
+                    width - 53,
+                    3 + N * colorSpacing,
+                    50,
+                    colorSpacing - 3);
         }
 
         /*
@@ -153,36 +168,50 @@ public class SimpleToolPaint extends Application {
     /**
      * Draw the 8 tools
      * 
-     * @param width of the canvas.
+     * @param width       of the canvas.
      * @param toolSpacing
      */
     private void drawTools(int width, int toolSpacing) {
         int NUMBER_OF_TOOLS = 8;
         int toolBoxXCordOffset = width - 108;
         int[] toolIndex = new int[8];
+        // Draw the tool's button white background
         for (int i = 0; i < NUMBER_OF_TOOLS; i++) {
             g.setFill(Color.WHITE);
-            g.fillRect(toolBoxXCordOffset, 3 + i * toolSpacing, 50, toolSpacing - 3);
-            toolIndex[i] = 3 + i * toolSpacing; // grab each tool box's location
+            g.fillRect(
+                    toolBoxXCordOffset,
+                    3 + i * toolSpacing,
+                    50,
+                    toolSpacing - 3);
+
+            // Grab each tool box's location
+            toolIndex[i] = 3 + i * toolSpacing;
         }
 
         // Draw a 2-pixel orange border around the default tool.
         g.setStroke(Color.ORANGE);
         g.setLineWidth(2);
-        g.strokeRect(toolBoxXCordOffset - 1, // add one spacing more for boarder
+        g.strokeRect(
+                toolBoxXCordOffset - 1, // Add one spacing more for boarder
                 2 + currentToolNum * toolSpacing, // 2 spacing for boarder
                 52, // 2 additional for boarder
                 toolSpacing - 1);
 
         /** Draw Tool Icons */
         // tools 01 -> 04 : 0.2px -> 0.8px pens
-        for (int i = 0, j = 2; i < 4; i++, j += 2) {
+        for (int i = 0, sizePen = 2; i < 4; i++, sizePen += 2) {
             g.setFill(Color.BLACK);
-            g.fillOval(toolBoxXCordOffset + 20, toolIndex[i] + 20, 2 + j, 2 + j);
+            g.fillOval(
+                    toolBoxXCordOffset + 20, // Draw in column toolbox column
+                    toolIndex[i] + 20, // The y-coordinate of each box
+                    2 + sizePen, // Increase the pen's icon by 0.2 pixel width
+                    2 + sizePen // Increase the pen's icon by 0.2 pixel height
+            );
         }
-        // tool 05: line
+        // tool 05: line - Fans out from initial clicked location
         g.setStroke(Color.BLACK);
-        g.strokeLine(toolBoxXCordOffset + 5,
+        g.strokeLine(
+                toolBoxXCordOffset + 5,
                 toolIndex[4] + 5,
                 toolBoxXCordOffset + 43,
                 toolIndex[4] + 40); // tool 05: line
@@ -226,11 +255,12 @@ public class SimpleToolPaint extends Application {
         int colorSpacing = (height - 56) / palette.length;
         int newColor = y / colorSpacing; // Which color number was clicked?
 
-        if (newColor < 0 || newColor > 6) // Make sure the color number is valid.
+        // Make sure the color number is valid.
+        if (newColor < 0 || newColor > 6)
             return;
 
         /*
-         * Remove the highlight from the current color, by drawing over it in 
+         * Remove the highlight from the current color, by drawing over it in
          * gray. Then change the current drawing color and draw a highlight
          * around the new drawing color.
          */
@@ -266,15 +296,17 @@ public class SimpleToolPaint extends Application {
         int toolBoxXCordOffset = width - 109;
 
         int toolSpacing = (height - 3) / NUMBER_OF_TOOLS; // Space for one tool
-        int newTool = usersYCord / toolSpacing; // Which tool number was clicked?
+
+        // Which tool number was clicked?
+        int newTool = usersYCord / toolSpacing;
 
         if (newTool < 0 || newTool > 7) // Make sure the color number is valid.
             return;
 
         /*
-         * Remove the highlight from the current tool, by drawing over it in gray.
-         * Then change the current tool type and draw a highlight around the
-         * new tool type.
+         * Remove the highlight from the current tool, by drawing over it in
+         * gray. Then change the current tool type and draw a highlight around
+         * the new tool type.
          */
 
         g.setLineWidth(2);
@@ -372,8 +404,8 @@ public class SimpleToolPaint extends Application {
      * down. If the user is drawing, draw a line segment from the previous
      * mouse location to the current mouse location, and set up prevX and
      * prevY for the next call. Note that in case the user drags outside of
-     * the drawing area, the values of x and y are "clamped" to lie within this
-     * area. This avoids drawing on the color palette or clear button.
+     * the drawing area, the values of x and y are "clamped" to lie within
+     * this area. This avoids drawing on the color palette or clear button.
      */
     public void mouseDragged(MouseEvent evt) {
 
