@@ -79,7 +79,7 @@ public class SimpleToolPaint extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setTitle("Simple Paint");
+        stage.setTitle("Simple Tool Paint");
         stage.show();
     }
 
