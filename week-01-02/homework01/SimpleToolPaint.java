@@ -62,7 +62,7 @@ public class SimpleToolPaint extends Application {
         
         canvas = new Canvas(600,400);
         g = canvas.getGraphicsContext2D();
-        clearAndDrawPalette();
+        clearAndDrawPalletteAndTools();
         
         /* Respond to mouse events on the canvas, by calling methods in this class. */
         
@@ -86,7 +86,7 @@ public class SimpleToolPaint extends Application {
      * "Clear" button on the right edge of the canvas.  This method is called when
      * the canvas is created and when the user clicks "Clear."
      */
-    public void clearAndDrawPalette() {
+    public void clearAndDrawPalletteAndTools() {
 
         int width = (int) canvas.getWidth(); // Width of the canvas.
         int height = (int) canvas.getHeight(); // Height of the canvas.
@@ -121,7 +121,7 @@ public class SimpleToolPaint extends Application {
 
         drawTools(width, toolSpacing);
 
-    } // end clearAndDrawPalette()
+    } // end clearAndDrawPalletteAndTools()
 
     /**
      * Draw the seven color rectangles.
@@ -254,7 +254,7 @@ public class SimpleToolPaint extends Application {
             // This click is either on the clear button or
             // on the color palette.
             if (y > height - 53)
-                clearAndDrawPalette();  //  Clicked on "CLEAR button".
+                clearAndDrawPalletteAndTools();  //  Clicked on "CLEAR button".
             else
                 changeColor(y);  // Clicked on the color palette.
         }
