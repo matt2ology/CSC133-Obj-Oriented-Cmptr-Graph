@@ -37,8 +37,10 @@ public class SimpleToolPaint extends Application {
             Color.CYAN, Color.MAGENTA, Color.color(0.95,0.9,0)
     };
 
-    private int currentColorNum = 0;  // The currently selected drawing color,
-                                      //   coded as an index into the above array
+    private int currentColorNum = 0; // The currently selected drawing color,
+                                     // coded as an index into the above array
+
+    private int currentToolNum = 0; // The default tool
 
     private double prevX, prevY;   // The previous location of the mouse, when
                                    // the user is drawing by dragging the mouse.
@@ -86,11 +88,13 @@ public class SimpleToolPaint extends Application {
      */
     public void clearAndDrawPalette() {
 
-        int width = (int)canvas.getWidth();    // Width of the canvas.
-        int height = (int)canvas.getHeight();  // Height of the canvas.
+        int width = (int) canvas.getWidth(); // Width of the canvas.
+        int height = (int) canvas.getHeight(); // Height of the canvas.
 
         g.setFill(Color.WHITE);
-        g.fillRect(0,0,width,height);
+        g.fillRect(0, 0, width, height);
+
+        int toolSpacing = (height - 3) / 8;
 
         int colorSpacing = (height - 56) / 7;
         // Distance between the top of one colored rectangle in the palette
@@ -106,16 +110,16 @@ public class SimpleToolPaint extends Application {
         g.setLineWidth(3);
         g.strokeRect(1.5, 1.5, width-3, height-3);
 
-        /* Draw a 56-pixel wide gray rectangle along the right edge of the canvas.
-             The color palette and Clear button will be drawn on top of this.
-             (This covers some of the same area as the border I just drew. */
-
+        // Gray rectangle along the right edge of the canvas.
+        // This covers some of the same area as the border
         g.setFill(Color.GRAY);
-        g.fillRect(width - 56, 0, 56, height);
+        g.fillRect(width - 112, 0, 112, height);
 
         clearCanvas(width, height); 
 
         drawPalette(width, colorSpacing);
+
+        drawTools(width, toolSpacing);
 
     } // end clearAndDrawPalette()
 
@@ -140,6 +144,47 @@ public class SimpleToolPaint extends Application {
         g.setStroke(Color.WHITE);
         g.setLineWidth(2);
         g.strokeRect(width - 54, 2 + currentColorNum * colorSpacing, 52, colorSpacing - 1);
+    }
+
+    /**
+     * Draw the 8 tools
+     * 
+     * @param width
+     * @param toolSpacing
+     */
+    private void drawTools(int width, int toolSpacing) {
+        int NUMBER_OF_TOOLS = 8;
+        int toolBoxOffset = width - 108;
+        int[] toolIndex = new int[8];
+        for (int i = 0; i < NUMBER_OF_TOOLS; i++) {
+            g.setFill(Color.WHITE);
+            g.fillRect(toolBoxOffset, 3 + i * toolSpacing, 50, toolSpacing - 3);
+            toolIndex[i] = 3 + i * toolSpacing; // grab each tool box's location
+        }
+
+        // Draw a 2-pixel orange border around the default tool.
+        g.setStroke(Color.ORANGE);
+        g.setLineWidth(2);
+        g.strokeRect(toolBoxOffset - 1, // add one spacing more for boarder
+                2 + currentToolNum * toolSpacing, // 2 spacing for boarder
+                52, // 2 additional for boarder
+                toolSpacing - 1);
+
+        /** Draw Tool Icons */
+        // tools 01 to 04: 0.2px to 0.8px pens
+        for (int i = 0, j = 2; i < 4; i++, j+=2) {
+            g.setFill(Color.BLACK);
+            g.fillOval(toolBoxOffset + 20, toolIndex[i] + 20, 2 + j, 2 + j);
+        }
+        // tool 05: line
+        g.setStroke(Color.BLACK);
+        g.strokeLine(toolBoxOffset + 5, toolIndex[4] + 5, toolBoxOffset + 43, toolIndex[4] + 40);
+        // tool 06: rectangle
+        g.fillRect(toolBoxOffset + 5, toolIndex[5] + 3, 40, 40);
+        // tool 07: circle
+        g.fillOval(toolBoxOffset + 5, toolIndex[6] + 3, 40, 40);
+        // tool 08: rounded rectangle
+        g.fillRoundRect(toolBoxOffset + 5, toolIndex[7] + 3, 40, 40, 10, 10);
     }
 
     /**
@@ -253,8 +298,8 @@ public class SimpleToolPaint extends Application {
 
         if (x < 3)                          // Adjust the value of x,
             x = 3;                           //   to make sure it's in
-        if (x > canvas.getWidth() - 57)       //   the drawing area.
-            x = (int)canvas.getWidth() - 57;
+        if (x > canvas.getWidth() - 112)       //   the drawing area.
+            x = (int)canvas.getWidth() - 112;
 
         if (y < 3)                          // Adjust the value of y,
             y = 3;                           //   to make sure it's in
