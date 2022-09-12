@@ -96,7 +96,7 @@ public class SimpleToolPaint extends Application {
 
         int toolSpacing = (height - 3) / 8;
 
-        int colorSpacing = (height - 56) / 7;
+        int colorSpacing = (height - 56) / palette.length;
         // Distance between the top of one colored rectangle in the palette
         // and the top of the rectangle below it.  The height of the
         // rectangle will be colorSpacing - 3.  There are 7 colored rectangles,
