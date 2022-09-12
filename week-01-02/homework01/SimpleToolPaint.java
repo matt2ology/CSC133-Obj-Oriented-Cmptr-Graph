@@ -45,6 +45,9 @@ public class SimpleToolPaint extends Application {
     private double prevX, prevY;   // The previous location of the mouse, when
                                    // the user is drawing by dragging the mouse.
 
+    private double initalX, initalY; // The previous location of the mouse, when
+                                   // the user is drawing by dragging the mouse.
+
     private boolean dragging;   // This is set to true while the user is drawing.
 
     private Canvas canvas;  // The canvas on which everything is drawn.
@@ -154,37 +157,37 @@ public class SimpleToolPaint extends Application {
      */
     private void drawTools(int width, int toolSpacing) {
         int NUMBER_OF_TOOLS = 8;
-        int toolBoxOffset = width - 108;
+        int toolBoxXCordOffset = width - 108;
         int[] toolIndex = new int[8];
         for (int i = 0; i < NUMBER_OF_TOOLS; i++) {
             g.setFill(Color.WHITE);
-            g.fillRect(toolBoxOffset, 3 + i * toolSpacing, 50, toolSpacing - 3);
+            g.fillRect(toolBoxXCordOffset, 3 + i * toolSpacing, 50, toolSpacing - 3);
             toolIndex[i] = 3 + i * toolSpacing; // grab each tool box's location
         }
 
         // Draw a 2-pixel orange border around the default tool.
         g.setStroke(Color.ORANGE);
         g.setLineWidth(2);
-        g.strokeRect(toolBoxOffset - 1, // add one spacing more for boarder
+        g.strokeRect(toolBoxXCordOffset - 1, // add one spacing more for boarder
                 2 + currentToolNum * toolSpacing, // 2 spacing for boarder
                 52, // 2 additional for boarder
                 toolSpacing - 1);
 
         /** Draw Tool Icons */
-        // tools 01 to 04: 0.2px to 0.8px pens
+        // tools 01 -> 04 : 0.2px -> 0.8px pens
         for (int i = 0, j = 2; i < 4; i++, j+=2) {
             g.setFill(Color.BLACK);
-            g.fillOval(toolBoxOffset + 20, toolIndex[i] + 20, 2 + j, 2 + j);
+            g.fillOval(toolBoxXCordOffset + 20, toolIndex[i] + 20, 2 + j, 2 + j);
         }
         // tool 05: line
         g.setStroke(Color.BLACK);
-        g.strokeLine(toolBoxOffset + 5, toolIndex[4] + 5, toolBoxOffset + 43, toolIndex[4] + 40);
+        g.strokeLine(toolBoxXCordOffset + 5, toolIndex[4] + 5, toolBoxXCordOffset + 43, toolIndex[4] + 40);
         // tool 06: rectangle
-        g.fillRect(toolBoxOffset + 5, toolIndex[5] + 3, 40, 40);
+        g.fillRect(toolBoxXCordOffset + 5, toolIndex[5] + 3, 40, 40);
         // tool 07: circle
-        g.fillOval(toolBoxOffset + 5, toolIndex[6] + 3, 40, 40);
+        g.fillOval(toolBoxXCordOffset + 5, toolIndex[6] + 3, 40, 40);
         // tool 08: rounded rectangle
-        g.fillRoundRect(toolBoxOffset + 5, toolIndex[7] + 3, 40, 40, 10, 10);
+        g.fillRoundRect(toolBoxXCordOffset + 5, toolIndex[7] + 3, 40, 40, 10, 10);
     }
 
     /**
@@ -228,7 +231,38 @@ public class SimpleToolPaint extends Application {
 
     } // end changeColor()
 
+    /**
+     * Change the tool after the user has clicked the
+     * mouse on the tool palette at a point with y-coordinate.
+     * 
+     * @param usersYCord y-coordinate where the user clicked.
+     */
+    private void changeTool(int usersYCord) {
+        int width = (int) canvas.getWidth();
+        int height = (int) canvas.getHeight();
 
+        int NUMBER_OF_TOOLS = 8;
+        int toolBoxXCordOffset = width - 109;
+
+        int toolSpacing = (height - 3) / NUMBER_OF_TOOLS; // Space for one tool
+        int newTool = usersYCord / toolSpacing; // Which tool number was clicked?
+
+        if (newTool < 0 || newTool > 7) // Make sure the color number is valid.
+            return;
+
+        /*
+         * Remove the highlight from the current tool, by drawing over it in gray.
+         * Then change the current tool type and draw a highlight around the
+         * new tool type.
+         */
+
+        g.setLineWidth(2);
+        g.setStroke(Color.GRAY);
+        g.strokeRect(toolBoxXCordOffset, 2 + currentToolNum * toolSpacing, 52, toolSpacing - 1);
+        currentToolNum = newTool;
+        g.setStroke(Color.ORANGE);
+        g.strokeRect(toolBoxXCordOffset, 2 + currentToolNum * toolSpacing, 52, toolSpacing - 1);
+    }
 
     /**
      * This is called when the user presses the mouse anywhere in the canvas.  
@@ -254,18 +288,32 @@ public class SimpleToolPaint extends Application {
             // This click is either on the clear button or
             // on the color palette.
             if (y > height - 53)
-                clearAndDrawPalletteAndTools();  //  Clicked on "CLEAR button".
+                clearAndDrawPalletteAndTools(); // Clicked on "CLEAR button".
             else
-                changeColor(y);  // Clicked on the color palette.
+                changeColor(y); // Clicked on the color palette.
+        } else if (x > width - 112 && x < width - 56) {
+            changeTool(y);
         }
-        else if (isUserInDrawingArea(x, y, width, height)) {
+         else if (isUserInDrawingArea(x, y, width, height)) {
             // The user has clicked on the white drawing area.
             // Start drawing a curve from the point (x,y).
+            initalX = x;
+            initalY = y;
+
             prevX = x;
             prevY = y;
             dragging = true;
-            g.setLineWidth(2);  // Use a 2-pixel-wide line for drawing.
-            g.setStroke( palette[currentColorNum] );
+            if (currentToolNum == 0) {
+                g.setLineWidth(2); // Use a 2-pixel-wide line for drawing.
+            } else if (currentToolNum == 1) {
+                g.setLineWidth(4);
+            } else if (currentToolNum == 2) {
+                g.setLineWidth(6);
+            } else if (currentToolNum == 3) {
+                g.setLineWidth(8);
+            }
+            g.setStroke(palette[currentColorNum]);
+            g.setFill(palette[currentColorNum]);
         }
 
     } // end mousePressed()
@@ -308,6 +356,7 @@ public class SimpleToolPaint extends Application {
 
         double x = evt.getX();   // x-coordinate of mouse.
         double y = evt.getY();   // y-coordinate of mouse.
+        
 
         if (x < 3)                          // Adjust the value of x,
             x = 3;                           //   to make sure it's in
@@ -319,7 +368,35 @@ public class SimpleToolPaint extends Application {
         if (y > canvas.getHeight() - 4)       //   the drawing area.
             y = canvas.getHeight() - 4;
 
-        g.strokeLine(prevX, prevY, x, y);  // Draw the line.
+        /* Use the selected drawing tools */
+        // X-axis distance from mouse clicked to location mouse dragged
+        double xDiff = Math.abs(x - initalX);
+        // Y-axis distance from mouse clicked to location mouse dragged
+        double yDiff = Math.abs(y - initalY);
+
+        if (currentToolNum >= 0 && currentToolNum <= 3) {
+            // Tool 01 -> 03: Pen sizes 0.2, 0.4, 0.6, 0.8
+            g.strokeLine(prevX, prevY, x, y); // Draw the line.
+        } else if (currentToolNum == 4) {
+            // Tool 04: Square
+            g.setLineWidth(2);
+            g.strokeLine(initalX, initalY, x, y);
+        } else if (currentToolNum == 5) {
+            // Tool 05: Square
+            g.fillRect(initalX - xDiff, initalY - yDiff, 2 * xDiff, 2 * yDiff);
+        } else if (currentToolNum == 6) {
+            // Tool 06: Circle
+            g.fillOval(initalX - xDiff, initalY - yDiff, 2 * xDiff, 2 * yDiff);
+        } else if (currentToolNum == 7) {
+            // Tool 07: Rounded Square
+            g.fillRoundRect(
+                    initalX - xDiff,
+                    initalY - yDiff,
+                    2 * xDiff,
+                    2 * yDiff,
+                    50,
+                    50);
+        }
 
         prevX = x;  // Get ready for the next line segment in the curve.
         prevY = y;
