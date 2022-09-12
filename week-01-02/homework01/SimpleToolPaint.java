@@ -258,7 +258,7 @@ public class SimpleToolPaint extends Application {
             else
                 changeColor(y);  // Clicked on the color palette.
         }
-        else if (x > 3 && x < width - 56 && y > 3 && y < height - 3) {
+        else if (isUserInDrawingArea(x, y, width, height)) {
             // The user has clicked on the white drawing area.
             // Start drawing a curve from the point (x,y).
             prevX = x;
@@ -270,6 +270,19 @@ public class SimpleToolPaint extends Application {
 
     } // end mousePressed()
 
+    /**
+     * The user has clicked on the white drawing area.
+     * Start drawing a curve from the point (x,y).
+     * 
+     * @param x      -coordinate where the user clicked.
+     * @param y      -coordinate where the user clicked.
+     * @param width  of the canvas.
+     * @param height of the canvas.
+     * @return boolean
+     */
+    private boolean isUserInDrawingArea(int x, int y, int width, int height) {
+        return x > 3 && x < width - 112 && y > 3 && y < height - 3;
+    }
 
     /**
      * Called whenever the user releases the mouse button. Just sets
