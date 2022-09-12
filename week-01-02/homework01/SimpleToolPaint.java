@@ -47,7 +47,7 @@ public class SimpleToolPaint extends Application {
 
     // The previous location of the mouse, when
     // the user has clicked down the mouse in the drawing canvas.
-    private double initalX, initalY;
+    private double initialX, initialY;
 
     private boolean dragging; // This is set to true while the user is drawing.
 
@@ -356,8 +356,8 @@ public class SimpleToolPaint extends Application {
         } else if (isUserInDrawingArea(x, y, width, height)) {
             // The user has clicked on the white drawing area.
             // Start drawing a curve from the point (x,y).
-            initalX = x;
-            initalY = y;
+            initialX = x;
+            initialY = y;
 
             prevX = x;
             prevY = y;
@@ -427,9 +427,9 @@ public class SimpleToolPaint extends Application {
 
         /* Use the selected drawing tools */
         // X-axis distance from mouse clicked to location mouse dragged
-        double xDiff = Math.abs(x - initalX);
+        double xDiff = Math.abs(x - initialX);
         // Y-axis distance from mouse clicked to location mouse dragged
-        double yDiff = Math.abs(y - initalY);
+        double yDiff = Math.abs(y - initialY);
 
         if (currentToolNum >= 0 && currentToolNum <= 3) {
             // Tool 01 -> 03: Pen sizes 0.2, 0.4, 0.6, 0.8
@@ -437,18 +437,18 @@ public class SimpleToolPaint extends Application {
         } else if (currentToolNum == 4) {
             // Tool 04: Square
             g.setLineWidth(2);
-            g.strokeLine(initalX, initalY, x, y);
+            g.strokeLine(initialX, initialY, x, y);
         } else if (currentToolNum == 5) {
             // Tool 05: Square
-            g.fillRect(initalX - xDiff, initalY - yDiff, 2 * xDiff, 2 * yDiff);
+            g.fillRect(initialX - xDiff, initialY - yDiff, 2 * xDiff, 2 * yDiff);
         } else if (currentToolNum == 6) {
             // Tool 06: Circle
-            g.fillOval(initalX - xDiff, initalY - yDiff, 2 * xDiff, 2 * yDiff);
+            g.fillOval(initialX - xDiff, initialY - yDiff, 2 * xDiff, 2 * yDiff);
         } else if (currentToolNum == 7) {
             // Tool 07: Rounded Square
             g.fillRoundRect(
-                    initalX - xDiff,
-                    initalY - yDiff,
+                    initialX - xDiff,
+                    initialY - yDiff,
                     2 * xDiff,
                     2 * yDiff,
                     50,
