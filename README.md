@@ -1,8 +1,20 @@
 # CSC133 Obj-Oriented Cmptr Graph - SECTION 03 - Fall 2022
 
+## Admin
+
 1. [CSC-133 Section 03 :: Fall 2022 :: On-Campus](welcome_to_csc133_obj_oriented_cmptr_graph.pdf)
 2. [CSC-133 :: Course Syllabus](admin_csc133_course_syllabus.pdf)
 3. [ADMIN :: My Approach to Assessment](admin_my_approach_to_assessment.pdf)
+
+### Books
+
+1. J9N: [Introduction to Programming Using Java by David Eck](https://math.hws.edu/javanotes/index.html)
+2. [Introduction to Software Design with Java by Martin P. Robillard](https://github.com/prmr/SoftwareDesign)
+3. GR: [Introduction to computer graphics](https://math.hws.edu/graphicsbook/index.html)
+
+#### Additional Resources
+
+[31 Days of Refactoring (Free eBook)](https://lostechies.com/wp-content/uploads/2011/03/31DaysRefactoring.pdf)
 
 ## Setup
 
@@ -11,7 +23,7 @@
 1. Install [Azul JavaFX .dmg](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=arm-64-bit&package=jdk-fx)
 2. Install [Jet Brains IntelliJ IDEA .dmg (Apple Silicon)](https://www.jetbrains.com/idea/download/#section=mac)
 
-## VSCode
+### VSCode
 
 1. Enable VIM
 2. Install extension [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
@@ -20,10 +32,12 @@
 ## Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10)
 
 [Week 01/02](week-01-02/README.md)
+[HW 01 Instructions](week-01-02/homework_01.pdf) - Due: Mon Sep 12, 2022
 
-## Academic Week 03 - Calendar Week 37 (09/11 - 09/16)
+## Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23)
 
-## Academic Week 04 - Calendar Week 38 (09/19 - 09/23)
+[Week 03/04](week-03-04/README.md)
+[HW 02 Instruction](week-03-04/hw02_simple_object_paint.pdf) - Due: Mon Sep 26, 2022
 
 ## Academic Week 05 - Calendar Week 39 (09/26 - 09/30)
 
