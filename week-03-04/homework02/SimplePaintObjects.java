@@ -19,7 +19,8 @@ import javafx.scene.paint.Color;
  */
 public class SimplePaintObjects extends Application {
     public static void main(String[] args) {
-        launch(); // This main routine allows this class to be run as a program
+        // This main routine allows this class to be run as a program
+        Application.launch(args);
     }
 
     /*
