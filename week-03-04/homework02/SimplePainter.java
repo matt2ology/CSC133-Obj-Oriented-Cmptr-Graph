@@ -85,3 +85,24 @@ public class SimplePainter extends Application {
 abstract class AbstractTool extends StackPane {
   Rectangle rectangle = new Rectangle();
 }
+
+/**
+ * <h2>2.3.1.3 ActionTool</h2>
+ * A tool that performs an action when an action is clicked on
+ * (i.e. <b>clear button</b>).
+ * <ol>
+ * <li>The tool is <b>activated</b> when the user clicks on it.</li>
+ * <li>The tool is <b>deactivated</b> when the user release their click of
+ * it.</li>
+ * <li>Actions outside of Tool Class hierarchy will have object of type
+ * <b>Runnable</b> (e.g., <code>this::myClearAction</code> as the parameter
+ * to the constructor)</li>
+ * </ol>
+ * <b>main class</b> implements a method <code>myClearAction()</code>
+ * that implements the clear functionality. To execute the action on a
+ * mouse press, you will need to call the <code>run()</code> method on the
+ * <b>Runnable</b> object stored within <code>ActionTool</code>
+ */
+class ActionTool extends AbstractTool {
+
+}
