@@ -106,3 +106,36 @@ abstract class AbstractTool extends StackPane {
 class ActionTool extends AbstractTool {
 
 }
+
+/**
+ * <h2>2.3.1.4 ColorTool</h2>
+ * ColorTool sets the color within the application.
+ * <ol>
+ * <li>When a color <b>activates</b>, it should deactivate any other
+ * <code>ColorTool</code> objects.</li>
+ * </ol>
+ * <h3>Implementation</h3>
+ * Store the active ColorTool object in your main class.
+ * On color change: deactivate the current tool, set the current tool to the
+ * new ColorTool object, then activate the new tool.
+ */
+class ColorTool extends AbstractTool {
+  /**
+   * Constructor for ColorTool
+   * 
+   * @param color
+   */
+  ColorTool(Color color) {
+    rectangle.setFill(color);
+  }
+
+  /**
+   * Gets the fill color of the rectangle
+   * 
+   * @param color
+   */
+  Color getColor() {
+    return (Color) rectangle.getFill();
+  }
+
+}
