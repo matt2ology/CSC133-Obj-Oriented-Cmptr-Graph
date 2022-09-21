@@ -243,3 +243,18 @@ class OvalTool extends ShapeTool {
 
   }
 }
+
+/**
+ * <h2>2.3.2.4 oundedRectangleTool</h2>
+ * Is a <code>ShapeTool</code> that draws a rounded rectangle on the
+ * <code>Canvas</code>
+ * Is only committed to the drawn object list when the mouse is released
+ */
+class RoundedRectangleTool extends ShapeTool {
+
+  @Override
+  void draw(GraphicsContext gc) {
+    // TODO Auto-generated method stub
+
+  }
+}
