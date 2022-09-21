@@ -139,3 +139,22 @@ class ColorTool extends AbstractTool {
   }
 
 }
+
+/**
+ * <h2>2.3.1.5 ShapeTool</h2>
+ * Represents one of the shapes to be drawn, will actively track the current
+ * shape tool in main class sets up the tool's rectangle with the
+ * appropriate color, and provides minor services the derived classes may
+ * need
+ */
+abstract class ShapeTool extends AbstractTool {
+  /**
+   * Constructor for ShapeTool - simply sets up the tool rectangle with the 
+   * appropriate color
+   * 
+   * @param color
+   */
+  ShapeTool() {
+    super(TOOL_RECT_BG);
+  }
+  
