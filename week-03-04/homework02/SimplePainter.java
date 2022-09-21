@@ -180,3 +180,38 @@ abstract class ShapeTool extends AbstractTool {
    */
   abstract void draw(GraphicsContext gc);
 }
+
+/**
+  * <h2>2.3.2.4 PointTool</h2>
+ * Is a <code>ShapeTool</code> that draws a single point on the canvas. 
+ * It implements the top four tools (the pens of sizes 0.2, 0.4, 0.6, and 0.8)
+ * that draw points, really line segments, continuously as the user drags the
+ * mouse.
+ * <br>
+ * <br> 
+ * The key difference between <code>PointTool</code> and the other tools. The
+ * <code>PointTool</code> object must save every drawn object to the list of 
+ * objects to be drawn in the application
+ * <br>
+ * <br> 
+ * The shapes that are drawn are committed to the list of drawn objects on
+ * every call.
+ */
+class PointTool extends ShapeTool {
+
+  /**
+   * Constructor for PointTool
+   * 
+   * @param size - take a size for the "pen tool"
+   */
+  public PointTool(double size) {
+    super();
+    // TODO Auto-generated constructor stub
+  }
+  
+  @Override
+  void draw(GraphicsContext gc) {
+    // TODO Auto-generated method stub
+
+  }
+}
