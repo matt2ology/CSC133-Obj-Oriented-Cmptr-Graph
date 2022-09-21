@@ -158,3 +158,25 @@ abstract class ShapeTool extends AbstractTool {
     super(TOOL_RECT_BG);
   }
   
+  /**
+   * The <code>draw()</code> method must
+   * be implemented in each of the derived shape tool classes.
+   * It is this method that draws the shape on the canvas.
+   * Within the tool hierarchy, <code>draw()</code> delegates the actual
+   * drawing to the <code>ShapeObject</code> hierarchy.
+   * <br>
+   * <br>
+   * At minimum: the <code>GraphicsContext</code> must be passed in
+   * <br>
+   * <br>
+   * but it will also need:
+   * <ol> 
+   * <li> To know the <b>start</b> and <b>end points</b> of the shape</li>
+   * <li> To know the <b>color</b> of the shape</li>
+   * </ol> 
+   * @param gc - GraphicsContext
+   * @param x - x coordinate
+   * @param y - y coordinate
+   */
+  abstract void draw(GraphicsContext gc);
+}
