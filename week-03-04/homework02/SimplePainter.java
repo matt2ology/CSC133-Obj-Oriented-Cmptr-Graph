@@ -73,3 +73,15 @@ public class SimplePainter extends Application {
 
 }
 
+/**
+ * A base class for other tool classes
+ * 
+ * Adds method so that tools can be both "activated" and "deactivated"
+ * instantiates a javafx.scene.shape.Rectangle object to represent the
+ * background of the tool
+ * 
+ * Allows the ability to set Rectangle's fill color
+ */
+abstract class AbstractTool extends StackPane {
+  Rectangle rectangle = new Rectangle();
+}
