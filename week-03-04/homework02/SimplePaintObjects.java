@@ -88,14 +88,30 @@ abstract class ShapeTool extends AbstractTool {
 
 class PointTool extends ShapeTool {
     double penWidth;
-
+    /**
+     * Creates a tool that is used to draw a point on the canvas.
+     * The point is drawn:
+     *      when the user clicks the mouse.
+     *      with the current drawing color.
+     *      as a small circle with the current drawing color.
+     * The size of the circle is determined by the value of the penWidth field.
+     * The penWidth field:
+     *      is set to 2 when the tool is created.
+     *      can be changed by calling the setPenWidth() method.
+     *      is used by the draw() method.
+     * The draw() method is:
+     *      called by the mousePressed() method in the PaintPanel class.
+     *      not called by the mouseDragged() method in the PaintPanel class.
+     *      not called by the mouseReleased() method in the PaintPanel class.
+     *      not called by the mouseMoved() method in the PaintPanel class.
+     * @param penWidth the width of the pen to be used for drawing the point
+     */
     public PointTool(int penWidth) {
         super(Color.LIGHTCORAL);
         this.penWidth = penWidth;
         Ellipse toolImage = new Ellipse(penWidth, penWidth);
         toolImage.setStroke(Color.LEMONCHIFFON);
         toolImage.setFill(Color.LEMONCHIFFON);
-
         this.getChildren().add(toolImage);
     }
 
