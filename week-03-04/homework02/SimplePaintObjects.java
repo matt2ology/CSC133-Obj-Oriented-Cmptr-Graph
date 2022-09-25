@@ -205,12 +205,7 @@ public class SimplePaintObjects extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /*
-         * Refactored out into below
-         * Scene scene = new Scene(makeRootPane());
-         * primaryStage.setScene(scene);
-         */
-        primaryStage.setScene(new Scene(makeRootPane())); // small method easy to test
+        primaryStage.setScene(new Scene(makeRootPane()));
         primaryStage.setTitle("Simple Paint Objects");
         primaryStage.show();
     }
