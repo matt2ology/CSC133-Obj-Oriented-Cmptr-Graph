@@ -171,6 +171,12 @@ public class SimplePaintObjects extends Application {
     }
 
     // approach 02
+    /**
+     * Adds a mouse handler to a ColorTool object.
+     * The mouse handler is a lambda expression.
+     * @param tool the ColorTool object to which the mouse handler is added
+     * @return the ColorTool object with the mouse handler added to it
+     */
     private ColorTool addMouseHandlerToColorTool(ColorTool tool) {
         tool.setOnMousePressed((e) -> {
             // this.currentColorTool.deactivate();
