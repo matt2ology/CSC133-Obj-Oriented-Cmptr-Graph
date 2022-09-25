@@ -149,7 +149,7 @@ class ColorTool extends AbstractTool {
  */
 abstract class ShapeTool extends AbstractTool {
   /**
-   * Constructor for ShapeTool - simply sets up the tool rectangle with the 
+   * Constructor for ShapeTool - simply sets up the tool rectangle with the
    * appropriate color
    * 
    * @param color
@@ -157,7 +157,7 @@ abstract class ShapeTool extends AbstractTool {
   ShapeTool() {
     super(TOOL_RECT_BG);
   }
-  
+
   /**
    * The <code>draw()</code> method must
    * be implemented in each of the derived shape tool classes.
