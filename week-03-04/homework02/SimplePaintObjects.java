@@ -114,6 +114,16 @@ class PointTool extends ShapeTool {
     }
 }
 
+/**
+ * A program where the user can sketch in a variety of colors and tools.
+ * A color palette list of paint tools is shown along the right edge of the
+ * canvas. The user can select a drawing color by clicking on a color in the
+ * palette, and in the column to the left (of the color palette) a set of
+ * drawing tools. Under the color palette is a "Clear button" that the user
+ * can click to clear the sketch. The user draws, with the selected tool, by
+ * clicking and dragging in a large white area that occupies most of the
+ * canvas.
+ */
 public class SimplePaintObjects extends Application {
     public static void main(String[] args) {
         Application.launch(args);
