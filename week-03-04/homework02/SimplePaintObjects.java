@@ -147,9 +147,9 @@ public class SimplePaintObjects extends Application {
         Canvas canvas = new Canvas(600, 400);
         gc = canvas.getGraphicsContext2D();
         clearCanvas();
-        canvas.setOnMousePressed(e -> mousePressed());
-        canvas.setOnMouseDragged(e -> mouseDragged());
-        canvas.setOnMouseReleased(e -> mouseReleased());
+        canvas.setOnMousePressed(e -> mousePressed(e));
+        canvas.setOnMouseDragged(e -> mouseDragged(e));
+        canvas.setOnMouseReleased(e -> mouseReleased(e));
         return canvas;
     }
 
@@ -209,14 +209,26 @@ public class SimplePaintObjects extends Application {
         return root;
     }
 
-    private void mousePressed() {
-    }
+    /**
+     * Called when the user clicks the mouse on the canvas.
+     * This method is not called when the user drags the mouse.
+     * @param event
+     */
+    private void mousePressed(MouseEvent event) {}
 
-    private void mouseDragged() {
-    }
+    /**
+     * Called when the user drags the mouse on the canvas.
+     * This method is not called when the user clicks the mouse.
+     * @param event
+     */
+    private void mouseDragged(MouseEvent event) {}
 
-    private void mouseReleased() {
-    }
+    /**
+     * Called when the user releases the mouse button on the canvas.
+     * This method is not called when the user clicks the mouse.
+     * @param event
+     */
+    private void mouseReleased(MouseEvent event) {}
 
     private void clearCanvas() {
     }
