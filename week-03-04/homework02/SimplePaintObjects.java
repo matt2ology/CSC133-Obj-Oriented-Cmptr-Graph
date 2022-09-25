@@ -186,6 +186,11 @@ public class SimplePaintObjects extends Application {
         return tool;
     }
 
+    /**
+     * The current tool that is selected for drawing. This is null if no tool
+     * is selected.
+     * @return toolPane
+     */
     private Node makeToolPane() {
         VBox toolPane = new VBox();
         toolPane.getChildren().add(new PointTool(2));
