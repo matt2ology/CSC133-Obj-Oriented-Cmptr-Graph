@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
  * clicking and dragging in a large white area that occupies most of the
  * canvas.
  */
-public class SimplePaintObjects extends Application {
+public class SimpleToolPaint extends Application {
     public static void main(String[] args) {
         // This main routine allows this class to be run as a program
         Application.launch(args);

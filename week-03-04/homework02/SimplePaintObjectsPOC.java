@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
  * clicking and dragging in a large white area that occupies most of the
  * canvas.
  */
-public class SimplePainter extends Application {
+public class SimplePaintObjectsPOC extends Application {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Constants - static defined constants in lieu of magic numbers
   //
