@@ -50,7 +50,7 @@ class ActionTool extends AbstractTool {
         super(Color.LIGHTCORAL);
         Label commandName = new Label(cmdName);
         commandName.setTextFill(Color.LEMONCHIFFON);
-        commandName.setFont(Font.font("Verdana"));
+        commandName.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         this.getChildren().add(commandName);
     }
 }
