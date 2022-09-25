@@ -144,6 +144,7 @@ public class SimplePaintObjects extends Application {
     static final Color TOOL_RECT_BG = Color.WHITE;
     static final Color TOOL_FG = Color.LEMONCHIFFON;
     static final int CELL_W = 60;
+    static final int CELL_H = CELL_W; // square cells
     static final int PADDING = 5; // padding between cells
     static final int APPLICATION_W = 600;
     static final int APPLICATION_H = 400;
