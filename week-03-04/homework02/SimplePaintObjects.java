@@ -230,8 +230,15 @@ public class SimplePaintObjects extends Application {
      */
     private void mouseReleased(MouseEvent event) {}
 
-    private void clearCanvas() {
-    }
+    /**
+     * Clear the canvas by filling it with white.
+     * This is called when the user clicks the "Clear" button.
+     * It is also called when the program starts.
+     * It is not called when the user is drawing.
+     * It is not called when the user is selecting a color or a tool.
+     * It is not called when the user is moving the mouse.
+     */
+    private void clearCanvas() {}
 
     @Override
     public void start(Stage primaryStage) throws Exception {
