@@ -78,12 +78,12 @@ abstract class ShapeTool extends AbstractTool {
      * <li>The shape is filled with the current drawing color.</li>
      * </ul>
      * 
-     * @param g     the graphics context for drawing on the canvas
+     * @param gc    the graphics context for drawing on the canvas
      * @param color the color to use for drawing the shape
      * @param start the starting point for the shape
      * @param end   the ending point for the shape
      */
-    abstract public void draw(GraphicsContext g, Color color, Point2D start, Point2D end);
+    abstract public void draw(GraphicsContext gc, Color color, Point2D start, Point2D end);
 }
 
 class PointTool extends ShapeTool {
@@ -100,7 +100,7 @@ class PointTool extends ShapeTool {
     }
 
     @Override
-    public void draw(GraphicsContext g, Color color, Point2D start, Point2D end) {
+    public void draw(GraphicsContext gc, Color color, Point2D start, Point2D end) {
 
     }
 }
@@ -120,7 +120,7 @@ public class SimplePaintObjects extends Application {
         Application.launch(args);
     }
 
-    GraphicsContext g;
+    GraphicsContext gc;
 
     private final Color[] palette = {
             Color.BLACK, Color.RED, Color.GREEN, Color.BLUE,
@@ -129,7 +129,7 @@ public class SimplePaintObjects extends Application {
 
     private Node makeCanvas() {
         Canvas canvas = new Canvas(600, 400);
-        g = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         clearCanvas();
         canvas.setOnMousePressed(e -> mousePressed());
         canvas.setOnMouseDragged(e -> mouseDragged());
