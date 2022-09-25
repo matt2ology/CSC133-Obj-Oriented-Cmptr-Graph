@@ -140,16 +140,16 @@ public class SimplePaintObjects extends Application {
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constants - static defined constants in lieu of magic numbers
     //
-    private static final Color TOOL_RECT_FG = Color.LIGHTCORAL;
-    private static final Color TOOL_RECT_BG = Color.WHITE;
-    private static final Color TOOL_FG = Color.LEMONCHIFFON;
-    private static final int CELL_W = 60;
-    private static final int PADDING = 5; // padding between cells
-    private static final int APPLICATION_W = 600;
-    private static final int APPLICATION_H = 400;
-    private static final int CANVAS_H = 2 * CELL_W + 3 * PADDING;
-    private static final int CANVAS_W = 3 * CELL_W + 4 * PADDING;
-    private static final Color[] palette = {
+    static final Color TOOL_RECT_FG = Color.LIGHTCORAL;
+    static final Color TOOL_RECT_BG = Color.WHITE;
+    static final Color TOOL_FG = Color.LEMONCHIFFON;
+    static final int CELL_W = 60;
+    static final int PADDING = 5; // padding between cells
+    static final int APPLICATION_W = 600;
+    static final int APPLICATION_H = 400;
+    static final int CANVAS_H = 2 * CELL_W + 3 * PADDING;
+    static final int CANVAS_W = 3 * CELL_W + 4 * PADDING;
+    static final Color[] palette = {
             Color.BLACK, Color.RED, Color.GREEN, Color.BLUE,
             Color.CYAN, Color.MAGENTA, Color.YELLOW
     };
