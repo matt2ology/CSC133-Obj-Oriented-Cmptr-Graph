@@ -135,10 +135,21 @@ public class SimplePaintObjects extends Application {
     public static void main(String[] args) {
         Application.launch(args);
     }
-
-    GraphicsContext gc;
-
-    private final Color[] palette = {
+    
+    GraphicsContext gc; // The graphics context for drawing on the canvas.
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Constants - static defined constants in lieu of magic numbers
+    //
+    private static final Color TOOL_RECT_FG = Color.LIGHTCORAL;
+    private static final Color TOOL_RECT_BG = Color.WHITE;
+    private static final Color TOOL_FG = Color.LEMONCHIFFON;
+    private static final int CELL_W = 60;
+    private static final int PADDING = 5; // padding between cells
+    private static final int APPLICATION_W = 600;
+    private static final int APPLICATION_H = 400;
+    private static final int CANVAS_H = 2 * CELL_W + 3 * PADDING;
+    private static final int CANVAS_W = 3 * CELL_W + 4 * PADDING;
+    private static final Color[] palette = {
             Color.BLACK, Color.RED, Color.GREEN, Color.BLUE,
             Color.CYAN, Color.MAGENTA, Color.YELLOW
     };
