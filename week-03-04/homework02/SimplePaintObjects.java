@@ -199,6 +199,7 @@ abstract class ShapeTool extends AbstractTool {
             Point2D start,
             // the ending point for the shape (in canvas coordinates)
             Point2D end);
+
     abstract public ShapeObject getPaintShape();
 }
 
@@ -412,11 +413,11 @@ class OvalTool extends ShapeTool {
     public OvalTool() {
         super(SimplePaintObjects.TOOL_RECT_FG);
         ovalShape = new OvalShape(
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            Color.BLACK);
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                Color.BLACK);
         // Icon for the tool
         Ellipse toolIcon = new Ellipse(
                 oval_tool_icon_radius_length, // radiusX
@@ -433,10 +434,10 @@ class OvalTool extends ShapeTool {
      */
     @Override
     public void draw(
-        GraphicsContext gc,
-        Color color,
-        Point2D start,
-        Point2D end) {
+            GraphicsContext gc,
+            Color color,
+            Point2D start,
+            Point2D end) {
         ovalShape = new OvalShape(
                 start.getX(), start.getY(), end.getX(), end.getY(), color);
     }
@@ -500,10 +501,10 @@ class RoundedRectangleTool extends ShapeTool {
      */
     @Override
     public void draw(
-        GraphicsContext gc,
-        Color color,
-        Point2D start,
-        Point2D end) {
+            GraphicsContext gc,
+            Color color,
+            Point2D start,
+            Point2D end) {
         roundedRectangleShape = new RoundedRectangleShape(
                 start.getX(),
                 start.getY(),
@@ -647,15 +648,13 @@ class LineShape implements ShapeObject {
     }
 
     /**
-     * Returns true if the object should update the objects list
-     * while the mouse is dragging.
+     * Don't update the list while dragging the line tool around the canvas
      *
      * @return true if the object should update the objects list
      *         while the mouse is dragging
      */
     @Override
     public boolean dragUpdate() {
-        // Don't update the list while dragging the line tool around the canvas
         return false;
     }
 }
@@ -677,11 +676,11 @@ abstract class FilledPolyShape implements ShapeObject {
     double yDiff;
 
     public FilledPolyShape(
-        double xInital,
-        double yInital,
-        double xPoints,
-        double yPoints, 
-        Color color) {
+            double xInital,
+            double yInital,
+            double xPoints,
+            double yPoints,
+            Color color) {
         this.xInital = xInital;
         this.yInital = yInital;
         this.xPoints = xPoints;
@@ -752,11 +751,11 @@ class OvalShape extends FilledPolyShape {
      * Creates a OvalShape.
      */
     public OvalShape(
-        double xInital,
-        double yInital,
-        double xPoints,
-        double yPoints,
-        Color color) {
+            double xInital,
+            double yInital,
+            double xPoints,
+            double yPoints,
+            Color color) {
         super(xInital, yInital, xPoints, yPoints, color);
     }
 
@@ -813,11 +812,11 @@ class RoundedRectangleShape extends FilledPolyShape {
          * corner to the bottom right corner.
          */
         gc.fillRoundRect(xInital - xDiff,
-        yInital - yDiff,
-        2 * xDiff,
-        2 * yDiff,
-        20,
-        20);
+                yInital - yDiff,
+                2 * xDiff,
+                2 * yDiff,
+                20,
+                20);
     }
 }
 
@@ -962,13 +961,13 @@ public class SimplePaintObjects extends Application {
             ActionTool tool,
             Runnable action) {
         tool.setOnMousePressed((e) -> {
-            
+
             tool.activate(); // activate the tool (highlight it) when the
                              // mouse is pressed on it
-            action.run();    // perform the action when the
-                             // mouse is pressed on the tool
+            action.run(); // perform the action when the
+                          // mouse is pressed on the tool
             /*
-             * deactivate the tool (un-highlight it) when the mouse is 
+             * deactivate the tool (un-highlight it) when the mouse is
              * released from it (mouseReleased)
              */
             tool.deactivate();
