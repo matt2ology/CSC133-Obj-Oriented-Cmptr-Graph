@@ -33,6 +33,11 @@ import javafx.stage.Stage;
  * Note that this only involves changing the properties of the base Rectangle.
  */
 abstract class AbstractTool extends StackPane {
+    /**
+     * (i.e., 20% larger than the size of the rectangle that is the background
+     * of the tool icon)
+     */
+    private static final double scaleRectangle = 1.2;
     Rectangle rectangle;
 
     public AbstractTool(Color color) {
@@ -45,8 +50,8 @@ abstract class AbstractTool extends StackPane {
     }
 
     public void activate() {
-        rectangle.setWidth(SimplePaintObjects.CELL_W * 1.2);
-        rectangle.setHeight(SimplePaintObjects.CELL_W * 1.2);
+        rectangle.setWidth(SimplePaintObjects.CELL_W * scaleRectangle);
+        rectangle.setHeight(SimplePaintObjects.CELL_W * scaleRectangle);
     }
 
     public void deactivate() {
@@ -94,63 +99,6 @@ class ActionTool extends AbstractTool {
     private Runnable action;
 
     /**
-     * The action to be performed when the tool is activated.
-     * This is a method in the main class.
-     *
-     * @param color
-     */
-    public ActionTool(Color color) {
-        super(color);
-    }
-
-    /**
-     * The action to be performed when the tool is activated.
-     * This is a method in the main class.
-     *
-     * @param color
-     * @param action
-     */
-    public ActionTool(Color color, Runnable action) {
-        super(color);
-        this.setOnMousePressed((e) -> {
-
-            this.activate(); // activate the tool (highlight it) when the
-                             // mouse is pressed on it
-            action.run(); // perform the action when the
-                          // mouse is pressed on the tool
-        });
-        /*
-         * deactivate the tool (un-highlight it) when the mouse is
-         * released from it (mouseReleased)
-         */
-
-        this.setOnMouseReleased((e) -> {
-            this.deactivate();
-        });
-    }
-
-    /**
-     * Creates a tool that is used to perform an action, such as clearing the
-     * canvas: the tool is a button with a label that says "Clear".
-     *
-     * @param cmdName the text to be displayed on the button
-     */
-    public ActionTool(String cmdName) {
-        super(SimplePaintObjects.TOOL_RECT_FG);
-        makeActionToolTitleName(cmdName);
-    }
-
-    private void makeActionToolTitleName(String cmdName) {
-        Label commandName = new Label(cmdName);
-        commandName.setTextFill(SimplePaintObjects.TOOL_FG);
-        commandName.setFont(Font.font(
-                "Verdana",
-                FontWeight.BOLD,
-                20));
-        this.getChildren().add(commandName);
-    }
-
-    /**
      * Creates a tool that is used to perform an action, such as clearing the
      * canvas: the tool is a button with a label that says "Clear".
      *
@@ -161,6 +109,22 @@ class ActionTool extends AbstractTool {
         super(SimplePaintObjects.TOOL_RECT_FG);
         makeActionToolTitleName(cmdName);
         this.action = action;
+    }
+
+    /**
+     * Creates a tool that is used to perform an action, 
+     * such as clearing the canvas: the tool is a button with a label that
+     * says "Clear". The button is colored with the specified color.
+     * @param cmdName the text to be displayed on the button
+     */
+    private void makeActionToolTitleName(String cmdName) {
+        Label commandName = new Label(cmdName);
+        commandName.setTextFill(SimplePaintObjects.TOOL_FG);
+        commandName.setFont(Font.font(
+                "Verdana",
+                FontWeight.BOLD,
+                20));
+        this.getChildren().add(commandName);
     }
 
     /**
@@ -247,11 +211,16 @@ class PointTool extends ShapeTool {
      */
     public PointTool(int penWidth) {
         super(SimplePaintObjects.TOOL_RECT_FG);
+        this.penWidth = penWidth;
         lineSegmentShape = new LineSegmentShape(
                 new Point2D(0, 0),
                 new Point2D(0, 0),
                 Color.BLACK,
-                2);
+                penWidth);
+        makePointToolIcon(penWidth);
+    }
+
+    private void makePointToolIcon(int penWidth) {
         Ellipse toolIcon = new Ellipse(penWidth, penWidth);
         toolIcon.setStroke(SimplePaintObjects.TOOL_FG);
         toolIcon.setFill(SimplePaintObjects.TOOL_FG);
@@ -866,7 +835,7 @@ public class SimplePaintObjects extends Application {
     static final int PADDING = 5; // padding between cells
     static final int APPLICATION_W = 2 * (CELL_W * PADDING);
     static final int APPLICATION_H = (int) ((double) (APPLICATION_W / 1.5));
-    static final int CANVAS_H = APPLICATION_H + (CELL_H + PADDING) * 2;
+    static final int CANVAS_H = APPLICATION_H + (CELL_H + PADDING*3) * 2;
     static final int CANVAS_W = APPLICATION_W;
     static final Color[] palette = {
             Color.BLACK,
