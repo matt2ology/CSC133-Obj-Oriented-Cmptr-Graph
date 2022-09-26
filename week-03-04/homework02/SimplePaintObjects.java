@@ -112,7 +112,21 @@ class ActionTool extends AbstractTool {
      */
     public ActionTool(Color color, Runnable action) {
         super(color);
-        this.action = action;
+        this.setOnMousePressed((e) -> {
+
+            this.activate(); // activate the tool (highlight it) when the
+                             // mouse is pressed on it
+            action.run(); // perform the action when the
+                          // mouse is pressed on the tool
+        });
+        /*
+         * deactivate the tool (un-highlight it) when the mouse is
+         * released from it (mouseReleased)
+         */
+
+        this.setOnMouseReleased((e) -> {
+            this.deactivate();
+        });
     }
 
     /**
@@ -199,6 +213,7 @@ abstract class ShapeTool extends AbstractTool {
             Point2D start,
             // the ending point for the shape (in canvas coordinates)
             Point2D end);
+
     abstract public ShapeObject getPaintShape();
 }
 
@@ -237,10 +252,6 @@ class PointTool extends ShapeTool {
                 new Point2D(0, 0),
                 Color.BLACK,
                 2);
-        makePointToolIcon(penWidth);
-    }
-
-    private void makePointToolIcon(int penWidth) {
         Ellipse toolIcon = new Ellipse(penWidth, penWidth);
         toolIcon.setStroke(SimplePaintObjects.TOOL_FG);
         toolIcon.setFill(SimplePaintObjects.TOOL_FG);
@@ -415,11 +426,11 @@ class OvalTool extends ShapeTool {
     public OvalTool() {
         super(SimplePaintObjects.TOOL_RECT_FG);
         ovalShape = new OvalShape(
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            Color.BLACK);
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                Color.BLACK);
         // Icon for the tool
         Ellipse toolIcon = new Ellipse(
                 oval_tool_icon_radius_length, // radiusX
@@ -436,10 +447,10 @@ class OvalTool extends ShapeTool {
      */
     @Override
     public void draw(
-        GraphicsContext gc,
-        Color color,
-        Point2D start,
-        Point2D end) {
+            GraphicsContext gc,
+            Color color,
+            Point2D start,
+            Point2D end) {
         ovalShape = new OvalShape(
                 start.getX(), start.getY(), end.getX(), end.getY(), color);
     }
@@ -503,10 +514,10 @@ class RoundedRectangleTool extends ShapeTool {
      */
     @Override
     public void draw(
-        GraphicsContext gc,
-        Color color,
-        Point2D start,
-        Point2D end) {
+            GraphicsContext gc,
+            Color color,
+            Point2D start,
+            Point2D end) {
         roundedRectangleShape = new RoundedRectangleShape(
                 start.getX(),
                 start.getY(),
@@ -678,11 +689,11 @@ abstract class FilledPolyShape implements ShapeObject {
     double yDiff;
 
     public FilledPolyShape(
-        double xInital,
-        double yInital,
-        double xPoints,
-        double yPoints, 
-        Color color) {
+            double xInital,
+            double yInital,
+            double xPoints,
+            double yPoints,
+            Color color) {
         this.xInital = xInital;
         this.yInital = yInital;
         this.xPoints = xPoints;
@@ -753,11 +764,11 @@ class OvalShape extends FilledPolyShape {
      * Creates a OvalShape.
      */
     public OvalShape(
-        double xInital,
-        double yInital,
-        double xPoints,
-        double yPoints,
-        Color color) {
+            double xInital,
+            double yInital,
+            double xPoints,
+            double yPoints,
+            Color color) {
         super(xInital, yInital, xPoints, yPoints, color);
     }
 
@@ -814,11 +825,11 @@ class RoundedRectangleShape extends FilledPolyShape {
          * corner to the bottom right corner.
          */
         gc.fillRoundRect(xInital - xDiff,
-        yInital - yDiff,
-        2 * xDiff,
-        2 * yDiff,
-        20,
-        20);
+                yInital - yDiff,
+                2 * xDiff,
+                2 * yDiff,
+                20,
+                20);
     }
 }
 
@@ -842,8 +853,6 @@ public class SimplePaintObjects extends Application {
     private Point2D end; // The end point of the mouse drag event.
     private ColorTool currentColorTool; // The current color tool.
     private ShapeTool currentShapeTool; // The current shape tool.
-    private double prevX; // The previous x coordinate of the mouse pointer.
-    private double prevY; // The previous y coordinate of the mouse pointer.
     private ArrayList<ShapeObject> drawnShapeObjects = new ArrayList<>();
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -914,9 +923,9 @@ public class SimplePaintObjects extends Application {
         currentColorTool = (ColorTool) colorPane.getChildren().get(0);
         currentColorTool.activate(); // activate the first color tool
         // Add a clear button to the color palette
-        colorPane.getChildren().add(
-                addMouseHandlerToClearTool(
-                        new ActionTool("Clear"), this::clearCanvas));
+        colorPane.getChildren().add( // 
+            addMouseHandlerToClearTool(
+                new ActionTool("Clear", this::clearCanvas)));
         return colorPane;
     }
 
@@ -959,21 +968,13 @@ public class SimplePaintObjects extends Application {
      *               the tool object
      * @return the tool pane to the caller of this method (makeColorPane)
      */
-    private ActionTool addMouseHandlerToClearTool(
-            ActionTool tool,
-            Runnable action) {
-        tool.setOnMousePressed((e) -> {
-            
-            tool.activate(); // activate the tool (highlight it) when the
-                             // mouse is pressed on it
-            action.run();    // perform the action when the
-                             // mouse is pressed on the tool
-            /*
-             * deactivate the tool (un-highlight it) when the mouse is 
-             * released from it (mouseReleased)
-             */
-            tool.deactivate();
+    private ActionTool addMouseHandlerToClearTool(ActionTool tool) {
+        tool.setOnMousePressed(value -> {
+            tool.activate();
+            clearCanvas();
+            drawnShapeObjects.clear();
         });
+        tool.setOnMouseReleased(value -> tool.deactivate());
         return tool;
     }
 
@@ -1127,6 +1128,10 @@ public class SimplePaintObjects extends Application {
                      * dragged
                      */
                     end);
+            /*
+             * add the shape to the list of drawn shapes (drawnShapeObjects)
+             * commit the drawn shape onto the canvas
+             */
             drawnShapeObjects.add(currentShapeTool.getPaintShape());
             /*
              * save the current point as the previous point
@@ -1149,6 +1154,7 @@ public class SimplePaintObjects extends Application {
                      * dragged
                      */
                     end);
+            // draw the shape object on the canvas (gc) - see the preview
             currentShapeTool.getPaintShape().draw(gc);
         }
     }
