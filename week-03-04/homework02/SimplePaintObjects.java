@@ -40,6 +40,12 @@ abstract class AbstractTool extends StackPane {
     private static final double scaleRectangle = 1.2;
     Rectangle rectangle;
 
+    /**
+     * The constructor for the AbstractTool class.
+     * 
+     * @param color The color of therectangle that is the background of the
+     *              tool icon.
+     */
     public AbstractTool(Color color) {
         rectangle = new Rectangle();
         rectangle.setWidth(SimplePaintObjects.CELL_W);
@@ -49,6 +55,9 @@ abstract class AbstractTool extends StackPane {
         this.getChildren().add(rectangle);
     }
 
+    /**
+     * This method should be called when the tool is activated.
+     */
     public void activate() {
         rectangle.setWidth(SimplePaintObjects.CELL_W * scaleRectangle);
         rectangle.setHeight(SimplePaintObjects.CELL_W * scaleRectangle);
@@ -112,9 +121,10 @@ class ActionTool extends AbstractTool {
     }
 
     /**
-     * Creates a tool that is used to perform an action, 
+     * Creates a tool that is used to perform an action,
      * such as clearing the canvas: the tool is a button with a label that
      * says "Clear". The button is colored with the specified color.
+     * 
      * @param cmdName the text to be displayed on the button
      */
     private void makeActionToolTitleName(String cmdName) {
@@ -309,7 +319,6 @@ class LineTool extends ShapeTool {
     public ShapeObject getPaintShape() {
         return lineShape;
     }
-
 }
 
 /**
@@ -835,7 +844,7 @@ public class SimplePaintObjects extends Application {
     static final int PADDING = 5; // padding between cells
     static final int APPLICATION_W = 2 * (CELL_W * PADDING);
     static final int APPLICATION_H = (int) ((double) (APPLICATION_W / 1.5));
-    static final int CANVAS_H = APPLICATION_H + (CELL_H + PADDING*3) * 2;
+    static final int CANVAS_H = APPLICATION_H + (CELL_H + PADDING * 3) * 2;
     static final int CANVAS_W = APPLICATION_W;
     static final Color[] palette = {
             Color.BLACK,
@@ -892,9 +901,9 @@ public class SimplePaintObjects extends Application {
         currentColorTool = (ColorTool) colorPane.getChildren().get(0);
         currentColorTool.activate(); // activate the first color tool
         // Add a clear button to the color palette
-        colorPane.getChildren().add( // 
-            addMouseHandlerToClearTool(
-                new ActionTool("Clear", this::clearCanvas)));
+        colorPane.getChildren().add( //
+                addMouseHandlerToClearTool(
+                        new ActionTool("Clear", this::clearCanvas)));
         return colorPane;
     }
 
@@ -929,13 +938,11 @@ public class SimplePaintObjects extends Application {
     }
 
     /**
-     * The tool pane is a list of tools that the user can click on to select a
-     * tool.
+     * Adds a mouse handler to a ActionTool object.
+     * The mouse handler is a lambda expression.
      * 
-     * @param tool   the ShapeTool object to which the mouse handler is added
-     * @param action the action to be performed when the mouse is pressed on
-     *               the tool object
-     * @return the tool pane to the caller of this method (makeColorPane)
+     * @param tool the ActionTool object to which the mouse handler is added
+     * @return the ActionTool object with the mouse handler added to it
      */
     private ActionTool addMouseHandlerToClearTool(ActionTool tool) {
         tool.setOnMousePressed(value -> {
@@ -1015,8 +1022,8 @@ public class SimplePaintObjects extends Application {
     /**
      * Adds the pen tool sizes to the tool pane.
      * The pen tool sizes are 2, 4, 6, and 8.
-     * 
-     * @param toolPane // the tool pane to which the pen tool sizes are added
+     *
+     * @param toolPane the tool pane to which the pen tool sizes are added
      */
     private void addPenToolSizes_2_4_6_8(VBox toolPane) {
         for (int penWidth = 2; penWidth <= 8; penWidth += 2) {

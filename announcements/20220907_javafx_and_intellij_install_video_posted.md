@@ -1,0 +1,5 @@
+[Daryl Posnett](https://csus.instructure.com/courses/93920/users/43499)
+
+I've posted a new video that goes through the JavaFX and IntelliJ install process. It also discusses how to verify that your install is working and setting up a simple project for the current homework assignment.  I've posted this because some of you appear to be struggling to get the source to compile correctly.  Let me be clear, you can't afford waiting a week to start coding the project if you are rusty with Java or haven't been doing much programming. This is exactly the pattern that causes students to struggle later in the course. I gave you more time than necessary on this project so that you had the extra time to setup your environment. Please use the assignment time wisely in this course. You may need more of it than you realize and it is very unlikely that there will be extensions on the assignments. 
+
+This announcement is closed for comments
