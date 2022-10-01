@@ -1,5 +1,25 @@
 # CSC133 Obj-Oriented Cmptr Graph - SECTION 03 - Fall 2022
 
+- [CSC133 Obj-Oriented Cmptr Graph - SECTION 03 - Fall 2022](#csc133-obj-oriented-cmptr-graph---section-03---fall-2022)
+  - [Admin](#admin)
+    - [Books](#books)
+      - [Additional Resources](#additional-resources)
+  - [Setup](#setup)
+    - [On M1 Mac](#on-m1-mac)
+    - [VSCode](#vscode)
+  - [Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01](#academic-week-0102---calendar-week-3536-0829---09-10---homework-01)
+  - [Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02](#academic-week-0304---calendar-week-37---38-0911---0923---homework-02)
+  - [Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07)](#academic-week-0506---calendar-week-3940-0926---1007)
+  - [Academic Week 07 - Calendar Week 41 (10/10 - 10/14)](#academic-week-07---calendar-week-41-1010---1014)
+  - [Academic Week 08 - Calendar Week 42 (10/17 - 10/21)](#academic-week-08---calendar-week-42-1017---1021)
+  - [Academic Week 09 - Calendar Week 43 (10/24 - 10/28)](#academic-week-09---calendar-week-43-1024---1028)
+  - [Academic Week 10 - Calendar Week 44 (10/31 - 11/04)](#academic-week-10---calendar-week-44-1031---1104)
+  - [Academic Week 11 - Calendar Week 45 (11/07 - 11/11)](#academic-week-11---calendar-week-45-1107---1111)
+  - [Academic Week 12 - Calendar Week 46 (11/14 - 11/18)](#academic-week-12---calendar-week-46-1114---1118)
+  - [Academic Week 13 - Calendar Week 47 (11/21 - 11/25)](#academic-week-13---calendar-week-47-1121---1125)
+  - [Academic Week 14 - Calendar Week 48 (11/27 - 12/02)](#academic-week-14---calendar-week-48-1127---1202)
+  - [Academic Week 15 - Calendar Week 49 (12/05 - 12/09)](#academic-week-15---calendar-week-49-1205---1209)
+
 ## Admin
 
 1. [CSC-133 Section 03 :: Fall 2022 :: On-Campus](welcome_to_csc133_obj_oriented_cmptr_graph.pdf)
