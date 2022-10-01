@@ -83,6 +83,8 @@
 
 [Week 05/06](week-05-06/README.md)
 
+[Notes on SE2 :: Encapsulation :: Encoding Abstractions as Types](course-notes/20220930-se2-encapsulation-encoding-abstractions-as-types.md)
+
 **Announcements**:
 
 1. [Quick Update :: Quiz 1](announcements\20220926_01_quick_update_quiz01.md) Posed on: Sep 26, 2022, 1:20 PM
