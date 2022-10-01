@@ -51,35 +51,46 @@
 
 ## Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01
 
-[Course Update 9/1](announcements\20220901_01_course_update_0901.md) Posed on: Sep 1, 2022, 2:42 PM
-[Quick Update :: Homework 1 and Temporary Enrollment](announcements\20220902_01_homework_01_and_temporary_enrollment.md) Posed on: Sep 2, 2022, 2:11 PM
-[Quick Update :: Demo Video of Modified Simple Paint](announcements\20220904_01_quick_update_demo_video_of_modified_simple_paint.md) Posed on: Sep 4, 2022, 10:16 AM
-[Course Update 9/7](announcements\20220907_01_course_update_0907.md) Posed on: Sep 7, 2022, 9:47 AM
-[Quick Update :: JavaFX and IntelliJ Install Video Posted](announcements\20220907_02_javafx_and_intellij_install_video_posted.md) Posed on: Sep 7, 2022, 9:56 PM
-[Quick Update :: Short Video with Additional Demo of Not Overwriting the Tool/Palette Area](announcements\20220909_01_quick_update_short_video_with_additional_demo_of_not_overwriting_the_toolPalette_area.md) Posed on: Sep 9, 2022, 11:56 AM
 [Week 01/02](week-01-02/README.md)
+
 [HW 01 Instructions](week-01-02/homework_01.pdf) - Due: Mon Sep 12, 2022
+
+**Announcements**:
+
+1. [Course Update 9/1](announcements\20220901_01_course_update_0901.md) Posed on: Sep 1, 2022, 2:42 PM
+2. [Quick Update :: Homework 1 and Temporary Enrollment](announcements\20220902_01_homework_01_and_temporary_enrollment.md) Posed on: Sep 2, 2022, 2:11 PM
+3. [Quick Update :: Demo Video of Modified Simple Paint](announcements\20220904_01_quick_update_demo_video_of_modified_simple_paint.md) Posed on: Sep 4, 2022, 10:16 AM
+4. [Course Update 9/7](announcements\20220907_01_course_update_0907.md) Posed on: Sep 7, 2022, 9:47 AM
+5. [Quick Update :: JavaFX and IntelliJ Install Video Posted](announcements\20220907_02_javafx_and_intellij_install_video_posted.md) Posed on: Sep 7, 2022, 9:56 PM
+6. [Quick Update :: Short Video with Additional Demo of Not Overwriting the Tool/Palette Area](announcements\20220909_01_quick_update_short_video_with_additional_demo_of_not_overwriting_the_toolPalette_area.md) Posed on: Sep 9, 2022, 11:56 AM
 
 ## Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02
 
-[Course Update :: 9/13](announcements\20220913_01_course_update_0913.md) Posed on: Sep 13, 2022, 11:15 AM
-[Quick Update :: Inheritance, Interfaces, IsA, HasA, Why and What For](announcements\20220913_02_quick_update_inheritance_interfaces_iIsa_hasa_why_and_what_for.md) Posed on: Sep 13, 2022, 7:44 PM
-[Quick Update :: Assignment and Extra Credit Details](announcements\20220919_01_quick_update_assignment_and_extra_credit_details.md) Posed on: Sep 19, 2022, 10:20 AM
-[Important Update :: All submissions must be complete!](announcements\20220919_02_important_update_all_submissions_must_be_complete.md) Posed on: Sep 19, 2022, 11:21 AM
-[Important Update :: On Nesting Classes and Extra Credit](announcements\20220920_01_important_update_on_nesting_classes_and_extra_credit.md) Posed on: Sep 20, 2022, 7:53 PM
-[Quick Update :: The Process of Coding](announcements\20220923_01_quick_update_the_process_of_coding.md) Posed on: Sep 23, 2022, 8:34 AM
 [Week 03/04](week-03-04/README.md)
+
 [HW 02 Instruction](week-03-04/hw02_simple_object_paint.pdf) - Due: Mon Sep 26, 2022
+
+**Announcements**:
+
+1. [Course Update :: 9/13](announcements\20220913_01_course_update_0913.md) Posed on: Sep 13, 2022, 11:15 AM
+2. [Quick Update :: Inheritance, Interfaces, IsA, HasA, Why and What For](announcements\20220913_02_quick_update_inheritance_interfaces_iIsa_hasa_why_and_what_for.md) Posed on: Sep 13, 2022, 7:44 PM
+3. [Quick Update :: Assignment and Extra Credit Details](announcements\20220919_01_quick_update_assignment_and_extra_credit_details.md) Posed on: Sep 19, 2022, 10:20 AM
+4. [Important Update :: All submissions must be complete!](announcements\20220919_02_important_update_all_submissions_must_be_complete.md) Posed on: Sep 19, 2022, 11:21 AM
+5. [Important Update :: On Nesting Classes and Extra Credit](announcements\20220920_01_important_update_on_nesting_classes_and_extra_credit.md) Posed on: Sep 20, 2022, 7:53 PM
+6. [Quick Update :: The Process of Coding](announcements\20220923_01_quick_update_the_process_of_coding.md) Posed on: Sep 23, 2022, 8:34 AM
 
 ## Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07)
 
-[Quick Update :: Quiz 1](announcements\20220926_01_quick_update_quiz01.md) Posed on: Sep 26, 2022, 1:20 PM
-[Quick Update :: HW 2 Deadline](announcements\20220926_02_quick_update_hw02_deadline.md) Posed on: Sep 26, 2022, 4:09 PM
-[Quick Update :: HW2 Late submission extended to (almost) midnight](announcements\20220926_03_quick_update_hw02_late_submission_extended_to_almost_midnight.md) Posed on: Sep 26, 2022, 10:25 PM
-[Quick Update :: Grade Curving Policy](announcements\20220927_01_quick_update_grade_curving_policy.md) Posed on: Sep 27, 2022, 2:10 AM
-[Important Update :: Thursday's lecture will be remote](announcements\20220928_01_important_update_thursdays_lecture_will_be_remote.md) Posed on: Sep 28, 2022, 3:38 PM
-[Course Update 9/30](announcements\20220930_01_course_update_0930.md) Posed on: Sep 30, 2022, 10:08 AM
 [Week 05/06](week-05-06/README.md)
+
+**Announcements**:
+
+1. [Quick Update :: Quiz 1](announcements\20220926_01_quick_update_quiz01.md) Posed on: Sep 26, 2022, 1:20 PM
+2. [Quick Update :: HW 2 Deadline](announcements\20220926_02_quick_update_hw02_deadline.md) Posed on: Sep 26, 2022, 4:09 PM
+3. [Quick Update :: HW2 Late submission extended to (almost) midnight](announcements\20220926_03_quick_update_hw02_late_submission_extended_to_almost_midnight.md) Posed on: Sep 26, 2022, 10:25 PM
+4. [Quick Update :: Grade Curving Policy](announcements\20220927_01_quick_update_grade_curving_policy.md) Posed on: Sep 27, 2022, 2:10 AM
+5. [Important Update :: Thursday's lecture will be remote](announcements\20220928_01_important_update_thursdays_lecture_will_be_remote.md) Posed on: Sep 28, 2022, 3:38 PM
+6. [Course Update 9/30](announcements\20220930_01_course_update_0930.md) Posed on: Sep 30, 2022, 10:08 AM
 
 ## Academic Week 07 - Calendar Week 41 (10/10 - 10/14)
 
