@@ -2,15 +2,10 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Text;
-import javafx.scene.text.Font;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
 
 
 /**
@@ -69,8 +64,9 @@ class Pong {
  * - The game loop is started when the game window is shown.
  * - The game loop is stopped when the game window is closed.
  * 
- * The “i” key will display or hid the fps information and the “s” key will
- * enable and disable sound effects.
+ * Respond to two keystroke events:
+ * The “i” key will display or hide the FPS information
+ * The “s” key will enable and disable sound effects.
  */
 public class PongApp extends Application {
 
