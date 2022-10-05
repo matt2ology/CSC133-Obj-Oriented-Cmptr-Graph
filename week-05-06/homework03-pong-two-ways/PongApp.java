@@ -51,22 +51,23 @@ class Pong {
 }
 
 /**
- * PongApp is the main class for the Pong game.
- * - It creates the game window and starts the game.
+ * The PongApp (Pong 1.0) is the main class that
  * - It also handles the game loop.
+ * - It creates the game window and starts the game.
+ * - Sets the event handling for all scene based mouse interaction
+ * - Sets up the scene and stage 
  * 
- * The game loop is a loop that runs until the game is over. In each iteration
- * of the loop:
+ * The game loop is a loop that runs until game window is closed.
+ * In each iteration of the loop:
  * - The game state is updated and the game is rendered.
  * - The loop runs at a fixed rate, which means that the game runs at the same
  * speed on all computers.
- * - The loop is implemented using a JavaFX Timeline.
  * - The game loop is started when the game window is shown.
  * - The game loop is stopped when the game window is closed.
  * 
  * Respond to two keystroke events:
- * The “i” key will display or hide the FPS information
- * The “s” key will enable and disable sound effects.
+ * - The “i” key will display or hide the FPS information
+ * - The “s” key will enable and disable sound effects.
  */
 public class PongApp extends Application {
 
