@@ -69,7 +69,7 @@ class Pong {
  * - The “i” key will display or hide the FPS information
  * - The “s” key will enable and disable sound effects.
  */
-public class PongApp extends Application {
+public class OPongApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
