@@ -50,11 +50,12 @@ public class PongApp extends Application {
     private static final String APP_FONT = "Arial";
     private static final Color FPS_INFO_COLOR = Color.BLACK;
     private static final int APP_FONT_SIZE = 24;
+    private static boolean newGame = true;
 
     private static final int NUMBER_OF_FRAMES_25 = 25;
     private static long startTime = System.nanoTime();
     private static long lastTime = 0;
-    private static int frameCount = 0; // number of frames since the start of
+    private static int frameCounter = 0; // number of frames since the start of
                                        // the game
     // frame rate per second (FPS) in a sliding window array of 20 frames
     private static double[] frameRateArr = new double[NUMBER_OF_FRAMES_25];
@@ -124,6 +125,12 @@ public class PongApp extends Application {
         final int BALL_W = BALL_H;
 
         // variables for paddle object
+        final boolean isBallUp = false;
+        final int BALL_RESPAWN_X = (int) (Math.random() * (APP_W - BALL_W));
+        final int BALL_RESPOWN_Y = APP_H / 3 - BALL_H / 2; // 1/3 of the screen
+        final int BALL_SPEED_X = 5;
+        final int BALL_VELOCITY_Y = (isBallUp ? -BALL_SPEED_X : BALL_SPEED_X);
+        final int BALL_X_MAX = APP_W - BALL_W;
         final int PADDLE_H = 20;
         final int PADDLE_W = 150;
         final int PADDLE_X_MAX = APP_W - PADDLE_W;
@@ -141,6 +148,8 @@ public class PongApp extends Application {
          */
         Rectangle ball = new Rectangle(BALL_W, BALL_H);
         ball.setFill(Color.BLUE);
+        ball.setTranslateX(BALL_RESPAWN_X);
+        ball.setTranslateY(BALL_RESPOWN_Y);
         root.getChildren().add(ball);
 
         /////////////////////////////
@@ -177,6 +186,8 @@ public class PongApp extends Application {
          */
         AnimationTimer timer = new AnimationTimer() {
 
+            private int randomXCord;
+
             /**
              * The game loop is a loop that runs until game window is closed.
              * In each iteration of the loop:
@@ -191,9 +202,36 @@ public class PongApp extends Application {
              */
             @Override
             public void handle(long now) {
+                // every new game the ball respawns in the middle of the screen
+                if (newGame) {
+                    // random location in app width - ball width
+                    randomXCord = (int) (Math.random() * (APP_W - BALL_W));
+                    ball.setTranslateX(randomXCord);
+                    ball.setTranslateY(BALL_RESPOWN_Y);
+                    /*
+                     * every new game the ball only moves vertically,
+                     * no velocity in the x-axis, along the y-axis down the screen
+                     */
+                    newGame = false;
+                } else {
+                    ball.setTranslateY(ball.getTranslateY() + BALL_VELOCITY_Y);
+                }
 
+                // game resets when ball hits the bottom of the screen
+                ballHitBottomOfScreenResetGame(ball);
                 calcGameTimeAndAveFpsAndAvgTf(fpsLabel, now);
-                frameCount++; // increment the frame counter
+                frameCounter++; // increment the frame counter
+            }
+
+            /**
+             * When the ball hits the bottom of the screen, the game resets.
+             * 
+             * @param ball
+             */
+            private void ballHitBottomOfScreenResetGame(Rectangle ball) {
+                if (ball.getTranslateY() >= APP_H - ball.getHeight()) {
+                    newGame = true;
+                }
             }
 
             private void calcGameTimeAndAveFpsAndAvgTf(
@@ -202,7 +240,7 @@ public class PongApp extends Application {
                 calculateFPS(now);
                 calculateAvgFpMiliSecond();
                 calculateSecondsElapsedInGame(now);
-                if (frameCount % 25 == 0) {
+                if (frameCounter % 25 == 0) {
                     fpsLabel.setText(String.format(
                             "FPS: %.2f (avg.), FT: %.2f (ms), GT:  %.2f (s)",
                             getAvgFPS(),
@@ -225,7 +263,7 @@ public class PongApp extends Application {
              */
             private void calculateFPS(long now) {
                 double sum = 0;
-                frameRateArr[frameCount % frameRateArr.length] = TIME_01_SECOND
+                frameRateArr[frameCounter % frameRateArr.length] = TIME_01_SECOND
                         / (now - lastTime);
                 lastTime = now;
                 // calculate the average frame rate
