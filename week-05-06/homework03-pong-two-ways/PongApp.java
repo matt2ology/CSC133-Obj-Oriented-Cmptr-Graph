@@ -157,6 +157,7 @@ public class PongApp extends Application {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.I) {
                     // Toggle FPS display information
+                    fpsLabel.setVisible(!fpsLabel.isVisible());
                 } else if (event.getCode() == KeyCode.S) {
                     // Toggle sound
                 }
