@@ -303,10 +303,9 @@ public class PongApp extends Application {
              * Update the FPS display information based on the current
              * calculations of the FPS, average frame time, and in-game time.
              * 
-             * @param fpsDisplayInfoLabel
              */
-            private void updateFPSDisplayInformation(
-                    Label fpsDisplayInfoLabel) {
+            private void updateFPSDisplayInformation() {
+                // Intermittently update the FPS display information
                 if (animationTimerFrameCounter % NUMBER_OF_FRAMES_25 == 0) {
                     fpsDisplayInfoLabel.setText(String.format(
                             FPS_DISPLAY_INFO_STRING,
