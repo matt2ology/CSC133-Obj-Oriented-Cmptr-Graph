@@ -80,7 +80,7 @@ public class PongApp extends Application {
 
     private static boolean paddleIsLeft = false;
     private static boolean paddleIsStationary = true;
-
+    
     
     private static double avgFpMiliSecond = 0;
     private static double avgFPS = 0;
@@ -262,8 +262,6 @@ public class PongApp extends Application {
          */
         AnimationTimer timer = new AnimationTimer() {
 
-            private int randomXCord;
-
             /**
              * The game loop is a loop that runs until game window is closed.
              * In each iteration of the loop:
@@ -292,7 +290,7 @@ public class PongApp extends Application {
                     newGame = false;
                 }
 
-                    ball.setTranslateY(ball.getTranslateY() + BALL_VELOCITY_Y);
+                ball.setTranslateY(ball.getTranslateY() + BALL_VELOCITY_Y);
                 // game resets when ball hits the bottom of the screen
                 ballHitBottomOfScreenResetGame();
 
@@ -316,7 +314,7 @@ public class PongApp extends Application {
                             getAvgFpMiliSecond(),
                             getSecondsElapsedInGame()));
                 }
-                }
+            }
 
             /**
              * A wrapper method that calls all the methods to calculate the
