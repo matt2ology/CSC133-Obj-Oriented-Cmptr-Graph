@@ -193,7 +193,7 @@ public class PongApp extends Application {
         // 1/3 of the screen
         final int BALL_RESPOWN_Y_CORD = APP_H / 3 - BALL_H / 2;
         final int BALL_SPEED_X = 5;
-        final int BALL_VELOCITY_Y = (isBallUp ? -BALL_SPEED_X : BALL_SPEED_X);
+        final int BALL_VELOCITY_Y = (isBallUp ? -BALL_SPEED_Y : BALL_SPEED_Y);
         final int BALL_X_MAX = APP_W - BALL_W;
         final int PADDLE_H = 20;
         final int PADDLE_W = 150;
