@@ -279,9 +279,7 @@ public class PongApp extends Application {
 
                 // every new game the ball respawns in the middle of the screen
                 if (newGame) {
-                    // random location in app x-axis (the width of app window)
-                    ball.setTranslateX(generateRandomBallRespawnXCord());
-                    ball.setTranslateY(BALL_RESPOWN_Y_CORD);
+                    respawnBallToRandomLocation();
                     /*
                      * every new game the ball only moves vertically,
                      * no velocity in the x-axis, along the y-axis down the
@@ -297,6 +295,16 @@ public class PongApp extends Application {
                 setInGameTimeAndAvgFrameTimeAndFPS(now);
                 updateFPSDisplayInformation(fpsDisplayInfoLabel);
                 animationTimerFrameCounter++; // increment the frame counter
+            }
+
+            /**
+             * Respawns the ball to a random location on the screen.
+             *
+             */
+            private void respawnBallToRandomLocation() {
+                // random location in app x-axis (the width of app window)
+                ball.setTranslateX(generateRandomBallRespawnXCord());
+                ball.setTranslateY(BALL_RESPOWN_Y_CORD);
             }
 
             /**
