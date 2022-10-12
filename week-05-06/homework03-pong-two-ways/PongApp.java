@@ -367,10 +367,12 @@ public class PongApp extends Application {
             /**
              * Calculates the in game time elapsed in seconds.
              * 
-             * @param now
-             * @return
+             * @param now The current time in nanoseconds
+             *            (1 billionth of a second)
+             * @return the in game time elapsed in seconds
              */
             private double calculateSecondsElapsedInGame(long now) {
+                // convert nanoseconds to seconds
                 return (((now - getStartTime()) / TIME_01_SECOND));
             }
 
