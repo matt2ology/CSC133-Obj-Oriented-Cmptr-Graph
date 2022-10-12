@@ -36,6 +36,32 @@ import javafx.stage.Stage;
 public class PongApp extends Application {
 
     /**
+     * In-game timer string format to display the number of frames per second.
+     */
+    private static final String GAME_TIME_INFO_STRING = "GT: %.2f (s)";
+
+    /**
+     * Frame time string format to display the number of frames per
+     * millisecond.
+     */
+    private static final String FRAME_TIME_INFO_STRING = "FT: %.2f (ms)";
+
+    /**
+     * The Frames Per Second (FPS) to be displayed.
+     */
+    private static final String FPS_INFO_STRING = "FPS: %.2f (avg.)";
+
+    /**
+     * Game information label is the concatenation of the FPS, frame time, and
+     * in-game timer.
+     */
+    private static final String FPS_DISPLAY_INFO_STRING = FPS_INFO_STRING +
+            " , " +
+            FRAME_TIME_INFO_STRING +
+            " , " +
+            GAME_TIME_INFO_STRING;
+
+    /**
      * 1_000.0 is the number of nanoseconds in a millisecond
      */
     private static final double TIME_01_MILLISECOND = 1_000.0;
@@ -52,33 +78,69 @@ public class PongApp extends Application {
     private static final int APP_FONT_SIZE = 24;
     private static boolean newGame = true;
 
-    private static final int NUMBER_OF_FRAMES_25 = 25;
-    private static long startTime = System.nanoTime();
-    private static long lastTime = 0;
-    private static int frameCounter = 0; // number of frames since the start of
-                                       // the game
-    // frame rate per second (FPS) in a sliding window array of 20 frames
-    private static double[] frameRateArr = new double[NUMBER_OF_FRAMES_25];
-    private static double avgFPS = 0;
+    private static boolean paddleIsLeft = false;
+    private static boolean paddleIsStationary = true;
 
+    
     private static double avgFpMiliSecond = 0;
+    private static double avgFPS = 0;
+    private static double secondsElapsedInGame = 0;
+    private static final int NUMBER_OF_FRAMES_25 = 25;
+    private static double[] frameRateArr = new double[NUMBER_OF_FRAMES_25];
+    private static int animationTimerFrameCounter = 0;
+    private static long lastTime = 0;
+    private static long startTime = System.nanoTime();
 
-    public double getAvgFPS() {
-        return avgFPS;
+    public static boolean isPaddleIsLeft() {
+        return paddleIsLeft;
+    }
+
+    public static void setPaddleIsLeft(boolean paddleIsLeft) {
+        PongApp.paddleIsLeft = paddleIsLeft;
+    }
+
+    public static boolean isPaddleIsStationary() {
+        return paddleIsStationary;
+    }
+
+    public static void setPaddleIsStationary(boolean paddleIsStationary) {
+        PongApp.paddleIsStationary = paddleIsStationary;
     }
 
     public static double getAvgFpMiliSecond() {
         return avgFpMiliSecond;
     }
 
-    public static long getStartTime() {
-        return startTime;
+    public static void setAvgFpMiliSecond(double avgFpMiliSecond) {
+        PongApp.avgFpMiliSecond = avgFpMiliSecond;
     }
 
-    private static double timeElapsed = 0;
+    public double getAvgFPS() {
+        return avgFPS;
+    }
 
-    public static double getTimeElapsed() {
-        return timeElapsed;
+    public static void setAvgFPS(double avgFPS) {
+        PongApp.avgFPS = avgFPS;
+    }
+
+    public static double getSecondsElapsedInGame() {
+        return secondsElapsedInGame;
+    }
+
+    public static void setSecondsElapsedInGame(double secondsElapsedInGame) {
+        PongApp.secondsElapsedInGame = secondsElapsedInGame;
+    }
+
+    public static int getAnimationTimerFrameCounter() {
+        return animationTimerFrameCounter;
+    }
+
+    public static void setAnimationTimerFrameCounter(int aniTimerFrmCtr) {
+        PongApp.animationTimerFrameCounter = aniTimerFrmCtr;
+    }
+
+    public static long getStartTime() {
+        return startTime;
     }
 
     /**
@@ -110,15 +172,16 @@ public class PongApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle(APP_TITLE);
         primaryStage.show();
+
         // Labels for Frames Per Second (FPS) information
-        Label fpsLabel = new Label("FPS: ");
-        fpsLabel.setFont(new Font(APP_FONT, APP_FONT_SIZE));
-        fpsLabel.setTextFill(FPS_INFO_COLOR);
-        fpsLabel.setLayoutX(10);
-        fpsLabel.setLayoutY(30);
+        Label fpsDisplayInfoLabel = new Label("FPS: ");
+        fpsDisplayInfoLabel.setFont(new Font(APP_FONT, APP_FONT_SIZE));
+        fpsDisplayInfoLabel.setTextFill(FPS_INFO_COLOR);
+        fpsDisplayInfoLabel.setLayoutX(10);
+        fpsDisplayInfoLabel.setLayoutY(10);
 
         // add the labels to the scene graph
-        root.getChildren().add(fpsLabel);
+        root.getChildren().add(fpsDisplayInfoLabel);
 
         // variables for ball object
         final int BALL_H = 20;
@@ -126,8 +189,9 @@ public class PongApp extends Application {
 
         // variables for paddle object
         final boolean isBallUp = false;
-        final int BALL_RESPAWN_X = (int) (Math.random() * (APP_W - BALL_W));
-        final int BALL_RESPOWN_Y = APP_H / 3 - BALL_H / 2; // 1/3 of the screen
+        final double BALL_RESPAWN_X_CORD = (Math.random() * (APP_W - BALL_W));
+        // 1/3 of the screen
+        final int BALL_RESPOWN_Y_CORD = APP_H / 3 - BALL_H / 2;
         final int BALL_SPEED_X = 5;
         final int BALL_VELOCITY_Y = (isBallUp ? -BALL_SPEED_X : BALL_SPEED_X);
         final int BALL_X_MAX = APP_W - BALL_W;
@@ -148,8 +212,8 @@ public class PongApp extends Application {
          */
         Rectangle ball = new Rectangle(BALL_W, BALL_H);
         ball.setFill(Color.BLUE);
-        ball.setTranslateX(BALL_RESPAWN_X);
-        ball.setTranslateY(BALL_RESPOWN_Y);
+        ball.setTranslateX(BALL_RESPAWN_X_CORD);
+        ball.setTranslateY(BALL_RESPOWN_Y_CORD);
         root.getChildren().add(ball);
 
         /////////////////////////////
@@ -166,7 +230,8 @@ public class PongApp extends Application {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.I) {
                     // Toggle FPS display information
-                    fpsLabel.setVisible(!fpsLabel.isVisible());
+                    fpsDisplayInfoLabel.setVisible(
+                            !fpsDisplayInfoLabel.isVisible());
                 } else if (event.getCode() == KeyCode.S) {
                     // Toggle sound
                 }
@@ -175,11 +240,22 @@ public class PongApp extends Application {
         /////////////////////////////
         // Mouse events for paddle //
         /////////////////////////////
-        paddleMouseMovementController(
-            scene,
-            PADDLE_X_MAX,
-            PADDLE_X_MIN,
-            paddle);
+
+        /**
+         * Respond to mouse movement events.
+         * The paddle's center is set to the mouse's x coordinate.
+         * The paddle will not go off the screen (stays within the window).
+         * 
+         * When the mouse is moved off the screen
+         * - the paddle will stop moving
+         * - stay in the last position it was in
+         * - change color to red.
+         * 
+         * When the mouse is moved back on the screen
+         * - the paddle will move to the latest cursor position
+         * - the paddle's middle will center on the cursor's position
+         */
+        paddleMouseMovementController(scene, paddle);
 
         /**
          * The game loop is a loop that runs until game window is closed.
@@ -202,25 +278,70 @@ public class PongApp extends Application {
              */
             @Override
             public void handle(long now) {
+
                 // every new game the ball respawns in the middle of the screen
                 if (newGame) {
-                    // random location in app width - ball width
-                    randomXCord = (int) (Math.random() * (APP_W - BALL_W));
-                    ball.setTranslateX(randomXCord);
-                    ball.setTranslateY(BALL_RESPOWN_Y);
+                    // random location in app x-axis (the width of app window)
+                    ball.setTranslateX(generateRandomBallRespawnXCord());
+                    ball.setTranslateY(BALL_RESPOWN_Y_CORD);
                     /*
                      * every new game the ball only moves vertically,
-                     * no velocity in the x-axis, along the y-axis down the screen
+                     * no velocity in the x-axis, along the y-axis down the
+                     * screen
                      */
                     newGame = false;
-                } else {
-                    ball.setTranslateY(ball.getTranslateY() + BALL_VELOCITY_Y);
                 }
 
+                    ball.setTranslateY(ball.getTranslateY() + BALL_VELOCITY_Y);
                 // game resets when ball hits the bottom of the screen
-                ballHitBottomOfScreenResetGame(ball);
-                calcGameTimeAndAveFpsAndAvgTf(fpsLabel, now);
-                frameCounter++; // increment the frame counter
+                ballHitBottomOfScreenResetGame();
+
+                setInGameTimeAndAvgFrameTimeAndFPS(now);
+                updateFPSDisplayInformation(fpsDisplayInfoLabel);
+                animationTimerFrameCounter++; // increment the frame counter
+            }
+
+            /**
+             * Update the FPS display information based on the current
+             * calculations of the FPS, average frame time, and in-game time.
+             * 
+             * @param fpsDisplayInfoLabel
+             */
+            private void updateFPSDisplayInformation(
+                    Label fpsDisplayInfoLabel) {
+                if (animationTimerFrameCounter % NUMBER_OF_FRAMES_25 == 0) {
+                    fpsDisplayInfoLabel.setText(String.format(
+                            FPS_DISPLAY_INFO_STRING,
+                            getAvgFPS(),
+                            getAvgFpMiliSecond(),
+                            getSecondsElapsedInGame()));
+                }
+                }
+
+            /**
+             * A wrapper method that calls all the methods to calculate the
+             * in-game time, the average frame time, and the average frames
+             * per second.
+             * 
+             * @param now
+             */
+            private void setInGameTimeAndAvgFrameTimeAndFPS(long now) {
+                setAvgFPS(calculateAvgFPS(now));
+                setAvgFpMiliSecond(calculateAvgFpMiliSecond());
+                setSecondsElapsedInGame(calculateSecondsElapsedInGame(now));
+            }
+
+            /**
+             * Generate an x-coordinate for the ball to respawn that is within
+             * the width of the app window
+             * 
+             * from (the left side of the app window) to the width of the app
+             * window minus the width of the ball (the right side of the app
+             * window).
+             * @return
+             */
+            private double generateRandomBallRespawnXCord() {
+                return Math.random() * (BALL_X_MAX);
             }
 
             /**
@@ -228,60 +349,65 @@ public class PongApp extends Application {
              * 
              * @param ball
              */
-            private void ballHitBottomOfScreenResetGame(Rectangle ball) {
+            private void ballHitBottomOfScreenResetGame() {
                 if (ball.getTranslateY() >= APP_H - ball.getHeight()) {
                     newGame = true;
+                    System.err.println("Game Over");
                 }
             }
 
-            private void calcGameTimeAndAveFpsAndAvgTf(
-                    Label fpsLabel,
-                    long now) {
-                calculateFPS(now);
-                calculateAvgFpMiliSecond();
-                calculateSecondsElapsedInGame(now);
-                if (frameCounter % 25 == 0) {
-                    fpsLabel.setText(String.format(
-                            "FPS: %.2f (avg.), FT: %.2f (ms), GT:  %.2f (s)",
-                            getAvgFPS(),
-                            getAvgFpMiliSecond(),
-                            getTimeElapsed()));
-                }
-            }
-
-            private void calculateAvgFpMiliSecond() {
+            /**
+             * Calculates the average frame time in milliseconds.
+             * 
+             * @return
+             */
+            private double calculateAvgFpMiliSecond() {
                 // calculate the average frame time in milliseconds (ms)
-                avgFpMiliSecond = TIME_01_MILLISECOND / getAvgFPS();
+                return (TIME_01_MILLISECOND / getAvgFPS());
             }
 
-            private void calculateSecondsElapsedInGame(long now) {
-                timeElapsed = ((now - getStartTime()) / TIME_01_SECOND);
+            /**
+             * Calculates the in game time elapsed in seconds.
+             * 
+             * @param now
+             * @return
+             */
+            private double calculateSecondsElapsedInGame(long now) {
+                return (((now - getStartTime()) / TIME_01_SECOND));
             }
 
             /**
              * calculate the average frame rate per second (FPS)
              */
-            private void calculateFPS(long now) {
+            private double calculateAvgFPS(long now) {
                 double sum = 0;
-                frameRateArr[frameCounter % frameRateArr.length] = TIME_01_SECOND
-                        / (now - lastTime);
+                long deltaCurTimePrevTime = now - lastTime;
+                // calculate the average FPS
+                frameRateArr[animationTimerFrameCounter %
+                        frameRateArr.length] = TIME_01_SECOND
+                                / deltaCurTimePrevTime;
                 lastTime = now;
                 // calculate the average frame rate
                 for (int i = 0; i < frameRateArr.length; i++) {
                     sum += frameRateArr[i];
                 }
-                avgFPS = sum / frameRateArr.length;
+                return (sum / frameRateArr.length);
             }
 
         }; // end of game loop
         timer.start(); // Start the game loop
     }
 
+    /**
+     * Defines the mouse movements to control the paddle movement and color.
+     * 
+     * @param scene
+     * @param paddle
+     */
     private void paddleMouseMovementController(
-            Scene scene,
-            final int PADDLE_X_MAX,
-            final int PADDLE_X_MIN,
+            Scene scene, // the scene to add the event handler
             Rectangle paddle) {
+
         /**
          * the paddle is blue when the mouse enters the scene
          */
@@ -311,15 +437,48 @@ public class PongApp extends Application {
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                // So paddle doesn't go off screen to the left
+                double PADDLE_X_MIN = 0;
+                // So paddle doesn't go off screen to the right
+                double PADDLE_X_MAX = APP_W - paddle.getWidth();
+
                 // Move the paddle center to the mouse position
-                paddle.setTranslateX(event.getX() - paddle.getWidth() / 2);
+                setCursorToCenterOfPaddle(paddle, event);
                 // Make sure the paddle stays inside the game window
+                setPaddleInGameBoundaries(paddle, PADDLE_X_MIN, PADDLE_X_MAX);
+                paddle.setFill(Color.BLUE);
+            }
+
+            /**
+             * Sets the paddle in the game window boundaries.
+             * If the paddle is at the left or right edge of the game window,
+             * the paddle will not move.
+             * 
+             * @param paddle       the paddle to set in the game window
+             * @param PADDLE_X_MIN the minimum x-coordinate of the paddle
+             * @param PADDLE_X_MAX the maximum x-coordinate of the paddle
+             */
+            private void setPaddleInGameBoundaries(
+                    Rectangle paddle,
+                    double PADDLE_X_MIN,
+                    double PADDLE_X_MAX) {
                 if (paddle.getTranslateX() < PADDLE_X_MIN) {
                     paddle.setTranslateX(PADDLE_X_MIN);
                 } else if (paddle.getTranslateX() > PADDLE_X_MAX) {
                     paddle.setTranslateX(PADDLE_X_MAX);
                 }
-                paddle.setFill(Color.BLUE);
+            }
+
+            /**
+             * Sets the mouse cursor to the center of the paddle.
+             * 
+             * @param paddle the paddle to set the mouse cursor
+             * @param event  the mouse event to get the mouse cursor location
+             */
+            private void setCursorToCenterOfPaddle(
+                    Rectangle paddle,
+                    MouseEvent event) {
+                paddle.setTranslateX(event.getX() - paddle.getWidth() / 2);
             }
         });
     }
