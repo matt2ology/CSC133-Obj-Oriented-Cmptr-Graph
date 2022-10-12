@@ -293,7 +293,7 @@ public class PongApp extends Application {
                 ballHitBottomOfScreenResetGame();
 
                 setInGameTimeAndAvgFrameTimeAndFPS(now);
-                updateFPSDisplayInformation(fpsDisplayInfoLabel);
+                updateFPSDisplayInformation();
                 animationTimerFrameCounter++; // increment the frame counter
             }
 
