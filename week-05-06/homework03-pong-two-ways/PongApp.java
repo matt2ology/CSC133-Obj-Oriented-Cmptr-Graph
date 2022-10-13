@@ -506,7 +506,7 @@ public class PongApp extends Application {
                 if (newGame) {
                     respawnBallToRandomLocation();
                     setBallUp(false); // ball only moves vertically
-                    setBallLeft(false); // ball only moves vertically
+                    setBallLeft(false); // only moves vertically
                     setBallSpdX(0); // no velocity in the x-axis
                     setBallSpdY(BALL_SPEED_Y_MIN); // along the y-axis down
                     setNewGame(false); // game has started
@@ -519,7 +519,8 @@ public class PongApp extends Application {
              * previous cursor x position
              */
             private void updatePrevCrsrLocation() {
-                if (getAnimationTimerFrameCounter() % NUMBER_OF_FRAMES_25 == 0) {
+                if (getAnimationTimerFrameCounter()
+                        % NUMBER_OF_FRAMES_25 == 0) {
                     setPrevCrsrX(getCrntCrsrX());
                 }
             }
@@ -557,7 +558,8 @@ public class PongApp extends Application {
             }
 
             private void ballHitsPaddle() {
-                if (ball.getBoundsInParent().intersects(paddle.getBoundsInParent())) {
+                if (ball.getBoundsInParent()
+                        .intersects(paddle.getBoundsInParent())) {
                     // Ball hits the paddle bounce off the paddle
                     setBallUp(true);
                     // ball's x velocity is equal to its y velocity
