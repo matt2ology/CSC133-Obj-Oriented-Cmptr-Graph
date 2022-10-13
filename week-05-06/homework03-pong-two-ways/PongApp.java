@@ -536,6 +536,9 @@ public class PongApp extends Application {
                 paddleIsStationary();
             }
 
+            /**
+             * moving right when the cursor is to the right of the paddle
+             */
             private void paddleIsMovingRight() {
                 if (getCrntCrsrX() > getPrevCrsrX()) {
                     // moving right
@@ -543,6 +546,9 @@ public class PongApp extends Application {
                 }
             }
 
+            /**
+             * moving left when the cursor is to the left of the paddle's center
+             */
             private void paddelIsMovingLeft() {
                 if (getCrntCrsrX() < getPrevCrsrX()) {
                     // moving left
@@ -550,6 +556,9 @@ public class PongApp extends Application {
                 }
             }
 
+            /**
+             * stationary when the cursor is not moving
+             */
             private void paddleIsStationary() {
                 if (getCrntCrsrX() == getPrevCrsrX()) {
                     // stationary
