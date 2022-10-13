@@ -15,25 +15,35 @@ import javafx.stage.Stage;
 
 /**
  * Now that you’re up to speed on JavaFX and the basic linear style, you will
- * want to code your first version of the video game. In the Asteroids game the
- * author uses a simple class hierarchy for his game objects where all game
- * objects extend the abstract class PhysicsObject. For this first version of
- * Pong, it’s not necessary to create a class hierarchy as the objects are so
- * simple. You may simply encode them as fields in the main class, e.g.:
+ * want to code your first version of the video game. In the Asteroids game
+ * the author uses a simple class hierarchy for his game objects where all
+ * game objects extend the abstract class PhysicsObject. For this first
+ * version of Pong, it’s not necessary to create a class
+ * hierarchy as the objects are so simple.
  * 
+ * You may simply encode them as fields in the main class, e.g.:
  * Rectangle paddle = new Rectangle(...);
  * Rectangle ball = new Rectangle(...);
  * 
  * Of course you can separate declaration from initialization if you wish.
  * 
- * The purpose of this first project is for you to code freely and solve all of
- * the simple algorithmic problems such as paddle/ball/wall intersection. You do
- * not have to write the sound class at all, it is provided in the appendix.
- * Your first version should be as close as possible to the given demo. Your
- * application should respond to two keystroke events: The “i” key will display
- * or hid the fps information and the “s” key will enable and disable sound.
+ * The purpose of this first project is for you to code freely and solve all
+ * of the simple algorithmic problems such as paddle/ball/wall intersection.
+ * You do not have to write the sound class at all, it is provided in the
+ * appendix. Your first version should be as close as possible to the given
+ * demo.
+ * 
+ * Your application should respond to two keystroke events:
+ * - The “i” key will display or hid the fps information and
+ * - the “s” key will enable and disable sound.
  */
 public class PongApp extends Application {
+
+    /**
+     * The position of the FPS information label in the scene.
+     * This value is used for both the x and y coordinates.
+     */
+    private static final int FPS_DISPLAY_INFO_LABEL_X_Y_POSITION = 10;
 
     /**
      * In-game timer string format to display the number of frames per second.
@@ -77,7 +87,18 @@ public class PongApp extends Application {
     private static final Color FPS_INFO_COLOR = Color.BLACK;
     private static final int APP_FONT_SIZE = 24;
     private static boolean newGame = true;
+    private static double Y_CORD_1_3RD_OF_APP_H = APP_H / 3;
 
+    private static final int BALL_H = 20;
+    private static final int BALL_W = BALL_H;
+    private static boolean isBallUp = false;
+    private static final int BALL_SPEED_Y_MIN = 5;
+    private static final int BALL_X_CORD_RESPAWN_LIMIT = APP_W - BALL_W;
+    private static int ballSpeedY = 5;
+    private static int ballVelocityY = (isBallUp ? -ballSpeedY : ballSpeedY);
+
+    private static final int PADDLE_H = 20;
+    private static final int PADDLE_W = 150;
     private static boolean paddleIsLeft = false;
     private static boolean paddleIsStationary = true;
     
@@ -177,8 +198,8 @@ public class PongApp extends Application {
         Label fpsDisplayInfoLabel = new Label("FPS: ");
         fpsDisplayInfoLabel.setFont(new Font(APP_FONT, APP_FONT_SIZE));
         fpsDisplayInfoLabel.setTextFill(FPS_INFO_COLOR);
-        fpsDisplayInfoLabel.setLayoutX(10);
-        fpsDisplayInfoLabel.setLayoutY(10);
+        fpsDisplayInfoLabel.setLayoutX(FPS_DISPLAY_INFO_LABEL_X_Y_POSITION);
+        fpsDisplayInfoLabel.setLayoutY(FPS_DISPLAY_INFO_LABEL_X_Y_POSITION);
 
         // add the labels to the scene graph
         root.getChildren().add(fpsDisplayInfoLabel);
@@ -212,8 +233,9 @@ public class PongApp extends Application {
          */
         Rectangle ball = new Rectangle(BALL_W, BALL_H);
         ball.setFill(Color.BLUE);
-        ball.setTranslateX(BALL_RESPAWN_X_CORD);
-        ball.setTranslateY(BALL_RESPOWN_Y_CORD);
+        // random x-coordinate for ball object
+        ball.setTranslateX((Math.random() * (APP_W - BALL_W)));
+        ball.setTranslateY(Y_CORD_1_3RD_OF_APP_H);
         root.getChildren().add(ball);
 
         /////////////////////////////
@@ -285,7 +307,9 @@ public class PongApp extends Application {
                      * no velocity in the x-axis, along the y-axis down the
                      * screen
                      */
+                    isBallUp = false;
                     newGame = false;
+                    ballSpeedY = BALL_SPEED_Y_MIN;
                 }
 
                 ball.setTranslateY(ball.getTranslateY() + BALL_VELOCITY_Y);
@@ -298,13 +322,14 @@ public class PongApp extends Application {
             }
 
             /**
-             * Respawns the ball to a random location on the screen.
+             * Respawns the ball to a random location on the screen along
+             * the x-axis fixed at the top 1/3 of the screen on the y-axis.
              *
              */
             private void respawnBallToRandomLocation() {
                 // random location in app x-axis (the width of app window)
                 ball.setTranslateX(generateRandomBallRespawnXCord());
-                ball.setTranslateY(BALL_RESPOWN_Y_CORD);
+                ball.setTranslateY(Y_CORD_1_3RD_OF_APP_H);
             }
 
             /**
@@ -328,7 +353,7 @@ public class PongApp extends Application {
              * in-game time, the average frame time, and the average frames
              * per second.
              * 
-             * @param now
+             * @param now the current time in nanoseconds
              */
             private void setInGameTimeAndAvgFrameTimeAndFPS(long now) {
                 setAvgFPS(calculateAvgFPS(now));
@@ -343,10 +368,11 @@ public class PongApp extends Application {
              * from (the left side of the app window) to the width of the app
              * window minus the width of the ball (the right side of the app
              * window).
-             * @return
+             * 
+             * @return a random x-coordinate for the ball to respawn
              */
             private double generateRandomBallRespawnXCord() {
-                return Math.random() * (BALL_X_MAX);
+                return Math.random() * (BALL_X_CORD_RESPAWN_LIMIT);
             }
 
             /**
@@ -364,7 +390,7 @@ public class PongApp extends Application {
             /**
              * Calculates the average frame time in milliseconds.
              * 
-             * @return
+             * @return the average frame time in milliseconds
              */
             private double calculateAvgFpMiliSecond() {
                 // calculate the average frame time in milliseconds (ms)
@@ -385,6 +411,8 @@ public class PongApp extends Application {
 
             /**
              * calculate the average frame rate per second (FPS)
+             * 
+             * @param now The current time in nanoseconds
              */
             private double calculateAvgFPS(long now) {
                 double sum = 0;
@@ -408,12 +436,10 @@ public class PongApp extends Application {
     /**
      * Defines the mouse movements to control the paddle movement and color.
      * 
-     * @param scene
-     * @param paddle
+     * @param scene  the scene of the game to add the event handler
+     * @param paddle the paddle to move and change color
      */
-    private void paddleMouseMovementController(
-            Scene scene, // the scene to add the event handler
-            Rectangle paddle) {
+    private void paddleMouseMovementController(Scene scene, Rectangle paddle) {
 
         /**
          * the paddle is blue when the mouse enters the scene
@@ -469,9 +495,12 @@ public class PongApp extends Application {
                     Rectangle paddle,
                     double PADDLE_X_MIN,
                     double PADDLE_X_MAX) {
+                // left edge of game window is
                 if (paddle.getTranslateX() < PADDLE_X_MIN) {
                     paddle.setTranslateX(PADDLE_X_MIN);
-                } else if (paddle.getTranslateX() > PADDLE_X_MAX) {
+                }
+                // right edge of game window
+                else if (paddle.getTranslateX() > PADDLE_X_MAX) {
                     paddle.setTranslateX(PADDLE_X_MAX);
                 }
             }
