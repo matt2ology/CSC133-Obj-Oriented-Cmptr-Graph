@@ -283,7 +283,6 @@ public class PongApp extends Application {
             @Override
             public void handle(long now) {
 
-                // every new game the ball respawns in the middle of the screen
                 if (newGame) {
                     respawnBallToRandomLocation();
                     /*
