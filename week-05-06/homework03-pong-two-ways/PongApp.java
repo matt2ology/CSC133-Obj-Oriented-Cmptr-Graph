@@ -312,7 +312,6 @@ public class PongApp extends Application {
                     ballSpeedY = BALL_SPEED_Y_MIN;
                 }
 
-                ball.setTranslateY(ball.getTranslateY() + BALL_VELOCITY_Y);
                 // game resets when ball hits the bottom of the screen
                 ballHitBottomOfScreenResetGame();
 
@@ -378,12 +377,10 @@ public class PongApp extends Application {
             /**
              * When the ball hits the bottom of the screen, the game resets.
              * 
-             * @param ball
              */
             private void ballHitBottomOfScreenResetGame() {
                 if (ball.getTranslateY() >= APP_H - ball.getHeight()) {
                     newGame = true;
-                    System.err.println("Game Over");
                 }
             }
 
