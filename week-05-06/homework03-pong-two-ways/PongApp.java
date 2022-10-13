@@ -204,22 +204,6 @@ public class PongApp extends Application {
         // add the labels to the scene graph
         root.getChildren().add(fpsDisplayInfoLabel);
 
-        // variables for ball object
-        final int BALL_H = 20;
-        final int BALL_W = BALL_H;
-
-        // variables for paddle object
-        final boolean isBallUp = false;
-        final double BALL_RESPAWN_X_CORD = (Math.random() * (APP_W - BALL_W));
-        // 1/3 of the screen
-        final int BALL_RESPOWN_Y_CORD = APP_H / 3 - BALL_H / 2;
-        final int BALL_SPEED_X = 5;
-        final int BALL_VELOCITY_Y = (isBallUp ? -BALL_SPEED_Y : BALL_SPEED_Y);
-        final int BALL_X_MAX = APP_W - BALL_W;
-        final int PADDLE_H = 20;
-        final int PADDLE_W = 150;
-        final int PADDLE_X_MAX = APP_W - PADDLE_W;
-        final int PADDLE_X_MIN = 0;
         /**
          * Paddle objects are rectangles that move up and down the screen.
          */
@@ -311,6 +295,8 @@ public class PongApp extends Application {
                     newGame = false;
                     ballSpeedY = BALL_SPEED_Y_MIN;
                 }
+
+                ball.setTranslateY(ball.getTranslateY() + ballSpeedY);
 
                 // game resets when ball hits the bottom of the screen
                 ballHitBottomOfScreenResetGame();
