@@ -89,20 +89,31 @@ public class PongApp extends Application {
     private static boolean newGame = true;
     private static double Y_CORD_1_3RD_OF_APP_H = APP_H / 3;
 
+    private static double crntCrsrX = 0;
+    private static double prevCrsrX = 0;
+
     private static final int BALL_H = 20;
     private static final int BALL_W = BALL_H;
     private static boolean isBallUp = false;
+    private static boolean isBallLeft = false;
+    private static boolean isBallRotLeft = false;
     private static final int BALL_SPEED_Y_MIN = 5;
-    private static final int BALL_X_CORD_RESPAWN_LIMIT = APP_W - BALL_W;
-    private static int ballSpeedY = 5;
-    private static int ballVelocityY = (isBallUp ? -ballSpeedY : ballSpeedY);
+    private static final int BALL_X_CORD_MAX_RESPAWN_LIMIT = APP_W - BALL_W;
+    private static final int BALL_X_CORD_MIN_RESPAWN_LIMIT = 0;
+    private static int ballRotSpd = 0;
+    private static int ballRotVel = 0;
+    private static int ballSpdX = 0;
+    private static int ballSpdY = 0;
+    private static int ballVelX = 0;
+    private static int ballVelY = 0;
 
     private static final int PADDLE_H = 20;
     private static final int PADDLE_W = 150;
-    private static boolean paddleIsLeft = false;
-    private static boolean paddleIsStationary = true;
-    
-    
+    private static boolean isPaddleLeft = false;
+    private static boolean isPaddleStationary = true;
+    private static int paddleSpdX = 0;
+    private static int paddleVelX = 0;
+
     private static double avgFpMiliSecond = 0;
     private static double avgFPS = 0;
     private static double secondsElapsedInGame = 0;
@@ -112,20 +123,213 @@ public class PongApp extends Application {
     private static long lastTime = 0;
     private static long startTime = System.nanoTime();
 
-    public static boolean isPaddleIsLeft() {
-        return paddleIsLeft;
+    public static boolean isNewGame() {
+        return newGame;
     }
 
-    public static void setPaddleIsLeft(boolean paddleIsLeft) {
-        PongApp.paddleIsLeft = paddleIsLeft;
+    public static void setNewGame(boolean newGame) {
+        PongApp.newGame = newGame;
     }
 
-    public static boolean isPaddleIsStationary() {
-        return paddleIsStationary;
+    /**
+     * Direction of Ball object to be factored in Ball's velocity
+     * 
+     * @return true if ball is moving left, false if ball is moving right
+     */
+    public static boolean isBallUp() {
+        return isBallUp;
     }
 
-    public static void setPaddleIsStationary(boolean paddleIsStationary) {
-        PongApp.paddleIsStationary = paddleIsStationary;
+    /**
+     * Direction of Ball object to be factored in Ball's velocity
+     * 
+     * @param isBallUp true if ball is moving up, false otherwise
+     */
+    public static void setBallUp(boolean isBallUp) {
+        PongApp.isBallUp = isBallUp;
+    }
+
+    /**
+     * Direction of Ball object to be factored in Ball's velocity
+     * 
+     * @return true if ball is moving left, false if ball is moving right
+     */
+    public static boolean isBallLeft() {
+        return isBallLeft;
+    }
+
+    /**
+     * Direction of Ball object to be factored in Ball's velocity
+     * 
+     * @param isBallUp true if ball is moving left, false otherwise
+     */
+    public static void setBallLeft(boolean isBallLeft) {
+        PongApp.isBallLeft = isBallLeft;
+    }
+
+    public static boolean isBallRotLeft() {
+        return isBallRotLeft;
+    }
+
+    public static void setBallRotLeft(boolean isBallRotLeft) {
+        PongApp.isBallRotLeft = isBallRotLeft;
+    }
+
+    public static int getBallRotSpd() {
+        return ballRotSpd;
+    }
+
+    public static void setBallRotSpd(int ballRotSpd) {
+        PongApp.ballRotSpd = ballRotSpd;
+    }
+
+    public static int getBallRotVel() {
+        return ballRotVel;
+    }
+
+    /**
+     * Calculates the ball's rotational velocity based on the ball's
+     * rotational speed and direction of rotation
+     * 
+     * @param ballRotVel the ball's rotational velocity
+     */
+    public static void calculateBallRotVel() {
+        PongApp.ballRotVel = (isBallRotLeft())
+                ? -getBallRotSpd() // if ball is rotating left, then
+                                   // ballRotVel is negative
+                : getBallRotSpd(); // if ball is rotating right, then
+                                   // ballRotVel is positive
+    }
+
+    /**
+     * Speed is the time rate at which the ball is moving along a path
+     * 
+     * @return the speed of the ball in the x direction
+     */
+    public static int getBallSpdX() {
+        return ballSpdX;
+    }
+
+    /**
+     * Speed is the time rate at which the ball is moving along a path
+     * 
+     * @param ballSpdX the speed of the ball in the x direction
+     */
+    public static void setBallSpdX(int ballSpdX) {
+        PongApp.ballSpdX = ballSpdX;
+    }
+
+    public static int getBallSpdY() {
+        return ballSpdY;
+    }
+
+    public static void setBallSpdY(int ballSpdY) {
+        PongApp.ballSpdY = ballSpdY;
+    }
+
+    /**
+     * velocity is the rate (speed) and
+     * direction (isBallLeft) of the ball's movement
+     * 
+     * @return the velocity of the ball in the x direction
+     */
+    public static int getBallVelX() {
+        return ballVelX;
+    }
+
+    /**
+     * Calculates ball's velocity based on its rate (speed) and
+     * direction (isBallLeft) movement
+     */
+    public static void calculateBallVelX() {
+        PongApp.ballVelX = (isBallLeft()
+                ? -getBallSpdX() // if ball is moving left,
+                                 // then ballVelX is negative
+                : getBallSpdX()); // if ball is moving right,
+                                  // then ballVelX is positive
+    }
+
+    /**
+     * velocity is the rate (speed) and
+     * direction (isBallUp) of the ball's movement
+     * 
+     * @return the velocity of the ball in the y direction
+     */
+    public static int getBallVelY() {
+        return ballVelY;
+    }
+
+    /**
+     * Calculates ball's velocity based on its rate (speed) and
+     * direction (isBallUp) movement
+     */
+    public static void calculateBallVelY() {
+        PongApp.ballVelY = (isBallUp() ? -getBallSpdY() : getBallSpdY());
+    }
+
+    public static int getPaddleSpdX() {
+        return paddleSpdX;
+    }
+
+    /**
+     * Calculates paddle's speed based on the distance between
+     * current and previous cursor x coordinates
+     */
+    public static void calculatePaddleSpdX() {
+        PongApp.paddleSpdX = Math.abs((int) ((getCrntCrsrX()
+                - getPrevCrsrX()) // distance between current and previous
+                                  // cursor x coordinates
+                / NUMBER_OF_FRAMES_25)); // divided by number of frames
+                                         // per second
+    }
+
+    public static int getPaddleVelX() {
+        return paddleVelX;
+    }
+
+    /**
+     * Calculate the paddle's velocity based on the cursor's
+     * previous and current position over time
+     */
+    public static void calculatePaddleVelX() {
+        // calculate paddle's speed to be used in calculating its velocity
+        calculatePaddleSpdX();
+        PongApp.paddleVelX = (isPaddleLeft()) // if paddle is moving left
+                ? -getPaddleSpdX() // then paddleVelX is negative
+                : getPaddleSpdX(); // if paddle is moving right
+                                   // then paddleVelX is positive
+    }
+
+    public static double getPrevCrsrX() {
+        return prevCrsrX;
+    }
+
+    public static void setPrevCrsrX(double prevCrsrX) {
+        PongApp.prevCrsrX = prevCrsrX;
+    }
+
+    public static double getCrntCrsrX() {
+        return crntCrsrX;
+    }
+
+    public static void setCrntCrsrX(double crntCrsrX) {
+        PongApp.crntCrsrX = crntCrsrX;
+    }
+
+    public static boolean isPaddleLeft() {
+        return isPaddleLeft;
+    }
+
+    public static void setPaddleLeft(boolean isPaddleLeft) {
+        PongApp.isPaddleLeft = isPaddleLeft;
+    }
+
+    public static boolean isPaddleStationary() {
+        return isPaddleStationary;
+    }
+
+    public static void setPaddleStationary(boolean isPaddleStationary) {
+        PongApp.isPaddleStationary = isPaddleStationary;
     }
 
     public static double getAvgFpMiliSecond() {
@@ -282,27 +486,168 @@ public class PongApp extends Application {
              */
             @Override
             public void handle(long now) {
+                checkStartOfNewGame(); // Reset to a new game state
+                updatePrevCrsrLocation(); // update previous cursor location
+                updatePaddleMovement(); // paddle movement (left, right, stop)
+                updateBallMovement(); // ball X & Y and rotational velocity
+                ballHitsPaddle(); // Logic for ball to paddle collision
+                ballHitsScrBndry(); // Logic for ball to screen collision
+                setInGameTimeAndAvgFrameTimeAndFPS(now); // calculate FPS
+                updateFPSDisplayInformation(); // update FPS display info
+                animationTimerFrameCounter++; // increment the frame counter
+            }
 
+            /**
+             * Every new game the ball only moves vertically,
+             * no velocity in the x-axis, along the y-axis down the
+             * screen
+             */
+            private void checkStartOfNewGame() {
                 if (newGame) {
                     respawnBallToRandomLocation();
-                    /*
-                     * every new game the ball only moves vertically,
-                     * no velocity in the x-axis, along the y-axis down the
-                     * screen
-                     */
-                    isBallUp = false;
-                    newGame = false;
-                    ballSpeedY = BALL_SPEED_Y_MIN;
+                    setBallUp(false); // ball only moves vertically
+                    setBallLeft(false); // ball only moves vertically
+                    setBallSpdX(0); // no velocity in the x-axis
+                    setBallSpdY(BALL_SPEED_Y_MIN); // along the y-axis down
+                    setNewGame(false); // game has started
                 }
+            }
 
-                ball.setTranslateY(ball.getTranslateY() + ballSpeedY);
+            /**
+             * every 25 frames, assign
+             * current cursor x position as
+             * previous cursor x position
+             */
+            private void updatePrevCrsrLocation() {
+                if (getAnimationTimerFrameCounter() % NUMBER_OF_FRAMES_25 == 0) {
+                    setPrevCrsrX(getCrntCrsrX());
+                }
+            }
 
+            /**
+             * compares current cursor position to its previous position
+             * to determine if the paddle is moving left, right,
+             * or not at all (stationary)
+             */
+            private void updatePaddleMovement() {
+                paddleIsMovingRight();
+                paddelIsMovingLeft();
+                paddleIsStationary();
+            }
+
+            private void paddleIsMovingRight() {
+                if (getCrntCrsrX() > getPrevCrsrX()) {
+                    // moving right
+                    setPaddleLeft(false);
+                }
+            }
+
+            private void paddelIsMovingLeft() {
+                if (getCrntCrsrX() < getPrevCrsrX()) {
+                    // moving left
+                    setPaddleLeft(true);
+                }
+            }
+
+            private void paddleIsStationary() {
+                if (getCrntCrsrX() == getPrevCrsrX()) {
+                    // stationary
+                    setPaddleStationary(true);
+                }
+            }
+
+            private void ballHitsPaddle() {
+                if (ball.getBoundsInParent().intersects(paddle.getBoundsInParent())) {
+                    // Ball hits the paddle bounce off the paddle
+                    setBallUp(true);
+                    // ball's x velocity is equal to its y velocity
+                    setBallSpdX(getBallSpdY());
+                    ballHitsLeftMovingPaddle();
+                    ballHitsRightMovingPaddle();
+                    ballHitsStationaryPaddle();
+                }
+            }
+
+            /**
+             * If the ball hits the paddle when the paddle is moving left
+             * the ball will move bounce left and rotate right
+             */
+            private void ballHitsLeftMovingPaddle() {
+                if (getCrntCrsrX() < getPrevCrsrX()) {
+                    setBallLeft(true);
+                    setBallRotLeft(true);
+                    setBallRotSpd(getPaddleSpdX());
+                }
+            }
+
+            /**
+             * If the ball hits the paddle when the paddle is moving right
+             * the ball will bounce right and rotate left
+             */
+            private void ballHitsRightMovingPaddle() {
+                if (getCrntCrsrX() > getPrevCrsrX()) {
+                    setBallLeft(false);
+                    setBallRotLeft(false);
+                    setBallRotSpd(getPaddleSpdX());
+                }
+            }
+
+            /**
+             * if the ball hits the paddle when the paddle is stationary
+             * the ball will move bounce up and have no rotation
+             */
+            private void ballHitsStationaryPaddle() {
+                if (getCrntCrsrX() == getPrevCrsrX()) {
+                    setBallSpdX(0);
+                }
+            }
+
+            /**
+             * A wrapper method for the ball's interaction with
+             * the screen boundaries (top, bottom, left, right).
+             */
+            private void ballHitsScrBndry() {
+                // top of screen
+                ballHitsTopOfScreenBounceDown();
+                // left side of screen
+                BallHitsLeftOfScreenBounceRight();
+                // right side of screen
+                ballHitsRightOfScreenBounceLeft();
                 // game resets when ball hits the bottom of the screen
-                ballHitBottomOfScreenResetGame();
+                ballHitsBottomOfScreenResetGame();
+            }
 
-                setInGameTimeAndAvgFrameTimeAndFPS(now);
-                updateFPSDisplayInformation();
-                animationTimerFrameCounter++; // increment the frame counter
+            private void ballHitsTopOfScreenBounceDown() {
+                if (ball.getTranslateY() <= 0) {
+                    setBallUp(false);
+                }
+            }
+
+            private void BallHitsLeftOfScreenBounceRight() {
+                if (ball.getTranslateX() <= BALL_X_CORD_MIN_RESPAWN_LIMIT) {
+                    setBallLeft(false);
+                }
+            }
+
+            private void ballHitsRightOfScreenBounceLeft() {
+                if (ball.getTranslateX() >= BALL_X_CORD_MAX_RESPAWN_LIMIT) {
+                    // bounce off right side of screen
+                    setBallLeft(true);
+                }
+            }
+
+            /**
+             * Move the ball according to the calculated x, y, and rotational
+             * velocity.
+             */
+            private void updateBallMovement() {
+                calculateBallVelX();
+                calculateBallVelY();
+                calculateBallRotVel();
+                // move the ball according to the calculated velocities
+                ball.setTranslateY(ball.getTranslateY() + getBallVelY());
+                ball.setTranslateX(ball.getTranslateX() + getBallVelX());
+                ball.setRotate(ball.getRotate() + getBallRotVel());
             }
 
             /**
@@ -356,14 +701,14 @@ public class PongApp extends Application {
              * @return a random x-coordinate for the ball to respawn
              */
             private double generateRandomBallRespawnXCord() {
-                return Math.random() * (BALL_X_CORD_RESPAWN_LIMIT);
+                return (Math.random() * (BALL_X_CORD_MAX_RESPAWN_LIMIT));
             }
 
             /**
              * When the ball hits the bottom of the screen, the game resets.
              * 
              */
-            private void ballHitBottomOfScreenResetGame() {
+            private void ballHitsBottomOfScreenResetGame() {
                 if (ball.getTranslateY() >= APP_H - ball.getHeight()) {
                     newGame = true;
                 }
@@ -416,7 +761,8 @@ public class PongApp extends Application {
     }
 
     /**
-     * Defines the mouse movements to control the paddle movement and color.
+     * Defines the mouse/courser movements to
+     * control the paddle movement and color.
      * 
      * @param scene  the scene of the game to add the event handler
      * @param paddle the paddle to move and change color
@@ -446,8 +792,8 @@ public class PongApp extends Application {
         });
 
         /**
-         * The paddle moves left and right when the user's mouse enters the
-         * game window
+         * The paddle moves left and right when the user's mouse/courser
+         * enters the game window
          */
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
@@ -456,12 +802,15 @@ public class PongApp extends Application {
                 double PADDLE_X_MIN = 0;
                 // So paddle doesn't go off screen to the right
                 double PADDLE_X_MAX = APP_W - paddle.getWidth();
+                paddle.setFill(Color.BLUE);
 
                 // Move the paddle center to the mouse position
                 setCursorToCenterOfPaddle(paddle, event);
                 // Make sure the paddle stays inside the game window
-                setPaddleInGameBoundaries(paddle, PADDLE_X_MIN, PADDLE_X_MAX);
-                paddle.setFill(Color.BLUE);
+                setPaddleInGameBndry(paddle, PADDLE_X_MIN, PADDLE_X_MAX);
+                // Grab the mouse position
+                setCrntCrsrX(event.getSceneX());
+                calculatePaddleVelX();
             }
 
             /**
@@ -473,7 +822,7 @@ public class PongApp extends Application {
              * @param PADDLE_X_MIN the minimum x-coordinate of the paddle
              * @param PADDLE_X_MAX the maximum x-coordinate of the paddle
              */
-            private void setPaddleInGameBoundaries(
+            private void setPaddleInGameBndry(
                     Rectangle paddle,
                     double PADDLE_X_MIN,
                     double PADDLE_X_MAX) {
