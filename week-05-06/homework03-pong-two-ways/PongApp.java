@@ -547,7 +547,8 @@ public class PongApp extends Application {
             }
 
             /**
-             * moving left when the cursor is to the left of the paddle's center
+             * moving left when the cursor is to the left of the paddle's
+             * center
              */
             private void paddelIsMovingLeft() {
                 if (getCrntCrsrX() < getPrevCrsrX()) {
