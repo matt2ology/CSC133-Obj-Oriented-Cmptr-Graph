@@ -6,8 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-
-
 /**
  * Game object base class
  * 
@@ -68,20 +66,36 @@ class Pong {
  * Respond to two keystroke events:
  * - The “i” key will display or hide the FPS information
  * - The “s” key will enable and disable sound effects.
+
  */
 public class OPongApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Group root = new Group();
-        Scene scene = new Scene(root, 800, 600);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Pong");
-        primaryStage.show();
-    }
 
-    public static void main(String[] args) {
-        Application.launch(args);
+        // create group as root node
+        Group root = new Group();
+        // scene with root node and size
+        Scene scene = new Scene(root, 800, 600);
+        // stage with scene
+        primaryStage.setScene(scene);
+        // title
+        primaryStage.setTitle("OPong");
+
+        // animation loop to update the ball, bat, score, and game timer
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+
+            }
+        };
+
+        // title
+        primaryStage.setTitle("OPong");
+        // show stage
+        primaryStage.show();
+
+
     }
 
 }
