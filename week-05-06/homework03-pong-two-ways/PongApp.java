@@ -1,17 +1,22 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Synthesizer;
 
 /**
  * Now that you’re up to speed on JavaFX and the basic linear style, you will
@@ -38,6 +43,16 @@ import javafx.stage.Stage;
  * - the “s” key will enable and disable sound.
  */
 public class PongApp extends Application {
+
+    /**
+     * Shrinks the paddle by this amount
+     */
+    private static final int PADDLE_SHRINK_FACTOR = getPADDLE_W() - 10;
+
+    /**
+     *
+     */
+    private static final Color SCORE_INFO_COLOR = Color.BLUE;
 
     /**
      * The position of the FPS information label in the scene.
@@ -85,9 +100,21 @@ public class PongApp extends Application {
     private static final int APP_W = 800;
     private static final String APP_FONT = "Arial";
     private static final Color FPS_INFO_COLOR = Color.BLACK;
-    private static final int APP_FONT_SIZE = 24;
+    private static final int APP_FONT_SIZE_24 = 24;
     private static boolean newGame = true;
-    private static double Y_CORD_1_3RD_OF_APP_H = APP_H / 3;
+    private static double APP_H_Y_CORD_1_3RD_FROM_TOP = APP_H / 3;
+
+    private static double avgFpMiliSecond = 0;
+    private static double avgFPS = 0;
+    private static double secondsElapsedInGame = 0;
+    private static final int NUMBER_OF_FRAMES_25 = 25;
+    private static double[] frameRateArr = new double[NUMBER_OF_FRAMES_25];
+    private static int animationTimerFrameCounter = 0;
+    private static long lastTime = 0;
+    private static long startTime = System.nanoTime();
+    private static int gameScoreCounter = 0;
+
+    private static boolean isGameScore50 = false;
 
     private static double crntCrsrX = 0;
     private static double prevCrsrX = 0;
@@ -108,20 +135,60 @@ public class PongApp extends Application {
     private static int ballVelY = 0;
 
     private static final int PADDLE_H = 20;
-    private static final int PADDLE_W = 150;
+    private static int PADDLE_W = 150;
+
     private static boolean isPaddleLeft = false;
     private static boolean isPaddleStationary = true;
+    private static boolean isPaddleAboveMinimalSizeCap = false;
+    private static int paddleMinimalSizeCap = 50;
     private static int paddleSpdX = 0;
     private static int paddleVelX = 0;
+    
+    public static void setGameScoreCounter(int gameScoreCounter) {
+        PongApp.gameScoreCounter = gameScoreCounter;
+    }
+    
+    public static int getPaddleMinimalSizeCap() {
+        return paddleMinimalSizeCap;
+    }
 
-    private static double avgFpMiliSecond = 0;
-    private static double avgFPS = 0;
-    private static double secondsElapsedInGame = 0;
-    private static final int NUMBER_OF_FRAMES_25 = 25;
-    private static double[] frameRateArr = new double[NUMBER_OF_FRAMES_25];
-    private static int animationTimerFrameCounter = 0;
-    private static long lastTime = 0;
-    private static long startTime = System.nanoTime();
+    public static void isGameScore50() {
+        if ((getGameScoreCounter() >= 50)) {
+            setGameScore50(true);
+        } else {
+            setGameScore50(false);
+        }
+    }
+
+    public static void setGameScore50(boolean isGameScore50) {
+        PongApp.isGameScore50 = isGameScore50;
+    }
+
+    public static boolean isPaddleAboveMinimalSizeCap() {;
+        return (getPADDLE_W() < getPaddleMinimalSizeCap()) ? true : false;
+    }
+
+    public static int getPADDLE_W() {
+        return PADDLE_W;
+    }
+
+    public static void setPADDLE_W(int pADDLE_W) {
+        PADDLE_W = pADDLE_W;
+    }
+
+    public static void shrinkPaddle() {
+        if (isPaddleAboveMinimalSizeCap()) {
+            setPADDLE_W(PADDLE_SHRINK_FACTOR);
+        }
+    }
+
+    public static int getGameScoreCounter() {
+        return gameScoreCounter;
+    }
+
+    public static void incrementGameScoreCounter() {
+        PongApp.gameScoreCounter += 1;
+    }
 
     public static boolean isNewGame() {
         return newGame;
@@ -369,6 +436,96 @@ public class PongApp extends Application {
     }
 
     /**
+     * Defines the mouse/courser movements to
+     * control the paddle movement and color.
+     * 
+     * @param scene  the scene of the game to add the event handler
+     * @param paddle the paddle to move and change color
+     */
+    private void paddleMouseMovementController(Scene scene, Rectangle paddle) {
+
+        /**
+         * the paddle is blue when the mouse enters the scene
+         */
+        scene.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                paddle.setFill(SCORE_INFO_COLOR);
+                // Mouse courser disappears when it enters the scene
+                scene.setCursor(Cursor.NONE);
+            }
+        });
+
+        /**
+         * The paddle color is red when the mouse is outside the game window.
+         */
+        scene.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                paddle.setFill(Color.RED);
+            }
+        });
+
+        /**
+         * The paddle moves left and right when the user's mouse/courser
+         * enters the game window
+         */
+        scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                // So paddle doesn't go off screen to the left
+                double PADDLE_X_MIN = 0;
+                // So paddle doesn't go off screen to the right
+                double PADDLE_X_MAX = APP_W - paddle.getWidth();
+                paddle.setFill(SCORE_INFO_COLOR);
+
+                // Move the paddle center to the mouse position
+                setCursorToCenterOfPaddle(paddle, event);
+                // Make sure the paddle stays inside the game window
+                setPaddleInGameBndry(paddle, PADDLE_X_MIN, PADDLE_X_MAX);
+                // Grab the mouse position
+                setCrntCrsrX(event.getSceneX());
+                calculatePaddleVelX();
+            }
+
+            /**
+             * Sets the paddle in the game window boundaries.
+             * If the paddle is at the left or right edge of the game window,
+             * the paddle will not move.
+             * 
+             * @param paddle       the paddle to set in the game window
+             * @param PADDLE_X_MIN the minimum x-coordinate of the paddle
+             * @param PADDLE_X_MAX the maximum x-coordinate of the paddle
+             */
+            private void setPaddleInGameBndry(
+                    Rectangle paddle,
+                    double PADDLE_X_MIN,
+                    double PADDLE_X_MAX) {
+                // left edge of game window is
+                if (paddle.getTranslateX() < PADDLE_X_MIN) {
+                    paddle.setTranslateX(PADDLE_X_MIN);
+                }
+                // right edge of game window
+                else if (paddle.getTranslateX() > PADDLE_X_MAX) {
+                    paddle.setTranslateX(PADDLE_X_MAX);
+                }
+            }
+
+            /**
+             * Sets the mouse cursor to the center of the paddle.
+             * 
+             * @param paddle the paddle to set the mouse cursor
+             * @param event  the mouse event to get the mouse cursor location
+             */
+            private void setCursorToCenterOfPaddle(
+                    Rectangle paddle,
+                    MouseEvent event) {
+                paddle.setTranslateX(event.getX() - paddle.getWidth() / 2);
+            }
+        });
+    }
+
+    /**
      * The game loop is a loop that runs until game window is closed.
      * In each iteration of the loop:
      * 
@@ -400,13 +557,23 @@ public class PongApp extends Application {
 
         // Labels for Frames Per Second (FPS) information
         Label fpsDisplayInfoLabel = new Label("FPS: ");
-        fpsDisplayInfoLabel.setFont(new Font(APP_FONT, APP_FONT_SIZE));
+        fpsDisplayInfoLabel.setFont(new Font(APP_FONT, APP_FONT_SIZE_24));
         fpsDisplayInfoLabel.setTextFill(FPS_INFO_COLOR);
         fpsDisplayInfoLabel.setLayoutX(FPS_DISPLAY_INFO_LABEL_X_Y_POSITION);
         fpsDisplayInfoLabel.setLayoutY(FPS_DISPLAY_INFO_LABEL_X_Y_POSITION);
-
         // add the labels to the scene graph
         root.getChildren().add(fpsDisplayInfoLabel);
+
+        // Labels score information
+        Label scoreDisplayInfoLabel = new Label("Score: ");
+        scoreDisplayInfoLabel.setFont(new Font(APP_FONT, APP_FONT_SIZE_24));
+        scoreDisplayInfoLabel.setTextFill(SCORE_INFO_COLOR);
+        // set score label position in the middle of the game window
+        scoreDisplayInfoLabel.setLayoutX(
+                (APP_W / 2) - (scoreDisplayInfoLabel.getWidth() / 2));
+        scoreDisplayInfoLabel.setLayoutY(APP_H_Y_CORD_1_3RD_FROM_TOP);
+        // add the labels to the scene graph
+        root.getChildren().add(scoreDisplayInfoLabel);
 
         /**
          * Paddle objects are rectangles that move up and down the screen.
@@ -420,15 +587,20 @@ public class PongApp extends Application {
          * Ball objects are rectangles that move around the screen.
          */
         Rectangle ball = new Rectangle(BALL_W, BALL_H);
-        ball.setFill(Color.BLUE);
+        ball.setFill(SCORE_INFO_COLOR);
         // random x-coordinate for ball object
         ball.setTranslateX((Math.random() * (APP_W - BALL_W)));
-        ball.setTranslateY(Y_CORD_1_3RD_OF_APP_H);
+        ball.setTranslateY(APP_H_Y_CORD_1_3RD_FROM_TOP);
         root.getChildren().add(ball);
 
+        /**
+         * BinkBonkSound objects are sound effects that play when the ball
+         */
+        BinkBonkSound sound = new BinkBonkSound();
+
         /////////////////////////////
-        // Key events for sound //
-        // effects and fps display //
+        // Key events for sound
+        // effects and fps display
         /////////////////////////////
         /**
          * Respond to two keystroke events:
@@ -444,11 +616,12 @@ public class PongApp extends Application {
                             !fpsDisplayInfoLabel.isVisible());
                 } else if (event.getCode() == KeyCode.S) {
                     // Toggle sound
+                    sound.toggleSound();
                 }
             }
         });
         /////////////////////////////
-        // Mouse events for paddle //
+        // Mouse events for paddle
         /////////////////////////////
 
         /**
@@ -473,6 +646,8 @@ public class PongApp extends Application {
         AnimationTimer timer = new AnimationTimer() {
 
             /**
+             * ALL THE MAGIC HAPPENS HERE IN THE GAME LOOP METHOD
+             * 
              * The game loop is a loop that runs until game window is closed.
              * In each iteration of the loop:
              * - The game state is updated and the game is rendered.
@@ -494,7 +669,17 @@ public class PongApp extends Application {
                 ballHitsScrBndry(); // Logic for ball to screen collision
                 setInGameTimeAndAvgFrameTimeAndFPS(now); // calculate FPS
                 updateFPSDisplayInformation(); // update FPS display info
+                updateScoreDisplay(); // update score display info
+                if (getGameScoreCounter() > 2) {
+                    PADDLE_W -= (int) (getPADDLE_W() / 2);
+                }
                 animationTimerFrameCounter++; // increment the frame counter
+            }
+
+            private void updateScoreDisplay() {
+                scoreDisplayInfoLabel.setText(
+                        String.format("%d",
+                                getGameScoreCounter()));
             }
 
             /**
@@ -510,6 +695,9 @@ public class PongApp extends Application {
                     setBallSpdX(0); // no velocity in the x-axis
                     setBallSpdY(BALL_SPEED_Y_MIN); // along the y-axis down
                     setNewGame(false); // game has started
+                    setBallRotSpd(0);
+                    ball.setRotate(0);
+                    setGameScoreCounter(0); // reset score
                 }
             }
 
@@ -577,6 +765,9 @@ public class PongApp extends Application {
                     ballHitsLeftMovingPaddle();
                     ballHitsRightMovingPaddle();
                     ballHitsStationaryPaddle();
+                    shrinkPaddle();
+                    sound.play(true);
+                    incrementGameScoreCounter();
                 }
             }
 
@@ -632,12 +823,21 @@ public class PongApp extends Application {
             private void ballHitsTopOfScreenBounceDown() {
                 if (ball.getTranslateY() <= 0) {
                     setBallUp(false);
+                    sound.play(false);
+                    incrementGameScoreCounter();
+                    setBallSpdX(getBallSpdX() + 1);
+                    setBallSpdY(getBallSpdY() + 1);
                 }
+
             }
 
             private void BallHitsLeftOfScreenBounceRight() {
                 if (ball.getTranslateX() <= BALL_X_CORD_MIN_RESPAWN_LIMIT) {
                     setBallLeft(false);
+                    sound.play(false);
+                    incrementGameScoreCounter();
+                    setBallSpdX(getBallSpdX() + 1);
+                    setBallSpdY(getBallSpdY() + 1);
                 }
             }
 
@@ -645,6 +845,10 @@ public class PongApp extends Application {
                 if (ball.getTranslateX() >= BALL_X_CORD_MAX_RESPAWN_LIMIT) {
                     // bounce off right side of screen
                     setBallLeft(true);
+                    sound.play(false);
+                    incrementGameScoreCounter();
+                    setBallSpdX(getBallSpdX() + 1);
+                    setBallSpdY(getBallSpdY() + 1);
                 }
             }
 
@@ -670,7 +874,7 @@ public class PongApp extends Application {
             private void respawnBallToRandomLocation() {
                 // random location in app x-axis (the width of app window)
                 ball.setTranslateX(generateRandomBallRespawnXCord());
-                ball.setTranslateY(Y_CORD_1_3RD_OF_APP_H);
+                ball.setTranslateY(APP_H_Y_CORD_1_3RD_FROM_TOP);
             }
 
             /**
@@ -772,98 +976,93 @@ public class PongApp extends Application {
         timer.start(); // Start the game loop
     }
 
-    /**
-     * Defines the mouse/courser movements to
-     * control the paddle movement and color.
-     * 
-     * @param scene  the scene of the game to add the event handler
-     * @param paddle the paddle to move and change color
-     */
-    private void paddleMouseMovementController(Scene scene, Rectangle paddle) {
-
-        /**
-         * the paddle is blue when the mouse enters the scene
-         */
-        scene.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                paddle.setFill(Color.BLUE);
-                // Mouse courser disappears when it enters the scene
-                scene.setCursor(Cursor.NONE);
-            }
-        });
-
-        /**
-         * The paddle color is red when the mouse is outside the game window.
-         */
-        scene.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                paddle.setFill(Color.RED);
-            }
-        });
-
-        /**
-         * The paddle moves left and right when the user's mouse/courser
-         * enters the game window
-         */
-        scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                // So paddle doesn't go off screen to the left
-                double PADDLE_X_MIN = 0;
-                // So paddle doesn't go off screen to the right
-                double PADDLE_X_MAX = APP_W - paddle.getWidth();
-                paddle.setFill(Color.BLUE);
-
-                // Move the paddle center to the mouse position
-                setCursorToCenterOfPaddle(paddle, event);
-                // Make sure the paddle stays inside the game window
-                setPaddleInGameBndry(paddle, PADDLE_X_MIN, PADDLE_X_MAX);
-                // Grab the mouse position
-                setCrntCrsrX(event.getSceneX());
-                calculatePaddleVelX();
-            }
-
-            /**
-             * Sets the paddle in the game window boundaries.
-             * If the paddle is at the left or right edge of the game window,
-             * the paddle will not move.
-             * 
-             * @param paddle       the paddle to set in the game window
-             * @param PADDLE_X_MIN the minimum x-coordinate of the paddle
-             * @param PADDLE_X_MAX the maximum x-coordinate of the paddle
-             */
-            private void setPaddleInGameBndry(
-                    Rectangle paddle,
-                    double PADDLE_X_MIN,
-                    double PADDLE_X_MAX) {
-                // left edge of game window is
-                if (paddle.getTranslateX() < PADDLE_X_MIN) {
-                    paddle.setTranslateX(PADDLE_X_MIN);
-                }
-                // right edge of game window
-                else if (paddle.getTranslateX() > PADDLE_X_MAX) {
-                    paddle.setTranslateX(PADDLE_X_MAX);
-                }
-            }
-
-            /**
-             * Sets the mouse cursor to the center of the paddle.
-             * 
-             * @param paddle the paddle to set the mouse cursor
-             * @param event  the mouse event to get the mouse cursor location
-             */
-            private void setCursorToCenterOfPaddle(
-                    Rectangle paddle,
-                    MouseEvent event) {
-                paddle.setTranslateX(event.getX() - paddle.getWidth() / 2);
-            }
-        });
-    }
-
     public static void main(String[] args) {
         Application.launch(args);
     }
 
+    class BinkBonkSound {
+
+        // magic numbers that are not common knowledge unless one
+        // has studied the GM2 standard and the midi sound system
+        //
+        // The initials GM mean General Midi. This GM standard
+        // provides for a set of common sounds that respond
+        // to midi messages in a common way.
+        //
+        // MIDI is a standard for the encoding and transmission
+        // of musical sound meta-information, e.g., play this
+        // note on this instrument at this level and this pitch
+        // for this long.
+        //
+        private static final int MAX_PITCH_BEND = 16383;
+        private static final int MIN_PITCH_BEND = 0;
+        private static final int REVERB_LEVEL_CONTROLLER = 91;
+        private static final int MIN_REVERB_LEVEL = 0;
+        private static final int MAX_REVERB_LEVEL = 127;
+        private static final int DRUM_MIDI_CHANNEL = 9;
+        private static final int CLAVES_NOTE = 76;
+        private static final int NORMAL_VELOCITY = 100;
+        private static final int MAX_VELOCITY = 127;
+
+        Instrument[] instrument;
+        MidiChannel[] midiChannels;
+        boolean playSound;
+
+        public BinkBonkSound() {
+            playSound = true;
+            try {
+                Synthesizer gmSynthesizer = MidiSystem.getSynthesizer();
+                gmSynthesizer.open();
+                instrument = gmSynthesizer
+                        .getDefaultSoundbank()
+                        .getInstruments();
+                midiChannels = gmSynthesizer.getChannels();
+
+            } catch (MidiUnavailableException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // This method has more comments than would typically be needed for
+        // programmers using the Java sound system libraries. This is because
+        // most students will not have exposure to the specifics of midi and
+        // the general midi sound system. For example, drums are on channel
+        // 10 and this cannot be changed. The GM2 standard defines much of
+        // the detail that I have chosen to use static constants to encode.
+        //
+        // The use of midi to play sounds allows us to avoid using external
+        // media, e.g., wav files, to play sounds in the game.
+        //
+        void play(boolean hiPitch) {
+            if (playSound) {
+
+                // Midi pitch bend is required to play a single drum note
+                // at different pitches. The high and low pongs are two
+                // octaves apart. As you recall from high school physics,
+                // each additional octave doubles the frequency.
+                //
+                midiChannels[DRUM_MIDI_CHANNEL]
+                        .setPitchBend(hiPitch
+                                ? MAX_PITCH_BEND
+                                : MIN_PITCH_BEND);
+
+                // Turn the reverb send fully off. Drum sounds play until they
+                // decay completely. Reverb extends the audible decay and,
+                // from a gameplay point of view, is distracting.
+                //
+                midiChannels[DRUM_MIDI_CHANNEL]
+                        .controlChange(REVERB_LEVEL_CONTROLLER,
+                                MIN_REVERB_LEVEL);
+
+                // Play the claves on the drum channel at a "normal" volume
+                //
+                midiChannels[DRUM_MIDI_CHANNEL]
+                        .noteOn(CLAVES_NOTE, NORMAL_VELOCITY);
+            }
+        }
+
+        public void toggleSound() {
+            playSound = !playSound;
+        }
+    }
 }
