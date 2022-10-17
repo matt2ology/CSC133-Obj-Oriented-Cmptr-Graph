@@ -53,7 +53,7 @@ class Pong {
  * - It also handles the game loop.
  * - It creates the game window and starts the game.
  * - Sets the event handling for all scene based mouse interaction
- * - Sets up the scene and stage 
+ * - Sets up the scene and stage
  * 
  * The game loop is a loop that runs until game window is closed.
  * In each iteration of the loop:
@@ -66,7 +66,7 @@ class Pong {
  * Respond to two keystroke events:
  * - The “i” key will display or hide the FPS information
  * - The “s” key will enable and disable sound effects.
-
+ * 
  */
 public class OPongApp extends Application {
 
@@ -94,7 +94,6 @@ public class OPongApp extends Application {
         primaryStage.setTitle("OPong");
         // show stage
         primaryStage.show();
-
 
     }
 
