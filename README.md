@@ -7,10 +7,10 @@
   - [Setup](#setup)
     - [On M1 Mac](#on-m1-mac)
     - [VSCode](#vscode)
-  - [Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01](#academic-week-0102---calendar-week-3536-0829---09-10---homework-01)
-  - [Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02](#academic-week-0304---calendar-week-37---38-0911---0923---homework-02)
-  - [Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07)](#academic-week-0506---calendar-week-3940-0926---1007)
-  - [Academic Week 07/08 - Calendar Week 41/42 (10/10 - 10/14 -> 10/17 - 10/21)](#academic-week-0708---calendar-week-4142-1010---1014---1017---1021)
+  - [Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01 (Simple Paint)](#academic-week-0102---calendar-week-3536-0829---09-10---homework-01-simple-paint)
+  - [Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02 (Simple Paint Objects)](#academic-week-0304---calendar-week-37---38-0911---0923---homework-02-simple-paint-objects)
+  - [Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07) - Homework 03 (Pong Two Ways)](#academic-week-0506---calendar-week-3940-0926---1007---homework-03-pong-two-ways)
+  - [Academic Week 07/08 - Calendar Week 41/42 (10/10 - 10/14 -> 10/17 - 10/21) - Homework 03 (Pong Two Ways)](#academic-week-0708---calendar-week-4142-1010---1014---1017---1021---homework-03-pong-two-ways)
   - [Academic Week 09 - Calendar Week 43 (10/24 - 10/28)](#academic-week-09---calendar-week-43-1024---1028)
   - [Academic Week 10 - Calendar Week 44 (10/31 - 11/04)](#academic-week-10---calendar-week-44-1031---1104)
   - [Academic Week 11 - Calendar Week 45 (11/07 - 11/11)](#academic-week-11---calendar-week-45-1107---1111)
@@ -48,7 +48,7 @@
 2. Install extension [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
    1. Should include: "Debugger for Java", "Maven for Java", "Project Manageer for Java", "Test Runner for Java"
 
-## Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01
+## Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01 (Simple Paint)
 
 [Week 01/02](week-01-02-hw01-simple-paint/README.md)
 
@@ -63,7 +63,7 @@
 5. [Quick Update :: JavaFX and IntelliJ Install Video Posted](announcements\20220907_02_javafx_and_intellij_install_video_posted.md) Posed on: Sep 7, 2022, 9:56 PM
 6. [Quick Update :: Short Video with Additional Demo of Not Overwriting the Tool/Palette Area](announcements\20220909_01_quick_update_short_video_with_additional_demo_of_not_overwriting_the_toolPalette_area.md) Posed on: Sep 9, 2022, 11:56 AM
 
-## Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02
+## Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02 (Simple Paint Objects)
 
 [Week 03/04](week-03-04-hw02-simple-paint-objects/README.md)
 
@@ -78,7 +78,7 @@
 5. [Important Update :: On Nesting Classes and Extra Credit](announcements\20220920_01_important_update_on_nesting_classes_and_extra_credit.md) Posed on: Sep 20, 2022, 7:53 PM
 6. [Quick Update :: The Process of Coding](announcements\20220923_01_quick_update_the_process_of_coding.md) Posed on: Sep 23, 2022, 8:34 AM
 
-## Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07)
+## Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07) - Homework 03 (Pong Two Ways)
 
 [Week 05/06](week-05-06-hw03-pong-two-ways/README.md)
 
@@ -93,7 +93,7 @@
 5. [Important Update :: Thursday's lecture will be remote](announcements\20220928_01_important_update_thursdays_lecture_will_be_remote.md) Posed on: Sep 28, 2022, 3:38 PM
 6. [Course Update 9/30](announcements\20220930_01_course_update_0930.md) Posed on: Sep 30, 2022, 10:08 AM
 
-## Academic Week 07/08 - Calendar Week 41/42 (10/10 - 10/14 -> 10/17 - 10/21)
+## Academic Week 07/08 - Calendar Week 41/42 (10/10 - 10/14 -> 10/17 - 10/21) - Homework 03 (Pong Two Ways)
 
 [Week 07/08](week-07-08-hw03-pong-two-ways-more-info/README.md)
 
