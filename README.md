@@ -50,9 +50,9 @@
 
 ## Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01
 
-[Week 01/02](week-01-02/README.md)
+[Week 01/02](week-01-02-hw01-simple-paint/README.md)
 
-[HW 01 Instructions](week-01-02/homework_01.pdf) - Due: Mon Sep 12, 2022
+[HW 01 Instructions](week-01-02-hw01-simple-paint/homework_01.pdf) - Due: Mon Sep 12, 2022
 
 **Announcements**:
 
@@ -65,9 +65,9 @@
 
 ## Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02
 
-[Week 03/04](week-03-04/README.md)
+[Week 03/04](week-03-04-hw02-simple-paint-objects/README.md)
 
-[HW 02 Instruction](week-03-04/hw02_simple_object_paint.pdf) - Due: Mon Sep 26, 2022
+[HW 02 Instruction](week-03-04-hw02-simple-paint-objects/hw02_simple_object_paint.pdf) - Due: Mon Sep 26, 2022
 
 **Announcements**:
 
@@ -80,7 +80,7 @@
 
 ## Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07)
 
-[Week 05/06](week-05-06/README.md)
+[Week 05/06](week-05-06-hw03-pong-two-ways/README.md)
 
 [Notes on SE2 :: Encapsulation :: Encoding Abstractions as Types](course-notes/20220930-se2-encapsulation-encoding-abstractions-as-types.md)
 
@@ -95,7 +95,7 @@
 
 ## Academic Week 07/08 - Calendar Week 41/42 (10/10 - 10/14 -> 10/17 - 10/21)
 
-[Week 07/08](week-07-08/README.md)
+[Week 07/08](week-07-08-hw03-pong-two-ways-more-info/README.md)
 
 ## Academic Week 09 - Calendar Week 43 (10/24 - 10/28)
 
