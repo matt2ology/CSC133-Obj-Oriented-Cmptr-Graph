@@ -1,13 +1,13 @@
-# CSC133 Obj-Oriented Cmptr Graph - SECTION 03 - Fall 2022
+# CSC133 Obj-Oriented Cmptr Graph - SECTION 03 - Fall 2022 (08/29 - 12/09)
 
-- [CSC133 Obj-Oriented Cmptr Graph - SECTION 03 - Fall 2022](#csc133-obj-oriented-cmptr-graph---section-03---fall-2022)
+- [CSC133 Obj-Oriented Cmptr Graph - SECTION 03 - Fall 2022 (08/29 - 12/09)](#csc133-obj-oriented-cmptr-graph---section-03---fall-2022-0829---1209)
   - [Admin](#admin)
     - [Books](#books)
       - [Additional Resources](#additional-resources)
   - [Setup](#setup)
     - [On M1 Mac](#on-m1-mac)
     - [VSCode](#vscode)
-  - [Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01 (Simple Paint)](#academic-week-0102---calendar-week-3536-0829---09-10---homework-01-simple-paint)
+  - [Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09/10) - Homework 01 (Simple Paint)](#academic-week-0102---calendar-week-3536-0829---0910---homework-01-simple-paint)
   - [Academic Week 03/04 - Calendar Week 37 - 38 (09/11 - 09/23) - Homework 02 (Simple Paint Objects)](#academic-week-0304---calendar-week-37---38-0911---0923---homework-02-simple-paint-objects)
   - [Academic Week 05/06 - Calendar Week 39/40 (09/26 - 10/07) - Homework 03 (Pong Two Ways)](#academic-week-0506---calendar-week-3940-0926---1007---homework-03-pong-two-ways)
   - [Academic Week 07/08 - Calendar Week 41/42 (10/10 - 10/14 -> 10/17 - 10/21) - Homework 03 (Pong Two Ways)](#academic-week-0708---calendar-week-4142-1010---1014---1017---1021---homework-03-pong-two-ways)
