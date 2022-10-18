@@ -48,7 +48,7 @@
 2. Install extension [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
    1. Should include: "Debugger for Java", "Maven for Java", "Project Manageer for Java", "Test Runner for Java"
 
-## Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09-10) - Homework 01 (Simple Paint)
+## Academic Week 01/02 - Calendar Week 35/36 (08/29 - 09/10) - Homework 01 (Simple Paint)
 
 [Week 01/02](week-01-02-hw01-simple-paint/README.md)
 
