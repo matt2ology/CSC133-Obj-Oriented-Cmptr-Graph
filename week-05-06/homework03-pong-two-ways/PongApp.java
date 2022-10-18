@@ -589,7 +589,7 @@ public class PongApp extends Application {
         Rectangle ball = new Rectangle(BALL_W, BALL_H);
         ball.setFill(SCORE_INFO_COLOR);
         // random x-coordinate for ball object
-        ball.setTranslateX((Math.random() * (APP_W - BALL_W)));
+        ball.setTranslateX((Math.random() * (APP_W - ball.getWidth())));
         ball.setTranslateY(APP_H_Y_CORD_1_3RD_FROM_TOP);
         root.getChildren().add(ball);
 
