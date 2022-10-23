@@ -95,7 +95,7 @@
 
 ## Academic Week 07/08 - Calendar Week 41/42 (10/10 - 10/14 -> 10/17 - 10/21) - Homework 03 (Pong Two Ways)
 
-[Week 07/08](week-07-08-hw03-pong-two-ways-more-info/README.md)
+[Week 07/08](week-07-08-a1-rainmaker-course-project/README.md)
 
 ## Academic Week 09 - Calendar Week 43 (10/24 - 10/28)
 
