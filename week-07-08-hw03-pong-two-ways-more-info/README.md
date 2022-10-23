@@ -7,3 +7,7 @@
 ## Resources
 
 [NSFAQ :: PONG](NSFAQ_PONG_CSC133.md)
+
+## Assignments
+
+![GO :: FA22 :: A1 :: RainMaker Specification](fa22_a1_rainmaker_specification.md)
