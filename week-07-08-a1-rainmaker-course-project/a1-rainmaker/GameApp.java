@@ -217,8 +217,15 @@ class Ponds extends PondsAndClouds {
 class Game extends Pane {
 
     public Game() {
-        // add clouds and ponds to the game world
+        setScreenOriginBottomLeftCornerFlipYAxis();
+    }
 
+    /**
+     * Flips the y-axis so that the origin is in the bottom
+     * left corner of the screen
+     */
+    private void setScreenOriginBottomLeftCornerFlipYAxis() {
+        super.setScaleY(-1);
     }
 
     public void update() {
