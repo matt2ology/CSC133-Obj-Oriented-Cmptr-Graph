@@ -259,7 +259,11 @@ public class GameApp extends Application {
         Game game = new Game();
         game.init();
         primaryStage.setTitle(GAME_TITLE);
-        primaryStage.setScene(new Scene(game, Globals.GAME_WIDTH, Globals.GAME_HEIGHT, Color.BLACK));
+        primaryStage.setScene(new Scene(
+                game,
+                Globals.GAME_WIDTH,
+                Globals.GAME_HEIGHT,
+                Color.BLACK));
         primaryStage.show();
         // start game
         // game.start();
