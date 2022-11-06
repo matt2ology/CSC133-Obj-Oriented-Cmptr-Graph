@@ -193,21 +193,28 @@ class Clouds extends PondsAndClouds {
 }
 
 /**
- * Ponds
+ * Pond class
+ * 
+ * Pond's percentage is of the normal radius of the pond
+ * 
+ * The rainfall must increase the area, not the radius: pi*r^2.
  */
-class Ponds extends PondsAndClouds {
+class Pond extends PondsAndClouds {
 
-    private int POND_VARIABLE_RADIUS = random.nextInt(25) + 10;
+    /**
+     * The upper bound for the random radius of the pond.
+     */
+    private static final int POND_SIZE_UPPER_BOUND = 25;
+    /**
+     * The lower bound for the random radius of the pond.
+     */
+    private static final int POND_SIZE_LOWER_BOUND = 10;
 
-    public Ponds() {
-        super();
-        // A random number between 10 and 25 for radius
-        circle.setRadius(POND_VARIABLE_RADIUS);
-
-        circle.setFill(Color.BLUE);
-        circle.setStroke(Color.WHITE);
-        circle.setStrokeWidth(2);
-        add(circle);
+    public Pond() {
+        super(POND_SIZE_LOWER_BOUND,
+                POND_SIZE_UPPER_BOUND,
+                Color.BLUE,
+                "0");
     }
 }
 
