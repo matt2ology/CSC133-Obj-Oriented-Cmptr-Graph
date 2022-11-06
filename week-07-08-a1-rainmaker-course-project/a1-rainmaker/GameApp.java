@@ -23,7 +23,7 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 /**
- * Updatable
+ * Updatable interface for all objects that are updatable in the game world.
  */
 interface Updatable {
     public void update();
