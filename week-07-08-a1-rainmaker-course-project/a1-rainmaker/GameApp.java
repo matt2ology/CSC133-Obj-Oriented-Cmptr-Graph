@@ -152,26 +152,62 @@ abstract class FixedObject extends GameObject {
  * all clouds and ponds are circles.
  */
 abstract class PondsAndClouds extends FixedObject {
-
-    // random class
-    Random random = new Random();
-
-    private double UPPER_2_3RDS_VERTICAL_SCREEN = random
-            .nextDouble(
-                    Globals.GAME_HEIGHT / 3);
-
-    private double RANDOM_HORIZONTAL_SCREEN = random
-            .nextDouble(
-                    Globals.GAME_WIDTH);
-
+    /**
+     * The percentage symbol for the clouds or ponds text.
+     */
+    private static final String PERCENT_SYMBOL = "%";
+    /**
+     * Circles represents clouds or ponds.
+     */
     protected Circle circle;
+    /**
+     * The percentage text for the clouds or ponds.
+     */
+    protected GameText percentageText;
+    /**
+     * Random screen x-axis coordinate for the cloud or pond.
+     */
+    private double RANDOM_SCREEN_X_COORDINATE = Utility.random
+            .nextDouble(Globals.GAME_WIDTH);
+    /**
+     * Random upper 2/3rds of the screen in the y-axis
+     * coordinate for the cloud or pond.
+     */
+    private double RANDOM_SCREEN_Y_COORDINATE_UPPER_2_3RDS = Utility
+            .genRandNumInRange(Globals.GAME_HEIGHT_1_3RD, Globals.GAME_HEIGHT);
 
-    public PondsAndClouds() {
+    /**
+     * Constructor for the clouds and ponds. The circle
+     * represents a cloud or pond set to a random radius
+     * defined by the derived class.
+     * 
+     * @param circleMinimumRadius - the minimum radius of the cloud or pond.
+     * @param circleMaximumRadius - the maximum radius of the cloud or pond.
+     * @param fill                - the color of the cloud or pond.
+     */
+    public PondsAndClouds(double circleMinimumRadius,
+            double circleMaximumRadius,
+            Color fill,
+            String percentageNumber) {
         super();
-        circle = new Circle();
-        // set translation
-        translate.setX(RANDOM_HORIZONTAL_SCREEN);
-        translate.setY(UPPER_2_3RDS_VERTICAL_SCREEN);
+        circle = new Circle(
+                Utility.genRandNumInRange(
+                        circleMinimumRadius,
+                        circleMaximumRadius));
+        circle.setFill(fill);
+        add(circle);
+        percentageText = new GameText(
+                percentageNumber + PERCENT_SYMBOL);
+        add(percentageText);
+        translate.setX(RANDOM_SCREEN_X_COORDINATE);
+        translate.setY(RANDOM_SCREEN_Y_COORDINATE_UPPER_2_3RDS);
+    }
+
+    /**
+     * Return circle attributes
+     */
+    public Circle getCircle() {
+        return circle;
     }
 }
 
