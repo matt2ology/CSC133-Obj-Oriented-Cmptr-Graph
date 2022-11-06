@@ -230,8 +230,13 @@ class Game extends Pane {
     public void start() {
     }
 
+    /**
+     * Initialize the game. This method is called when the game is started.
+     * It will clear all nodes from the game world and add the game objects
+     */
     public void init() {
-        super.getChildren().add(new Clouds());
+        super.getChildren().clear();
+        super.getChildren().addAll(new Pond(), new Clouds());
     }
 }
 
