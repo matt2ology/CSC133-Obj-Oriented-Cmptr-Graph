@@ -247,6 +247,28 @@ class Globals {
      * The height of the game window.
      */
     public static final double GAME_HEIGHT = 800;
+
+/**
+ * Utility class for all utility methods that are used in the game.
+ * Utility methods are static methods that are used by other classes in the
+ * game, so they are not tied to any particular object.
+ */
+class Utility {
+
+    // random class is static so it is shared by all instances of this class
+    static Random random = new Random();
+
+    /**
+     * Generate a random number in the inclusive range [min, max].
+     * 
+     * @param min - the minimum value of the range
+     * @param max - the maximum value of the range
+     * @return a random number in the inclusive range [min, max]
+     */
+    public static double genRandNumInRange(double min, double max) {
+        return min + ((max - min) + 1) * random.nextDouble();
+    }
+
 }
 
 public class GameApp extends Application {
