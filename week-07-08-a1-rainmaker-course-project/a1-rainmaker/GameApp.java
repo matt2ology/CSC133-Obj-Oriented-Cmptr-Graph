@@ -101,13 +101,30 @@ class GameText extends GameObject {
         this.text.setFill(Color.WHITE);
         this.text.setScaleY(-1);
         // set origin to center of text
-        this.text.setX(
-                this.text.getX()
-                        - this.text.getBoundsInLocal().getWidth() / 2);
-        this.text.setY(
-                this.text.getY()
-                        + this.text.getBoundsInLocal().getHeight() / 4);
+        this.text.setX(getTextCenterX());
+        this.text.setY(getTextCenterY());
         add(this.text);
+    }
+
+    /**
+     * The center y-axis coordinate is obtained by adding the height of the
+     * text to the y-axis coordinate of the text and dividing by four.
+     * Divided by four because the text is scaled by -1, so the y-axis
+     * coordinate is negative.
+     * @return the center y-axis coordinate of the text.
+     */
+    private double getTextCenterY() {
+        return this.text.getY() + this.text.getBoundsInLocal().getHeight() / 4;
+    }
+
+    /**
+     * The center x-axis coordinate is obtained by subtracting
+     * the width of the text from the x-axis coordinate of the 
+     * text and dividing by half.
+     * @return the center x-axis coordinate of the text.
+     */
+    private double getTextCenterX() {
+        return this.text.getX() - this.text.getBoundsInLocal().getWidth() / 2;
     }
 
     /**
