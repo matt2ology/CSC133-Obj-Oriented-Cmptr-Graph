@@ -70,6 +70,70 @@ abstract class GameObject extends Group implements Updatable {
 }
 
 /**
+ * GameText
+ */
+class GameText extends GameObject {
+
+    /**
+     * The default font size.
+     */
+    private static final int DEFAULT_FONT_SIZE = 15;
+    /**
+     * The text object.
+     */
+    private Text text;
+    private String FONT_OF_CHOICE = "Helvetica";
+
+    /**
+     * Constructor for the GameText object.
+     * 
+     * @param text - the text to display.
+     * @param x    - the x-axis coordinate of the text.
+     * @param y    - the y-axis coordinate of the text.
+     */
+    public GameText(String text) {
+        this.text = new Text(text);
+        this.text.setFont(
+                Font.font(
+                        FONT_OF_CHOICE,
+                        FontWeight.BOLD,
+                        DEFAULT_FONT_SIZE));
+        this.text.setTextAlignment(TextAlignment.CENTER);
+        this.text.setFill(Color.WHITE);
+        this.text.setScaleY(-1);
+        // set origin to center of text
+        this.text.setX(
+                this.text.getX()
+                        - this.text.getBoundsInLocal().getWidth() / 2);
+        this.text.setY(
+                this.text.getY()
+                        + this.text.getBoundsInLocal().getHeight() / 4);
+        add(this.text);
+    }
+
+    /**
+     * Set the text to display.
+     * 
+     * @param text - the text to display.
+     */
+    public void setText(String text) {
+        this.text.setText(text);
+    }
+
+    public void setLocation(double x, double y) {
+        translate.setX(x);
+        translate.setY(y);
+    }
+
+    /**
+     * Return the text object.
+     */
+    public Text getText() {
+        return text;
+    }
+}
+
+/**
  * FixedObject class for all fixed objects in the game world
  * derived from this class.
  */
