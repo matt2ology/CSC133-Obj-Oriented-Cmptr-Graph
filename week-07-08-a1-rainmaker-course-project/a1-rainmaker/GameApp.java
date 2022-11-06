@@ -37,8 +37,12 @@ abstract class GameObject extends Group implements Updatable {
 
     protected Translate translate;
     protected Rotate rotate;
-    protected Scale scale;
 
+    /**
+     * Constructor for the GameObject object,
+     * initializes the translate and rotate transforms;
+     * so, all objects have a translate and rotate transform.
+     */
     public GameObject() {
         translate = new Translate();
         rotate = new Rotate();
