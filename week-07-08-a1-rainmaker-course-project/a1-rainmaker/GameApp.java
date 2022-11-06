@@ -177,6 +177,18 @@ abstract class PondsAndClouds extends FixedObject {
 
 /**
  * Clouds
+ * 
+ * Cloud's percentage text is its saturation level.
+ * 
+ * As the cloud becomes more saturated the color turns from
+ * WHITE [rgb(255,255,255)] to GRAY [rgb(155,155,155)]
+ * (100 shades of gray)
+ * 
+ * When the saturation reaches 30% the rainfall will start to fill the pond at
+ * a rate proportional to the cloud’s saturation.
+ * 
+ * The cloud will automatically lose saturation when it’s not being seeded at
+ * a rate that allows the percentage to drop about 1%/second
  */
 class Clouds extends PondsAndClouds {
     /**
