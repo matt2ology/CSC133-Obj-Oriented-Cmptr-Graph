@@ -1,6 +1,8 @@
 import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application; // JavaFX application support
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
@@ -261,6 +263,50 @@ public class GameApp extends Application {
         primaryStage.show();
         // start game
         // game.start();
+
+        /**
+         * Key listener for key pressed events.
+         */
+        primaryStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                // Left Arrow Changes the heading of the helicopter by 15 degrees to the left.
+                if (event.getCode() == KeyCode.LEFT) {
+                    System.out.println("Left Arrow: <-");
+                }
+
+                // Right Arrow Changes the heading of the helicopter by 15 degrees to the right.
+                if (event.getCode() == KeyCode.RIGHT) {
+                    System.out.println("Right Arrow: ->");
+                }
+
+                // Up Arrow Increases the speed of the helicopter by 0.1.
+                if (event.getCode() == KeyCode.UP) {
+                    System.out.println("Up Arrow: ^");
+                }
+
+                // Down Arrow Decreases the speed of the helicopter by 0.1.
+                if (event.getCode() == KeyCode.DOWN) {
+                    System.out.println("Down Arrow: v");
+                }
+
+                // 'i' Turns on the helicopter ignition.
+                if (event.getCode() == KeyCode.I) {
+                    System.out.println("I - Turns on the helicopter ignition");
+                }
+
+                // 'b' [optional] shows bounding boxes around objects.
+                if (event.getCode() == KeyCode.B) {
+                    System.out.println("B - shows bounding boxes around objects");
+                }
+
+                // 'r' Reinitialize the game
+                if (event.getCode() == KeyCode.R) {
+                    System.out.println("R - Reinitialize the game");
+                    game.init();
+                }
+            }
+        });
     }
 
     public static void main() {
