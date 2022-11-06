@@ -111,6 +111,7 @@ class GameText extends GameObject {
      * text to the y-axis coordinate of the text and dividing by four.
      * Divided by four because the text is scaled by -1, so the y-axis
      * coordinate is negative.
+     * 
      * @return the center y-axis coordinate of the text.
      */
     private double getTextCenterY() {
@@ -119,8 +120,9 @@ class GameText extends GameObject {
 
     /**
      * The center x-axis coordinate is obtained by subtracting
-     * the width of the text from the x-axis coordinate of the 
+     * the width of the text from the x-axis coordinate of the
      * text and dividing by half.
+     * 
      * @return the center x-axis coordinate of the text.
      */
     private double getTextCenterX() {
@@ -308,14 +310,10 @@ class Pond extends PondsAndClouds {
 class Game extends Pane {
 
     public Game() {
-        setScreenOriginBottomLeftCornerFlipYAxis();
-    }
-
-    /**
-     * Flips the y-axis so that the origin is in the bottom
-     * left corner of the screen
-     */
-    private void setScreenOriginBottomLeftCornerFlipYAxis() {
+        /*
+         * Flips the y-axis, so that the origin is in the
+         * bottom left corner of the screen
+         */
         super.setScaleY(-1);
     }
 
