@@ -250,13 +250,11 @@ class Globals {
 }
 
 public class GameApp extends Application {
-
     private static final String GAME_TITLE = "Rainmaker A1";
+    Game game = new Game(); // game object to be displayed in the window
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // init game
-        Game game = new Game();
         game.init();
         primaryStage.setTitle(GAME_TITLE);
         primaryStage.setScene(new Scene(
