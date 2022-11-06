@@ -179,16 +179,35 @@ abstract class PondsAndClouds extends FixedObject {
  * Clouds
  */
 class Clouds extends PondsAndClouds {
-
-    private int CLOUD_VARIABLE_RADIUS = random.nextInt(80) + 30;
+    /**
+     * The upper bound for the random radius of the cloud.
+     */
+    private static final double CLOUD_SIZE_UPPER_BOUND = 80.0;
+    /**
+     * The lower bound for the random radius of the cloud.
+     */
+    private static final double CLOUD_SIZE_LOWER_BOUND = 30.0;
+    /**
+     * The saturation level of the cloud.
+     */
+    private double cloudSaturationLevel = 0.0;
 
     public Clouds() {
-        super();
-        circle.setRadius(CLOUD_VARIABLE_RADIUS);
-        circle.setFill(Color.WHITE);
-        circle.setStroke(Color.BLUE);
-        circle.setStrokeWidth(2);
-        add(circle);
+        super(
+                CLOUD_SIZE_LOWER_BOUND,
+                CLOUD_SIZE_UPPER_BOUND,
+                Color.WHITE,
+                "100");
+        percentageText.getText().setFill(Color.BLACK);
+        cloudSaturationLevel = 0.0;
+    }
+
+    public double getCloudSaturationLevel() {
+        return cloudSaturationLevel;
+    }
+
+    public void setCloudSaturationLevel(double cloudSaturationLevel) {
+        this.cloudSaturationLevel = cloudSaturationLevel;
     }
 }
 
