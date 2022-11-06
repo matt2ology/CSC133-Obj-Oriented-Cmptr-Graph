@@ -40,16 +40,9 @@ abstract class GameObject extends Group implements Updatable {
     protected Scale scale;
 
     public GameObject() {
-        translate = new Translate(); // create a new Translate object so we can have a reference to it later on to
-                                     // change the position of the object in the game world (x,y) coordinates
-        rotate = new Rotate(); // create a new Rotate object so we can have a reference to it later on to
-                               // change the rotation of the object in the game world (z) coordinates
-        scale = new Scale(); // create a new Scale object so we can have a reference to it later on to change
-                             // the scale of the object in the game world (x,y) coordinates
-        getTransforms().addAll(translate, rotate, scale); // this will add the translate, rotate and scale objects to
-                                                          // the transforms list of the Group class so we can use them
-                                                          // later on to change the position, rotation and scale of the
-                                                          // object in the game world
+        translate = new Translate();
+        rotate = new Rotate();
+        getTransforms().addAll(translate, rotate);
     }
 
     public void update() {
@@ -138,9 +131,12 @@ class GameText extends GameObject {
  * derived from this class.
  */
 abstract class FixedObject extends GameObject {
+    protected Scale scale;
 
     public FixedObject() {
         super();
+        scale = new Scale();
+        getTransforms().add(scale);
     }
 }
 
