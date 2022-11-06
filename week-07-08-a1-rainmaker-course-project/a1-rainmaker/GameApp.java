@@ -247,6 +247,11 @@ class Globals {
      * The height of the game window.
      */
     public static final double GAME_HEIGHT = 800;
+    /**
+     * The lower 1/3rd of the screen height.
+     */
+    public static final double GAME_HEIGHT_1_3RD = GAME_HEIGHT / 3;
+}
 
 /**
  * Utility class for all utility methods that are used in the game.
