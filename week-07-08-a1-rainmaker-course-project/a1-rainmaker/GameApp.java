@@ -364,7 +364,7 @@ class HelicopterGameInfoText extends GameText {
     }
 }
 
-class HelicopterHeadingIndicator extends MovableObject {
+class HelicopterHeadingIndicator extends FixedObject {
     /**
      * The radius of the helicopter heading indicator on the map (in-game)
      */
@@ -388,7 +388,7 @@ class HelicopterHeadingIndicator extends MovableObject {
 /**
  * HelicopterBlip class for the helicopter blip on the map.
  */
-class HelicopterBlipCircle extends MovableObject {
+class HelicopterBlipCircle extends FixedObject {
 
     /**
      * The radius of the helicopter blip on the map (in-game)
