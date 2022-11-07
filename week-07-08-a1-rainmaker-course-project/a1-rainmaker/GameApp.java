@@ -237,20 +237,15 @@ abstract class MovableObject extends GameObject {
 
 class Helicopter extends MovableObject {
     private int fuelGauge = 0;
-    private GameText helicopterGameText;
     private boolean isIgnitionOn = false;
 
     public Helicopter(int fuelCapacity) {
         super(Helipad.getCenter());
         this.setFuelGauge(fuelCapacity);
-        this.helicopterGameText = new GameText(
-                "Fuel:" + String.valueOf(getFuelGauge()),
-                15);
-        this.helicopterGameText.getText().setFill(Color.RED);
-        this.helicopterGameText.setTranslateY(-20);
         super.add(new HelicopterHeadingIndicator());
         super.add(new HelicopterBlipCircle());
-        super.add(helicopterGameText);
+        super.add(new HelicopterGameInfoText(
+                "Fuel:" + String.valueOf(getFuelGauge())));
     }
 
     public void setFuelGauge(int fuelGauge) {
@@ -272,6 +267,14 @@ class Helicopter extends MovableObject {
     @Override
     public String toString() {
         return "Helicopter [fuelGauge=" + fuelGauge + ", isIgnitionOn=" + isIgnitionOn + "]";
+    }
+}
+
+class HelicopterGameInfoText extends GameText {
+    public HelicopterGameInfoText(String text) {
+        super(text, 15);
+        this.getText().setFill(Color.RED);
+        this.setTranslateY(-20);
     }
 }
 
