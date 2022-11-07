@@ -389,16 +389,20 @@ class HelicopterHeadingIndicator extends FixedObject {
  * HelicopterBlip class for the helicopter blip on the map.
  */
 class HelicopterBlipCircle extends FixedObject {
-
+    private Circle blipCircle;
     /**
      * The radius of the helicopter blip on the map (in-game)
      */
-    private static final double helicopterBlibCircleRadius = 10;
+    private static final double blibCircleRadius = 10;
 
     public HelicopterBlipCircle() {
-        Circle circle = new Circle(helicopterBlibCircleRadius);
-        circle.setFill(Color.YELLOW);
-        super.add(circle);
+        blipCircle = new Circle(blibCircleRadius);
+        blipCircle.setFill(Color.YELLOW);
+        super.add(blipCircle);
+    }
+
+    public Circle getHelicopterBlipCircle() {
+        return blipCircle;
     }
 }
 
