@@ -668,6 +668,14 @@ class Game extends Pane {
     public Helicopter getHelicopter() {
         return helicopter;
     }
+
+    /**
+     * Method to determine if the helicopter is in the cloud.
+     */
+    public boolean isHelicopterInCloud() {
+        return cloud.getCircle().contains(helicopter.getTranslateX(),
+                helicopter.getTranslateY());
+    }
 }
 
 /**
