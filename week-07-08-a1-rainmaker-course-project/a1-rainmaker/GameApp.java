@@ -232,6 +232,11 @@ abstract class MovableObject extends GameObject {
     private double velocityX;
     private double velocityY;
 
+    /**
+     * Abstract method for moving the object
+     * because each object moves differently.
+     */
+    public abstract void move();
     public MovableObject() {
         super();
     }
