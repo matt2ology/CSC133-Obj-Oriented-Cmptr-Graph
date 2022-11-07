@@ -600,7 +600,7 @@ class Game extends Pane {
      */
     public void init() {
         super.getChildren().clear();
-        super.getChildren().addAll(new Pond(), new Clouds(), new Helipad());
+        super.getChildren().addAll(new Pond(), new Clouds(), new Helipad(), new Helicopter());
     }
 }
 
