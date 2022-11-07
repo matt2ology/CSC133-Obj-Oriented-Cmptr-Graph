@@ -255,6 +255,7 @@ class Helicopter extends MovableObject {
         super.add(new HelicopterBlipCircle());
         super.add(new HelicopterGameInfoText(
                 "Fuel:" + String.valueOf(getFuelGauge())));
+    }
 
     @Override
     public void steerLeft() {
