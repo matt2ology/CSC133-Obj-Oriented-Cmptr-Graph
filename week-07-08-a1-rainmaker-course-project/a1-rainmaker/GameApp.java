@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -326,15 +327,21 @@ class HelicopterBlipCircle extends MovableObject {
 }
 
 class Helipad extends FixedObject {
+    Point2D location = new Point2D(0, 0);
     public Helipad(Point2D location) {
         /**
          * Call the constructor of the parent class, FixedObject,
          * to set the location of the helipad.
          */
         super(location);
+        this.location = location;
         add(new HelipadFATOSquare()); // The Final Approach and Takeoff (FATO)
         add(new HelipadTLOFCircle()); // The Touchdown and Liftoff (TLOF)
         add(new HelipadH()); // The Helipad "H" font
+    }
+    @Override
+    public String toString() {
+        return "Helipad [location=" + location + "]";
     }
 }
 
@@ -526,7 +533,7 @@ abstract class PondsAndClouds extends FixedObject {
  * The cloud will automatically lose saturation when it’s not being seeded at
  * a rate that allows the percentage to drop about 1%/second
  */
-class Clouds extends PondsAndClouds {
+class Cloud extends PondsAndClouds {
     /**
      * The upper bound for the random radius of the cloud.
      */
@@ -540,7 +547,7 @@ class Clouds extends PondsAndClouds {
      */
     private double cloudSaturationLevel = 0.0;
 
-    public Clouds() {
+    public Cloud() {
         super(
                 CLOUD_SIZE_LOWER_BOUND,
                 CLOUD_SIZE_UPPER_BOUND,
@@ -603,7 +610,7 @@ class Game extends Pane {
      * The initial fuel value is set for playability
      */
     private static final int INITIAL_FUEL = 25000;
-    private Clouds cloud;
+    private Cloud cloud;
     /**
      * Initialize Helicopter object in the game world.
      * This is called composition because the helicopter
@@ -611,16 +618,16 @@ class Game extends Pane {
      */
     private Helicopter helicopter;
     private Helipad helipad;
-    private Pond pond;
 
     public Game() {
-        cloud = new Clouds();
         /**
          * Initialize the helicopter with the initial fuel value defined
          */
         helicopter = new Helicopter(INITIAL_FUEL);
+        /**
+         * Initialize the helipad with the coordinates defined
+         */
         helipad = new Helipad(Globals.HELIPAD_COORDINATES);
-        pond = new Pond();
         /*
          * Flips the y-axis, so that the origin is in the
          * bottom left corner of the screen
@@ -643,7 +650,11 @@ class Game extends Pane {
      */
     public void init() {
         super.getChildren().clear();
-        super.getChildren().addAll(pond, cloud, helipad, helicopter);
+        super.getChildren().addAll(
+                new Pond(),
+                cloud = new Cloud(),
+                helipad,
+                helicopter);
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
