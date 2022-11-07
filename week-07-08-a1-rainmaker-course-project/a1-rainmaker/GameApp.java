@@ -51,8 +51,8 @@ abstract class GameObject extends Group implements Updatable {
         getTransforms().addAll(translate, rotate);
     }
 
-    public GameObject(double locationX, double locationY) {
-        translate = new Translate(locationX, locationY);
+    public GameObject(Point2D location) {
+        translate = new Translate(location.getX(), location.getY());
         rotate = new Rotate();
         getTransforms().addAll(translate, rotate);
     }
@@ -203,8 +203,8 @@ abstract class FixedObject extends GameObject {
         getTransforms().add(scale);
     }
 
-    public FixedObject(double locationX, double locationY) {
-        super(locationX, locationY);
+    public FixedObject(Point2D location) {
+        super(location);
         scale = new Scale();
         getTransforms().add(scale);
     }
@@ -227,7 +227,7 @@ class Helipad extends FixedObject {
          * Call the constructor of the parent class, FixedObject,
          * to set the location of the helipad.
          */
-        super(HELIPAD_CENTER.getX(), HELIPAD_CENTER.getY());
+        super(HELIPAD_CENTER);
         // The Final Approach and Takeoff (FATO) square
         HelipadFATOSquare square = new HelipadFATOSquare();
         // The Touchdown and Liftoff (TLOF) circle
