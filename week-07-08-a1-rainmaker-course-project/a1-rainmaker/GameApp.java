@@ -247,8 +247,14 @@ abstract class MovableObject extends GameObject {
         velocityX = 0;
         velocityY = 0;
     }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
 }
 
+    public double getSpeed() {
+        return speed;
+    }
 
     /**
      * method that converts the rotation angle to a compass direction:
