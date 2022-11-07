@@ -668,6 +668,7 @@ public class GameApp extends Application {
                 Globals.GAME_WIDTH,
                 Globals.GAME_HEIGHT,
                 Color.BLACK));
+        primaryStage.setResizable(false);
         primaryStage.show();
         // start game
         // game.start();
