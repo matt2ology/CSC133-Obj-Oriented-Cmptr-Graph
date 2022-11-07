@@ -343,6 +343,13 @@ abstract class MovableObject extends GameObject {
         this.isIgnitionOn = !isIgnitionOn;
     }
 
+    /**
+     * Return Helicopter object
+     */
+    public Helicopter getHelicopter() {
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Helicopter [fuelGauge=" + fuelGauge + ", isIgnitionOn=" + isIgnitionOn + "]";
@@ -634,6 +641,13 @@ class Cloud extends PondsAndClouds {
         this.cloudSaturationLevel = cloudSaturationLevel;
     }
 
+    /**
+     * Return Cloud object
+     */
+    public Cloud getCloud() {
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Clouds [cloudSaturationLevel=" + cloudSaturationLevel + "]";
@@ -741,8 +755,8 @@ class Game extends Pane {
      * Method to determine if the helicopter is in the cloud.
      */
     public boolean isHelicopterInCloud() {
-        return cloud.getCircle().contains(helicopter.getTranslateX(),
-                helicopter.getTranslateY());
+        return cloud.getCloud().getBoundsInParent().intersects(
+                helicopter.getHelicopter().getBoundsInParent());
     }
 }
 
