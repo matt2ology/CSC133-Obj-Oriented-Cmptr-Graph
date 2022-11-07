@@ -32,6 +32,15 @@ interface Updatable {
 }
 
 /**
+ * Steerable interface for all objects that are steerable in the game world.
+ */
+interface Steerable {
+    public void steerLeft();
+
+    public void steerRight();
+}
+
+/**
  * GameObject class for all game objects both Fixed and Movable objects
  * derived from this class.
  */
