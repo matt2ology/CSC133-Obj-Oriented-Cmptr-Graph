@@ -333,17 +333,10 @@ class Helipad extends FixedObject {
          * to set the location of the helipad.
          */
         super(HELIPAD_CENTER);
-        // The Final Approach and Takeoff (FATO) square
-        HelipadFATOSquare square = new HelipadFATOSquare();
-        // The Touchdown and Liftoff (TLOF) circle
-        HelipadTLOFCircle circle = new HelipadTLOFCircle();
-        // The Helipad "H" font
-        HelipadH helipadH = new HelipadH();
-
-        add(helipadH);
-        add(circle);
-        add(square);
-    } // end constructor
+        add(new HelipadFATOSquare()); // The Final Approach and Takeoff (FATO)
+        add(new HelipadTLOFCircle()); // The Touchdown and Liftoff (TLOF)
+        add(new HelipadH()); // The Helipad "H" font
+    }
 
     /**
      * getHelipadCenter - returns the center of the helipad as a Point2D.
