@@ -13,7 +13,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
-import javafx.scene.effect.MotionBlur;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -613,15 +612,24 @@ class Pond extends PondsAndClouds {
 class Game extends Pane {
     // The initial fuel value is set for playability at 25000
     private static final int INITIAL_FUEL = 25000;
+    private Clouds clouds;
     /**
      * Initialize Helicopter object in the game world.
      * This is called composition because the helicopter
      * is a part of the game world and not a subclass of it (inheritance)
      */
     private Helicopter helicopter;
+    private Helipad helipad;
+    private Pond pond;
 
     public Game() {
-        helicopter = new Helicopter(INITIAL_FUEL); // initialize the helicopter
+        clouds = new Clouds();
+        /**
+         * Initialize the helicopter with the initial fuel value defined
+         */
+        helicopter = new Helicopter(INITIAL_FUEL);
+        helipad = new Helipad();
+        pond = new Pond();
         /*
          * Flips the y-axis, so that the origin is in the
          * bottom left corner of the screen
@@ -644,7 +652,7 @@ class Game extends Pane {
      */
     public void init() {
         super.getChildren().clear();
-        super.getChildren().addAll(new Pond(), new Clouds(), new Helipad(), helicopter);
+        super.getChildren().addAll(pond, clouds, helipad, helicopter);
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
