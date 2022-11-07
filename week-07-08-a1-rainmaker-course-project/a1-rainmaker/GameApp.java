@@ -249,7 +249,7 @@ class Helicopter extends MovableObject {
         this.helicopterGameText.getText().setFill(Color.RED);
         this.helicopterGameText.setTranslateY(-20);
         super.add(new HelicopterHeadingIndicator());
-        super.add(new HelicopterBlip());
+        super.add(new HelicopterBlipCircle());
         super.add(helicopterGameText);
     }
 
@@ -299,15 +299,15 @@ class HelicopterHeadingIndicator extends MovableObject {
 /**
  * HelicopterBlip class for the helicopter blip on the map.
  */
-class HelicopterBlip extends MovableObject {
+class HelicopterBlipCircle extends MovableObject {
 
     /**
      * The radius of the helicopter blip on the map (in-game)
      */
-    private static final double helicopterBlibRadius = 10;
+    private static final double helicopterBlibCircleRadius = 10;
 
-    public HelicopterBlip() {
-        Circle circle = new Circle(helicopterBlibRadius);
+    public HelicopterBlipCircle() {
+        Circle circle = new Circle(helicopterBlibCircleRadius);
         circle.setFill(Color.YELLOW);
         super.add(circle);
     }
