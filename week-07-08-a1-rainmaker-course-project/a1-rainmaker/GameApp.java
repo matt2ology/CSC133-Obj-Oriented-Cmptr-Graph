@@ -613,7 +613,9 @@ class Pond extends PondsAndClouds {
  * Game
  */
 class Game extends Pane {
-    // The initial fuel value is set for playability at 25000
+    /**
+     * The initial fuel value is set for playability
+     */
     private static final int INITIAL_FUEL = 25000;
     private Clouds cloud;
     /**
