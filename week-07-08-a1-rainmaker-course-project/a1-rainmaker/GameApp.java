@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -235,15 +236,43 @@ abstract class MovableObject extends GameObject {
 }
 
 class Helicopter extends MovableObject {
-    private HelicopterHeadingIndicator headingIndicator;
-    private HelicopterBlip helicopterBlip;
+    private int fuelGauge = 0;
+    private GameText helicopterGameText;
+    private boolean isIgnitionOn = false;
 
-    public Helicopter() {
+    public Helicopter(int fuelCapacity) {
         super(Helipad.getCenter());
+        this.setFuelGauge(fuelCapacity);
+        this.helicopterGameText = new GameText(
+                "Fuel:" + String.valueOf(getFuelGauge()),
+                15);
+        this.helicopterGameText.getText().setFill(Color.RED);
+        this.helicopterGameText.setTranslateY(-20);
         super.add(new HelicopterHeadingIndicator());
         super.add(new HelicopterBlip());
+        super.add(helicopterGameText);
     }
 
+    public void setFuelGauge(int fuelGauge) {
+        this.fuelGauge = fuelGauge;
+    }
+
+    public int getFuelGauge() {
+        return fuelGauge;
+    }
+
+    public boolean isIgnitionOn() {
+        return isIgnitionOn;
+    }
+
+    public void toggleHelicopterIgnition() {
+        this.isIgnitionOn = !isIgnitionOn;
+    }
+
+    @Override
+    public String toString() {
+        return "Helicopter [fuelGauge=" + fuelGauge + ", isIgnitionOn=" + isIgnitionOn + "]";
+    }
 }
 
 class HelicopterHeadingIndicator extends MovableObject {
@@ -544,6 +573,11 @@ class Clouds extends PondsAndClouds {
     public void setCloudSaturationLevel(double cloudSaturationLevel) {
         this.cloudSaturationLevel = cloudSaturationLevel;
     }
+
+    @Override
+    public String toString() {
+        return "Clouds [cloudSaturationLevel=" + cloudSaturationLevel + "]";
+    }
 }
 
 /**
@@ -570,14 +604,28 @@ class Pond extends PondsAndClouds {
                 Color.BLUE,
                 "0");
     }
+
+    @Override
+    public String toString() {
+        return "Pond [percentageText=" + percentageText + "]";
+    }
 }
 
 /**
  * Game
  */
 class Game extends Pane {
+    // The initial fuel value is set for playability at 25000
+    private static final int INITIAL_FUEL = 25000;
+    /**
+     * Initialize Helicopter object in the game world.
+     * This is called composition because the helicopter
+     * is a part of the game world and not a subclass of it (inheritance)
+     */
+    private Helicopter helicopter;
 
     public Game() {
+        helicopter = new Helicopter(INITIAL_FUEL); // initialize the helicopter
         /*
          * Flips the y-axis, so that the origin is in the
          * bottom left corner of the screen
@@ -600,7 +648,18 @@ class Game extends Pane {
      */
     public void init() {
         super.getChildren().clear();
-        super.getChildren().addAll(new Pond(), new Clouds(), new Helipad(), new Helicopter());
+        super.getChildren().addAll(new Pond(), new Clouds(), new Helipad(), helicopter);
+        // print out each object in the game world
+        super.getChildren().forEach(System.out::println);
+    }
+
+    /**
+     * Get the helicopter object in the game world for the game.
+     * 
+     * @return the helicopter object in the game world.
+     */
+    public Helicopter getHelicopter() {
+        return helicopter;
     }
 }
 
@@ -652,7 +711,6 @@ class Utility {
     public static double genRandNumInRange(double min, double max) {
         return min + ((max - min) + 1) * random.nextDouble();
     }
-
 }
 
 public class GameApp extends Application {
@@ -681,37 +739,41 @@ public class GameApp extends Application {
             public void handle(KeyEvent event) {
                 // Left Arrow Changes the heading of the helicopter by 15 degrees to the left.
                 if (event.getCode() == KeyCode.LEFT) {
-                    System.out.println("Left Arrow: <-");
+                    System.err.println("Left Arrow: <-");
                 }
 
                 // Right Arrow Changes the heading of the helicopter by 15 degrees to the right.
                 if (event.getCode() == KeyCode.RIGHT) {
-                    System.out.println("Right Arrow: ->");
+                    System.err.println("Right Arrow: ->");
                 }
 
                 // Up Arrow Increases the speed of the helicopter by 0.1.
                 if (event.getCode() == KeyCode.UP) {
-                    System.out.println("Up Arrow: ^");
+                    System.err.println("Up Arrow: ^");
                 }
 
                 // Down Arrow Decreases the speed of the helicopter by 0.1.
                 if (event.getCode() == KeyCode.DOWN) {
-                    System.out.println("Down Arrow: v");
+                    System.err.println("Down Arrow: v");
                 }
 
                 // 'i' Turns on the helicopter ignition.
                 if (event.getCode() == KeyCode.I) {
-                    System.out.println("I - Turns on the helicopter ignition");
+                    game.getHelicopter().toggleHelicopterIgnition();
+                    System.err.println("I - Toggles the helicopter ignition: "
+                            + game.getHelicopter().isIgnitionOn());
+
                 }
 
                 // 'b' [optional] shows bounding boxes around objects.
                 if (event.getCode() == KeyCode.B) {
-                    System.out.println("B - shows bounding boxes around objects");
+                    System.err.println("B - shows bounding boxes around objects");
                 }
 
                 // 'r' Reinitialize the game
                 if (event.getCode() == KeyCode.R) {
-                    System.out.println("R - Reinitialize the game");
+                    System.err.println();
+                    System.err.println("R - Reinitialize the game");
                     game.init();
                 }
             }
