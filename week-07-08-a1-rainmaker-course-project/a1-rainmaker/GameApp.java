@@ -328,7 +328,6 @@ class Helipad extends FixedObject {
 /**
  * FATOSquare - represents the Final Approach and Takeoff (FATO) square of the
  * helipad.
- * 
  */
 class HelipadFATOSquare extends FixedObject {
     /**
