@@ -51,6 +51,12 @@ abstract class GameObject extends Group implements Updatable {
         getTransforms().addAll(translate, rotate);
     }
 
+    public GameObject(double locationX, double locationY) {
+        translate = new Translate(locationX, locationY);
+        rotate = new Rotate();
+        getTransforms().addAll(translate, rotate);
+    }
+
     public void update() {
         for (Node n : getChildren()) { // for each child node of this object
             if (n instanceof Updatable) // if the child node is updatable
@@ -87,8 +93,6 @@ class GameText extends GameObject {
      * Constructor for the GameText object.
      * 
      * @param text - the text to display.
-     * @param x    - the x-axis coordinate of the text.
-     * @param y    - the y-axis coordinate of the text.
      */
     public GameText(String text) {
         this.text = new Text(text);
@@ -107,6 +111,28 @@ class GameText extends GameObject {
     }
 
     /**
+     * Constructor for the GameText object that takes text and font size.
+     * 
+     * @param text         - the text to display.
+     * @param textFontSize - the font size of the text.
+     */
+    public GameText(String text, int textFontSize) {
+        this.text = new Text(text);
+        this.text.setFont(
+                Font.font(
+                        FONT_OF_CHOICE,
+                        FontWeight.BOLD,
+                        textFontSize));
+        this.text.setTextAlignment(TextAlignment.CENTER);
+        this.text.setFill(Color.WHITE);
+        this.text.setScaleY(-1);
+        // set origin to center of text
+        this.text.setX(getTextCenterX());
+        this.text.setY(getTextCenterY());
+        add(this.text);
+    }
+
+    /**
      * The center y-axis coordinate is obtained by adding the height of the
      * text to the y-axis coordinate of the text and dividing by four.
      * Divided by four because the text is scaled by -1, so the y-axis
@@ -115,7 +141,7 @@ class GameText extends GameObject {
      * @return the center y-axis coordinate of the text.
      */
     private double getTextCenterY() {
-        return this.text.getY() + this.text.getBoundsInLocal().getHeight() / 4;
+        return this.text.getY() + this.text.getBoundsInLocal().getHeight() / 3;
     }
 
     /**
@@ -136,6 +162,19 @@ class GameText extends GameObject {
      */
     public void setText(String text) {
         this.text.setText(text);
+    }
+
+    /**
+     * Set the font size of the text.
+     * 
+     * @param size - the font size of the text.
+     */
+    public void setFontSize(int fontSize) {
+        this.text.setFont(
+                Font.font(
+                        FONT_OF_CHOICE,
+                        FontWeight.BOLD,
+                        fontSize));
     }
 
     public void setLocation(double x, double y) {
@@ -163,6 +202,163 @@ abstract class FixedObject extends GameObject {
         scale = new Scale();
         getTransforms().add(scale);
     }
+
+    public FixedObject(double locationX, double locationY) {
+        super(locationX, locationY);
+        scale = new Scale();
+        getTransforms().add(scale);
+    }
+
+}
+
+class Helipad extends FixedObject {
+    /**
+    *  The coordinates to set the center of the Helipad.
+     * The Helipad's y-coordinate is set along the bottom
+     * 1/8th of the game window height and x-coordinate is
+     * set to the center 1/2 of the game window.
+     */
+    private static Point2D HELIPAD_CENTER = new Point2D(
+            Globals.GAME_WIDTH_1_HALF,
+            Globals.GAME_HEIGHT_1_8TH);
+
+    public Helipad() {
+        /**
+         * Call the constructor of the parent class, FixedObject,
+         * to set the location of the helipad.
+         */
+        super(HELIPAD_CENTER.getX(), HELIPAD_CENTER.getY());
+        // The Final Approach and Takeoff (FATO) square
+        HelipadFATOSquare square = new HelipadFATOSquare();
+        // The Touchdown and Liftoff (TLOF) circle
+        HelipadTLOFCircle circle = new HelipadTLOFCircle();
+        // The Helipad "H" font
+        HelipadH helipadH = new HelipadH();
+
+        add(helipadH);
+        add(circle);
+        add(square);
+    } // end constructor
+
+    /**
+     * getHelipadCenter - returns the center of the helipad as a Point2D.
+     * 
+     * This is the center of the TLOF circle.
+     * 
+     * @return the center of the helipad as a Point2D
+     */
+    public static Point2D getCenter() {
+        return HELIPAD_CENTER;
+    }
+}
+
+/**
+ * FATOSquare - represents the Final Approach and Takeoff (FATO) square of the
+ * helipad.
+ * 
+ */
+class HelipadFATOSquare extends FixedObject {
+    /**
+     * Helipad FATO square dimension.
+     */
+    private static final int SQUARE_DIMENSION = 100;
+    /**
+     * Helipad FATO square x and y offset to center the square.
+     * 
+     * Multiply by -1 to make the offset negative to center
+     * the square on the origin.
+     * 
+     * we need -1 because the square is scaled by -1 to make
+     * it appear upright on the screen.
+     */
+    private static final int SQUARE_CENTER_ORIGIN = -(SQUARE_DIMENSION / 2);
+
+    public HelipadFATOSquare() {
+        Rectangle square = new Rectangle(
+                SQUARE_CENTER_ORIGIN, // x-offset so to center the square
+                SQUARE_CENTER_ORIGIN, // y-offset so to center the square
+                SQUARE_DIMENSION, // width of square
+                SQUARE_DIMENSION); // height of square
+        square.setStroke(Color.YELLOW);
+        square.setFill(Color.TRANSPARENT);
+        add(square);
+    } // end constructor
+
+    /**
+     * getFATO_SQUARE_DIMENSION - returns the dimension of
+     * the FATO square of the helipad.
+     * 
+     * @return the dimension of the FATO square of the helipad
+     */
+    public static int getSquareDimension() {
+        return SQUARE_DIMENSION;
+    }
+}
+
+/**
+ * TLOFCircle - Represents the Touchdown and Liftoff (TLOF) circle of the
+ * helipad.
+ * 
+ * The Circle's diameter is based on the helipad's FATO square dimension.
+ */
+class HelipadTLOFCircle extends FixedObject {
+    /**
+     * The gap between the circle and the square edge
+     */
+    private static final int PADDING = 5;
+    /**
+     * Represents both the x and y radius of the Touchdown
+     * and Liftoff (TLOF) circle.
+     * 
+     * The radius is half the width of the FATO square with a gap, so that the
+     * edge of the circle and the side of the square are not touching.
+     * 
+     * The radius is scaled by the FATO square dimension and the padding.
+     */
+    private static final int RADIUS = (HelipadFATOSquare
+            .getSquareDimension() / 2)
+            - PADDING;
+
+    /**
+     * Constructor for the Helipad TLOF circle.
+     * 
+     * @param center - the center of the circle in the
+     *               x and y direction of the game
+     * @param RADIUS - the radius of the circle
+     */
+    public HelipadTLOFCircle() {
+        Circle circle = new Circle(RADIUS);
+        circle.setStroke(Color.GRAY);
+        circle.setStrokeWidth(2);
+        circle.setFill(Color.TRANSPARENT);
+        super.add(circle);
+    } // end constructor
+}
+
+/**
+ * A class to contain the letter "H" in the helipad. It extends the Fixed class
+ * so that it can be added to the game world. It uses the JavaFX Text class to
+ * create the letter "H".
+ * 
+ * The Letter "H" is centered on the helipad.
+ */
+class HelipadH extends FixedObject {
+    /**
+     * The helipad "H" font size.
+     */
+    private static final int HELIPAD_H_FONT_SIZE = 75;
+
+    /**
+     * add Text "H" to the center of the helipad by getting the text width
+     * and height, computing the center of the helipad, and then
+     * subtracting half of the text width and height from the center of the
+     * helipad to get the top left corner of the text.
+     */
+    public HelipadH() {
+        GameText text = new GameText("H", HELIPAD_H_FONT_SIZE);
+        text.setFontSize(HELIPAD_H_FONT_SIZE);
+        super.add(text);
+    } // end constructor
 }
 
 /**
@@ -332,12 +528,14 @@ class Game extends Pane {
      */
     public void init() {
         super.getChildren().clear();
-        super.getChildren().addAll(new Pond(), new Clouds());
+        super.getChildren().addAll(new Pond(), new Clouds(), new Helipad());
     }
 }
 
 /**
- * Globals
+ * Globals class contains all the global variables used in the game.
+ * We have this class so that we can easily change the game window
+ * size and other global variables.
  */
 class Globals {
     /**
@@ -352,6 +550,14 @@ class Globals {
      * The lower 1/3rd of the screen height.
      */
     public static final double GAME_HEIGHT_1_3RD = GAME_HEIGHT / 3;
+    /**
+     * The x-axis coordinate of the center of the game window.
+     */
+    public static final double GAME_WIDTH_1_HALF = GAME_WIDTH / 2;
+    /**
+     * 1/8th of the game height along the y-axis coordinate.
+     */
+    public static final double GAME_HEIGHT_1_8TH = GAME_HEIGHT / 8;
 }
 
 /**
