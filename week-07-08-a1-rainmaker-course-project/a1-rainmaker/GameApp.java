@@ -208,7 +208,80 @@ abstract class FixedObject extends GameObject {
         scale = new Scale();
         getTransforms().add(scale);
     }
+}
 
+/**
+ * MovableObject class for all movable objects in the game world
+ * are derived from this class.
+ */
+abstract class MovableObject extends GameObject {
+    private double angle;
+    private double speedX;
+    private double speedY;
+    private double velocityX;
+    private double velocityY;
+
+    public MovableObject() {
+        super();
+    }
+
+    public MovableObject(Point2D location) {
+        super(location);
+        speedX = 0;
+        speedY = 0;
+        velocityX = 0;
+        velocityY = 0;
+    }
+}
+
+class Helicopter extends MovableObject {
+    private HelicopterHeadingIndicator headingIndicator;
+    private HelicopterBlip helicopterBlip;
+
+    public Helicopter() {
+        super(Helipad.getCenter());
+        super.add(new HelicopterHeadingIndicator());
+        super.add(new HelicopterBlip());
+    }
+
+}
+
+class HelicopterHeadingIndicator extends MovableObject {
+    /**
+     * The radius of the helicopter heading indicator on the map (in-game)
+     */
+    private static Dimension2D headingIndicator = new Dimension2D(5, 30);
+
+    public HelicopterHeadingIndicator() {
+        Rectangle rectangle = new Rectangle(
+                headingIndicator.getWidth(),
+                headingIndicator.getHeight());
+        rectangle.setFill(Color.YELLOW);
+        // set origin to center of rectangle
+        rectangle.setX(-headingIndicator.getWidth() / 2);
+        super.add(rectangle);
+    }
+
+    public Dimension2D getHeadingIndicatorDimensions() {
+        return headingIndicator;
+    }
+}
+
+/**
+ * HelicopterBlip class for the helicopter blip on the map.
+ */
+class HelicopterBlip extends MovableObject {
+
+    /**
+     * The radius of the helicopter blip on the map (in-game)
+     */
+    private static final double helicopterBlibRadius = 10;
+
+    public HelicopterBlip() {
+        Circle circle = new Circle(helicopterBlibRadius);
+        circle.setFill(Color.YELLOW);
+        super.add(circle);
+    }
 }
 
 class Helipad extends FixedObject {
