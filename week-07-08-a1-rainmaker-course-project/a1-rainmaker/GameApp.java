@@ -615,7 +615,7 @@ class Pond extends PondsAndClouds {
 class Game extends Pane {
     // The initial fuel value is set for playability at 25000
     private static final int INITIAL_FUEL = 25000;
-    private Clouds clouds;
+    private Clouds cloud;
     /**
      * Initialize Helicopter object in the game world.
      * This is called composition because the helicopter
@@ -626,7 +626,7 @@ class Game extends Pane {
     private Pond pond;
 
     public Game() {
-        clouds = new Clouds();
+        cloud = new Clouds();
         /**
          * Initialize the helicopter with the initial fuel value defined
          */
@@ -655,7 +655,7 @@ class Game extends Pane {
      */
     public void init() {
         super.getChildren().clear();
-        super.getChildren().addAll(pond, clouds, helipad, helicopter);
+        super.getChildren().addAll(pond, cloud, helipad, helicopter);
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
