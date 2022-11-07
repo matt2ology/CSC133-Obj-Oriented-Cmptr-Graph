@@ -244,9 +244,79 @@ abstract class MovableObject extends GameObject {
     }
 }
 
-class Helicopter extends MovableObject {
-    private int fuelGauge = 0;
-    private boolean isIgnitionOn = false;
+
+    /**
+     * method that converts the rotation angle to a compass direction:
+     * N, NW, W, SW, S, SE, E, NE
+     * 
+     * regardless of the rotation angle in both the positive and negative
+     * 
+     * @TODO (2022-11-07) FIX THIS METHOD REDUCE LOGIC
+     * @return the compass direction
+     */
+    public String getCompassDirection() {
+        String compassDirection = "";
+        if (rotate.getAngle() >= 0) {
+            if (rotate.getAngle() >= 0 && rotate.getAngle() < 22.5) {
+                compassDirection = "N";
+            } else if (rotate.getAngle() >= 22.5
+                    && rotate.getAngle() < 67.5) {
+                compassDirection = "NW";
+            } else if (rotate.getAngle() >= 67.5
+                    && rotate.getAngle() < 112.5) {
+                compassDirection = "W";
+            } else if (rotate.getAngle() >= 112.5
+                    && rotate.getAngle() < 157.5) {
+                compassDirection = "SW";
+            } else if (rotate.getAngle() >= 157.5
+                    && rotate.getAngle() < 202.5) {
+                        compassDirection = "S";
+            } else if (rotate.getAngle() >= 202.5
+                    && rotate.getAngle() < 247.5) {
+                compassDirection = "SE";
+            } else if (rotate.getAngle() >= 247.5
+            && rotate.getAngle() < 292.5) {
+                compassDirection = "E";
+            } else if (rotate.getAngle() >= 292.5
+            && rotate.getAngle() < 337.5) {
+                compassDirection = "NE";
+            } else if (rotate.getAngle() >= 337.5
+            && rotate.getAngle() < 360) {
+                compassDirection = "N";
+            }
+        } else {
+            if (rotate.getAngle() >= -22.5 && rotate.getAngle() < 0) {
+                compassDirection = "N";
+            } else if (rotate.getAngle() >= -67.5
+                    && rotate.getAngle() < -22.5) {
+                compassDirection = "NE";
+            } else if (rotate.getAngle() >= -112.5
+                    && rotate.getAngle() < -67.5) {
+                compassDirection = "E";
+            } else if (rotate.getAngle() >= -157.5
+                    && rotate.getAngle() < -112.5) {
+                compassDirection = "SE";
+            } else if (rotate.getAngle() >= -202.5
+                    && rotate.getAngle() < -157.5) {
+                compassDirection = "S";
+            } else if (rotate.getAngle() >= -247.5
+                    && rotate.getAngle() < -202.5) {
+                compassDirection = "SW";
+            } else if (rotate.getAngle() >= -292.5
+                    && rotate.getAngle() < -247.5) {
+                compassDirection = "W";
+            } else if (rotate.getAngle() >= -337.5
+                    && rotate.getAngle() < -292.5) {
+                compassDirection = "NW";
+            } else if (rotate.getAngle() >= -360
+                    && rotate.getAngle() < -337.5) {
+                compassDirection = "N";
+            }
+        }
+        return compassDirection;
+    }
+}
+
 
     public Helicopter(int fuelCapacity) {
         super(Globals.HELIPAD_COORDINATES);
