@@ -408,6 +408,7 @@ class HelicopterBlipCircle extends FixedObject {
 
 class Helipad extends FixedObject {
     Point2D location = new Point2D(0, 0);
+
     public Helipad(Point2D location) {
         /**
          * Call the constructor of the parent class, FixedObject,
@@ -419,6 +420,7 @@ class Helipad extends FixedObject {
         add(new HelipadTLOFCircle()); // The Touchdown and Liftoff (TLOF)
         add(new HelipadH()); // The Helipad "H" font
     }
+
     @Override
     public String toString() {
         return "Helipad [location=" + location + "]";
