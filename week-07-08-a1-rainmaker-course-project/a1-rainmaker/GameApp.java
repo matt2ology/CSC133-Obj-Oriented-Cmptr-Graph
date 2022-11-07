@@ -213,7 +213,7 @@ abstract class FixedObject extends GameObject {
 
 class Helipad extends FixedObject {
     /**
-    *  The coordinates to set the center of the Helipad.
+     * The coordinates to set the center of the Helipad.
      * The Helipad's y-coordinate is set along the bottom
      * 1/8th of the game window height and x-coordinate is
      * set to the center 1/2 of the game window.
