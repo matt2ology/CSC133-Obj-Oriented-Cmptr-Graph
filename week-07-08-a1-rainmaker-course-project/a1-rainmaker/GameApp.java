@@ -78,7 +78,6 @@ abstract class GameObject extends Group implements Updatable {
  * GameText
  */
 class GameText extends GameObject {
-
     /**
      * The default font size.
      */
@@ -87,6 +86,10 @@ class GameText extends GameObject {
      * The text object.
      */
     private Text text;
+    /**
+     * The font of choice Helvetica because the tall x-height
+     * makes this font easier to read at a distance.
+     */
     private String FONT_OF_CHOICE = "Helvetica";
 
     /**
