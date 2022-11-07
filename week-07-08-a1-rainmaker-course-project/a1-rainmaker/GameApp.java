@@ -249,24 +249,12 @@ class Helicopter extends MovableObject {
     private boolean isIgnitionOn = false;
 
     public Helicopter(int fuelCapacity) {
-        super(Helipad.getCenter());
+        super(Globals.HELIPAD_COORDINATES);
         this.setFuelGauge(fuelCapacity);
         super.add(new HelicopterHeadingIndicator());
         super.add(new HelicopterBlipCircle());
         super.add(new HelicopterGameInfoText(
                 "Fuel:" + String.valueOf(getFuelGauge())));
-    }
-
-    @Override
-    public void steerLeft() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void steerRight() {
-        // TODO Auto-generated method stub
-
     }
 
     public void setFuelGauge(int fuelGauge) {
@@ -338,36 +326,15 @@ class HelicopterBlipCircle extends MovableObject {
 }
 
 class Helipad extends FixedObject {
-    /**
-     * The coordinates to set the center of the Helipad.
-     * The Helipad's y-coordinate is set along the bottom
-     * 1/8th of the game window height and x-coordinate is
-     * set to the center 1/2 of the game window.
-     */
-    private static Point2D HELIPAD_CENTER = new Point2D(
-            Globals.GAME_WIDTH_1_HALF,
-            Globals.GAME_HEIGHT_1_8TH);
-
-    public Helipad() {
+    public Helipad(Point2D location) {
         /**
          * Call the constructor of the parent class, FixedObject,
          * to set the location of the helipad.
          */
-        super(HELIPAD_CENTER);
+        super(location);
         add(new HelipadFATOSquare()); // The Final Approach and Takeoff (FATO)
         add(new HelipadTLOFCircle()); // The Touchdown and Liftoff (TLOF)
         add(new HelipadH()); // The Helipad "H" font
-    }
-
-    /**
-     * getHelipadCenter - returns the center of the helipad as a Point2D.
-     * 
-     * This is the center of the TLOF circle.
-     * 
-     * @return the center of the helipad as a Point2D
-     */
-    public static Point2D getCenter() {
-        return HELIPAD_CENTER;
     }
 }
 
@@ -652,7 +619,7 @@ class Game extends Pane {
          * Initialize the helicopter with the initial fuel value defined
          */
         helicopter = new Helicopter(INITIAL_FUEL);
-        helipad = new Helipad();
+        helipad = new Helipad(Globals.HELIPAD_COORDINATES);
         pond = new Pond();
         /*
          * Flips the y-axis, so that the origin is in the
@@ -725,6 +692,15 @@ class Globals {
      * 1/8th of the game height along the y-axis coordinate.
      */
     public static final double GAME_HEIGHT_1_8TH = GAME_HEIGHT / 8;
+    /**
+     * The coordinates to set the center of the Helipad.
+     * The Helipad's y-coordinate is set along the bottom
+     * 1/8th of the game window height and x-coordinate is
+     * set to the center 1/2 of the game window.
+     */
+    public static Point2D HELIPAD_COORDINATES = new Point2D(
+            GAME_WIDTH_1_HALF,
+            GAME_HEIGHT_1_8TH);
 }
 
 /**
