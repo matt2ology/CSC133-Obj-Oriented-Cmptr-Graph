@@ -228,8 +228,7 @@ abstract class FixedObject extends GameObject {
  */
 abstract class MovableObject extends GameObject {
     private double angle;
-    private double speedX;
-    private double speedY;
+    private double speed;
     private double velocityX;
     private double velocityY;
 
@@ -239,8 +238,7 @@ abstract class MovableObject extends GameObject {
 
     public MovableObject(Point2D location) {
         super(location);
-        speedX = 0;
-        speedY = 0;
+        speed = 0;
         velocityX = 0;
         velocityY = 0;
     }
