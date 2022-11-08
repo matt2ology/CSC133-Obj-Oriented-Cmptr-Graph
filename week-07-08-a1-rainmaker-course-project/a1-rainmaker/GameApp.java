@@ -848,14 +848,7 @@ class Game extends Pane {
     private Helicopter helicopter;
 
     public Game() {
-        /**
-         * Initialize the helicopter with the initial fuel value defined
-         */
-        helicopter = new Helicopter(INITIAL_FUEL);
-        /**
-         * Initialize the helipad with the coordinates defined
-         */
-        helipad = new Helipad(Globals.HELIPAD_COORDINATES);
+
         /*
          * Flips the y-axis, so that the origin is in the
          * bottom left corner of the screen
