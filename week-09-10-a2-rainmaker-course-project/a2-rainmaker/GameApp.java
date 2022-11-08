@@ -364,7 +364,7 @@ class Helicopter extends MovableObject implements Steerable {
         if (!isIgnitionOn) {
             return;
         } else if (getSpeed() < MAX_SPEED) {
-            setSpeed(getSpeed() + 0.1);
+            setSpeed(getSpeed() + Globals.ONE_PERCENT);
         }
     }
 
@@ -375,7 +375,7 @@ class Helicopter extends MovableObject implements Steerable {
         if (!isIgnitionOn) {
             return;
         } else if (getSpeed() > MIN_SPEED) {
-            setSpeed(getSpeed() - 0.1);
+            setSpeed(getSpeed() - Globals.ONE_PERCENT);
         }
     }
 
@@ -956,6 +956,7 @@ class Globals {
      * Helicopter's degree of incremental rotation.
      */
     public static final double HELICOPTER_ROTATION_DEGREE = 15;
+    public static final double ONE_PERCENT = (1/100);
 }
 
 /**
