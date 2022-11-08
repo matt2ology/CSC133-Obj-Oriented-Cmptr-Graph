@@ -1,8 +1,6 @@
 import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application; // JavaFX application support
-import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
