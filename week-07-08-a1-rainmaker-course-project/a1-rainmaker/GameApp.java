@@ -877,10 +877,16 @@ class Game extends Pane {
         // pond.update();
     }
 
-    public void render() {
+    public void play() {
+        AnimationTimer loop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                update();
+                System.err.println(helicopter.toString());
+                System.err.println(isHelicopterInCloud());
     }
-
-    public void start() {
+        };
+        loop.start();
     }
 
     /**
