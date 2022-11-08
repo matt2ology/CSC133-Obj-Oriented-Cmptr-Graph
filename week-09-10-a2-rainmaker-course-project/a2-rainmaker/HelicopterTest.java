@@ -55,7 +55,7 @@ public class HelicopterTest extends TestCase {
      *          </ol>
      */
     @Test
-    public void testHelicopterToggleIgnitionTrue() {
+    public void testToggleIgnition_isOn() {
         helicopter.toggleIgnition();
         assertTrue(helicopter.isIgnitionOn());
     }
