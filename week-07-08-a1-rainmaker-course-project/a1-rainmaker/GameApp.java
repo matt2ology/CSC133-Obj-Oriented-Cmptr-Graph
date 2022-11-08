@@ -234,6 +234,23 @@ abstract class MovableObject extends GameObject {
      * because each object moves differently.
      */
     public abstract void move();
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
     public MovableObject() {
         super();
     }
@@ -247,7 +264,7 @@ abstract class MovableObject extends GameObject {
 
     public void setSpeed(double speed) {
         this.speed = speed;
-}
+    }
 
     public double getSpeed() {
         return speed;
@@ -278,18 +295,18 @@ abstract class MovableObject extends GameObject {
                 compassDirection = "SW";
             } else if (rotate.getAngle() >= 157.5
                     && rotate.getAngle() < 202.5) {
-                        compassDirection = "S";
+                compassDirection = "S";
             } else if (rotate.getAngle() >= 202.5
                     && rotate.getAngle() < 247.5) {
                 compassDirection = "SE";
             } else if (rotate.getAngle() >= 247.5
-            && rotate.getAngle() < 292.5) {
+                    && rotate.getAngle() < 292.5) {
                 compassDirection = "E";
             } else if (rotate.getAngle() >= 292.5
-            && rotate.getAngle() < 337.5) {
+                    && rotate.getAngle() < 337.5) {
                 compassDirection = "NE";
             } else if (rotate.getAngle() >= 337.5
-            && rotate.getAngle() < 360) {
+                    && rotate.getAngle() < 360) {
                 compassDirection = "N";
             }
         } else {
@@ -501,7 +518,9 @@ class HelicopterHeadingIndicator extends FixedObject {
     /**
      * The radius of the helicopter heading indicator on the map (in-game)
      */
-    private static Dimension2D headingIndicator = new Dimension2D(5, 30);
+    private static Dimension2D headingIndicator = new Dimension2D(
+            5,
+            30);
 
     public HelicopterHeadingIndicator() {
         Rectangle rectangle = new Rectangle(
@@ -857,6 +876,7 @@ class Game extends Pane {
     /**
      * update is called by the game loop, so it may "render" the game
      * with updated object states (e.g. position, velocity, etc.)
+     * 
      * @TODO - add the pond and cloud for update
      */
     public void update() {
@@ -875,7 +895,7 @@ class Game extends Pane {
                 update();
                 System.err.println(helicopter.toString());
                 System.err.println(isHelicopterInCloud());
-    }
+            }
         };
         loop.start();
     }
@@ -1025,13 +1045,13 @@ public class GameApp extends Application {
         primaryStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                // Left Arrow Changes the heading of the helicopter to the left.
+                // Left Arrow Changes heading of the helicopter to the left.
                 if (event.getCode() == KeyCode.LEFT
                         || event.getCode() == KeyCode.A) {
                     game.getHelicopter().steerLeft();
                 }
 
-                // Right Arrow Changes the heading of the helicopter to the right.
+                // Right Arrow Changes heading of the helicopter to the right.
                 if (event.getCode() == KeyCode.RIGHT
                         || event.getCode() == KeyCode.D) {
                     game.getHelicopter().steerRight();
@@ -1060,13 +1080,15 @@ public class GameApp extends Application {
                 // 'h' Stops the helicopter from moving.
                 if (event.getCode() == KeyCode.H) {
                     game.getHelicopter().stopAndHover();
-                    System.err.println("H - Stops the helicopter from moving");
+                    System.err.println(
+                            "H - Stops the helicopter from moving");
 
                 }
 
                 // 'b' [optional] shows bounding boxes around objects.
                 if (event.getCode() == KeyCode.B) {
-                    System.err.println("B - shows bounding boxes around objects");
+                    System.err.println(
+                            "B - shows bounding boxes around objects");
                 }
 
                 // 'r' Reinitialize the game
