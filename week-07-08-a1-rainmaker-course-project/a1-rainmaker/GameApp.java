@@ -227,7 +227,6 @@ abstract class FixedObject extends GameObject {
  * are derived from this class.
  */
 abstract class MovableObject extends GameObject {
-    private double angle;
     private double speed;
     private double velocityX;
     private double velocityY;
