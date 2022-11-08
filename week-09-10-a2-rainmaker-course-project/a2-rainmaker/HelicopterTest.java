@@ -47,10 +47,11 @@ public class HelicopterTest extends TestCase {
     }
 
     /**
-     * @brief Test if helicopter initial ignition on Instantiation is false.
+     * @brief Test if helicopter initial ignition on Instantiation is true.
      * @summary Test Steps:
      *          <ol>
-     *          <li>Assert that the helicopter ignition is false.</li>
+     *          <li>Toggle ignition on</li>
+     *          <li>Assert that the helicopter ignition is true.</li>
      *          </ol>
      */
     @Test
