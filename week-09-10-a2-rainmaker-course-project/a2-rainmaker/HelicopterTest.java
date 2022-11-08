@@ -10,12 +10,10 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 public class HelicopterTest extends TestCase {
-    private Game game;
     private Helicopter helicopter;
 
     @Override
     protected void setUp() throws Exception {
-        this.game = new Game();
         this.helicopter = new Helicopter();
     }
 
@@ -59,11 +57,6 @@ public class HelicopterTest extends TestCase {
     public void testHelicopterToggleIgnitionTrue() {
         helicopter.toggleIgnition();
         assertTrue(helicopter.isIgnitionOn());
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        game.init();
     }
 
 }
