@@ -328,14 +328,126 @@ abstract class MovableObject extends GameObject {
     }
 }
 
+class Helicopter extends MovableObject implements Steerable {
+    /**
+     * Burn rate of fuel
+     */
+    private static final int FUEL_BURN_RATE = 5;
+    private static final double MAX_SPEED = 10.0;
+    private static final double MIN_SPEED = -2.0;
+    private int fuelGauge;
+    private boolean isIgnitionOn;
+    private HelicopterBlipCircle blipCircle;
+    private HelicopterGameInfoText gameInfoText;
+
+    public Helicopter() {
+        super();
+        isIgnitionOn = false;
+    }
 
     public Helicopter(int fuelCapacity) {
         super(Globals.HELIPAD_COORDINATES);
+        isIgnitionOn = false;
+        setSpeed(0);
         this.setFuelGauge(fuelCapacity);
         super.add(new HelicopterHeadingIndicator());
-        super.add(new HelicopterBlipCircle());
-        super.add(new HelicopterGameInfoText(
+        super.add(blipCircle = new HelicopterBlipCircle());
+        super.add(gameInfoText = new HelicopterGameInfoText(
                 "Fuel:" + String.valueOf(getFuelGauge())));
+        rotate.setAngle(0); // set initial rotation angle to 0 (north)
+        rotate.setPivotX(blipCircle.getHelicopterBlipCircle().getCenterX());
+        rotate.setPivotY(blipCircle.getHelicopterBlipCircle().getCenterY());
+    }
+
+    /**
+     * Increase speed.
+     */
+    public void accelerate() {
+        if (!isIgnitionOn) {
+            return;
+        } else if (getSpeed() < MAX_SPEED) {
+            setSpeed(getSpeed() + 0.1);
+        }
+    }
+
+    /**
+     * Decrease speed.
+     */
+    public void decelerate() {
+        if (!isIgnitionOn) {
+            return;
+        } else if (getSpeed() > MIN_SPEED) {
+            setSpeed(getSpeed() - 0.1);
+        }
+    }
+
+    /**
+     * Break: full stop helicopter and hold position.
+     */
+    public void stopAndHover() {
+        if (!isIgnitionOn) {
+            return;
+        } else {
+            setSpeed(0);
+        }
+    }
+
+    /**
+     * Rotate the helicopter to the left (counter-clockwise)
+     * Modulo 360 to keep the angle between 0 and 360
+     */
+    @Override
+    public void steerLeft() {
+        rotate.setAngle(
+                (rotate.getAngle()
+                        + Globals.HELICOPTER_ROTATION_DEGREE)
+                        % 360);
+    }
+
+    /**
+     * Rotate the helicopter to the right (clockwise)
+     * Modulo 360 to keep the angle between 0 and 360
+     */
+    @Override
+    public void steerRight() {
+        rotate.setAngle(
+                (rotate.getAngle()
+                        - Globals.HELICOPTER_ROTATION_DEGREE)
+                        % 360);
+    }
+
+    /**
+     * Move the helicopter object to the corresponding location
+     * based on the current speed and direction of the helicopter
+     * 
+     * @TODO (2022-11-07) Find a way to abstract the velocity
+     *       calculation to the MovableObject class so that
+     *       it can be reused by other classes that extend
+     *       MovableObject class (e.g. EnemyHelicopter)
+     * 
+     *       This should simply move the helicopter object
+     *       to the corresponding location and nothing more
+     */
+    @Override
+    public void move() {
+        // calculate the velocity
+        Point2D heading = Utility
+                .directionToVector(
+                        rotate.getAngle(),
+                        getSpeed());
+        // update the location
+        translate.setX(translate.getX() + heading.getX());
+        translate.setY(translate.getY() + heading.getY());
+    }
+
+    @Override
+    public void update() {
+        if (!isIgnitionOn) {
+            return;
+        }
+        move();
+        setFuelGauge(getFuelGauge() - FUEL_BURN_RATE); // update the fuel gauge
+        gameInfoText.setText("Fuel:" + String.valueOf(getFuelGauge()));
     }
 
     public void setFuelGauge(int fuelGauge) {
