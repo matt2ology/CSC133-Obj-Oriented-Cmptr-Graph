@@ -42,7 +42,7 @@ public class HelicopterTest extends TestCase {
      *          </ol>
      */
     @Test
-    public void testHelicopterInitialIgnitionOnInstantiationFalse() {
+    public void testIsIgnitionOffOnCreationOfHelicopter() {
         assertFalse(helicopter.isIgnitionOn());
     }
 
