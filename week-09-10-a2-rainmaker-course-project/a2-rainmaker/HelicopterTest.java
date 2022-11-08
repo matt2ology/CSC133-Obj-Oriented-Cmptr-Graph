@@ -60,4 +60,20 @@ public class HelicopterTest extends TestCase {
         assertTrue(helicopter.isIgnitionOn());
     }
 
+    /**
+     * @brief Test if helicopter initial ignition on Instantiation is false.
+     * @summary Test Steps:
+     *          <ol>
+     *          <li>Toggle ignition on</li>
+     *          <li>Toggle ignition off</li>
+     *          <li>Assert that the helicopter ignition is false.</li>
+     *          </ol>
+     */
+    @Test
+    public void testToggleIgnition_isOff() {
+        helicopter.toggleIgnition();
+        helicopter.toggleIgnition();
+        assertFalse(helicopter.isIgnitionOn());
+    }
+
 }
