@@ -1034,24 +1034,29 @@ public class GameApp extends Application {
         primaryStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                // Left Arrow Changes the heading of the helicopter by 15 degrees to the left.
-                if (event.getCode() == KeyCode.LEFT) {
-                    System.err.println("Left Arrow: <-");
+                // Left Arrow Changes the heading of the helicopter to the left.
+                if (event.getCode() == KeyCode.LEFT
+                        || event.getCode() == KeyCode.A) {
+                    game.getHelicopter().steerLeft();
                 }
 
-                // Right Arrow Changes the heading of the helicopter by 15 degrees to the right.
-                if (event.getCode() == KeyCode.RIGHT) {
-                    System.err.println("Right Arrow: ->");
+                // Right Arrow Changes the heading of the helicopter to the right.
+                if (event.getCode() == KeyCode.RIGHT
+                        || event.getCode() == KeyCode.D) {
+                    game.getHelicopter().steerRight();
                 }
 
                 // Up Arrow Increases the speed of the helicopter by 0.1.
-                if (event.getCode() == KeyCode.UP) {
-                    System.err.println("Up Arrow: ^");
+                if (event.getCode() == KeyCode.UP
+                        || event.getCode() == KeyCode.W) {
+                    game.getHelicopter().accelerate();
                 }
 
                 // Down Arrow Decreases the speed of the helicopter by 0.1.
-                if (event.getCode() == KeyCode.DOWN) {
+                if (event.getCode() == KeyCode.DOWN
+                        || event.getCode() == KeyCode.S) {
                     System.err.println("Down Arrow: v");
+                    game.getHelicopter().decelerate();
                 }
 
                 // 'i' Turns on the helicopter ignition.
@@ -1059,6 +1064,12 @@ public class GameApp extends Application {
                     game.getHelicopter().toggleHelicopterIgnition();
                     System.err.println("I - Toggles the helicopter ignition: "
                             + game.getHelicopter().isIgnitionOn());
+
+                }
+                // 'h' Stops the helicopter from moving.
+                if (event.getCode() == KeyCode.H) {
+                    game.getHelicopter().stopAndHover();
+                    System.err.println("H - Stops the helicopter from moving");
 
                 }
 
