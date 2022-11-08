@@ -1026,7 +1026,7 @@ public class GameApp extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
         // start game
-        // game.start();
+        game.play();
 
         /**
          * Key listener for key pressed events.
