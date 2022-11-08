@@ -363,7 +363,20 @@ abstract class MovableObject extends GameObject {
 
     @Override
     public String toString() {
-        return "Helicopter [fuelGauge=" + fuelGauge + ", isIgnitionOn=" + isIgnitionOn + "]";
+        return "Helicopter ["
+                + "fuelGauge="
+                + fuelGauge
+                + ", isIgnitionOn="
+                + isIgnitionOn
+                + ", getSpeed()="
+                // gets the speed with 2 decimal places (e.g. 1.00)
+                + String.format("%.2f", getSpeed())
+                + ", Compass(Direction,Angle)=("
+                + getCompassDirection()
+                + ","
+                + rotate.getAngle()
+                + ")"
+                + "]";
     }
 }
 
