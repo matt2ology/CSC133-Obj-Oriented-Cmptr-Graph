@@ -460,7 +460,7 @@ class Helicopter extends MovableObject implements Steerable {
         return isIgnitionOn;
     }
 
-    public void toggleHelicopterIgnition() {
+    public void toggleIgnition() {
         this.isIgnitionOn = !isIgnitionOn;
     }
 
@@ -1057,7 +1057,7 @@ public class GameApp extends Application {
 
                 // 'i' Turns on the helicopter ignition.
                 if (event.getCode() == KeyCode.I) {
-                    game.getHelicopter().toggleHelicopterIgnition();
+                    game.getHelicopter().toggleIgnition();
                     System.err.println("I - Toggles the helicopter ignition: "
                             + game.getHelicopter().isIgnitionOn());
 
