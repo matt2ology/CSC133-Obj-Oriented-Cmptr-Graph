@@ -846,7 +846,6 @@ class Game extends Pane {
      * is a part of the game world and not a subclass of it (inheritance)
      */
     private Helicopter helicopter;
-    private Helipad helipad;
 
     public Game() {
         /**
