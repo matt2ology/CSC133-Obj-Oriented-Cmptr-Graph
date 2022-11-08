@@ -898,8 +898,8 @@ class Game extends Pane {
         super.getChildren().addAll(
                 new Pond(),
                 cloud = new Cloud(),
-                helipad,
-                helicopter);
+                new Helipad(Globals.HELIPAD_COORDINATES),
+                helicopter = new Helicopter(INITIAL_FUEL));
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
