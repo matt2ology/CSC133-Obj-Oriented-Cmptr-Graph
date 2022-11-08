@@ -863,7 +863,18 @@ class Game extends Pane {
         super.setScaleY(-1);
     }
 
+    /**
+     * update is called by the game loop, so it may "render" the game
+     * with updated object states (e.g. position, velocity, etc.)
+     * @TODO - add the pond and cloud for update
+     */
     public void update() {
+        // update the helicopter
+        helicopter.update();
+        // update the cloud
+        // cloud.update();
+        // update the pond
+        // pond.update();
     }
 
     public void render() {
