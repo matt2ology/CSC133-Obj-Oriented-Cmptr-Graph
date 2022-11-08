@@ -834,6 +834,11 @@ class Game extends Pane {
      * The initial fuel value is set for playability
      */
     private static final int INITIAL_FUEL = 25000;
+    /**
+     * Initialize Cloud object in the game world so that
+     * we can access it later like this: game.getCloud()
+     * And determine if the helicopter is over the cloud
+     */
     private Cloud cloud;
     /**
      * Initialize Helicopter object in the game world.
