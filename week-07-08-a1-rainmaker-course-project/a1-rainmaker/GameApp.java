@@ -957,6 +957,10 @@ class Globals {
     public static Point2D HELIPAD_COORDINATES = new Point2D(
             GAME_WIDTH_1_HALF,
             GAME_HEIGHT_1_8TH);
+    /**
+     * Helicopter's degree of incremental rotation.
+     */
+    public static final double HELICOPTER_ROTATION_DEGREE = 15;
 }
 
 /**
