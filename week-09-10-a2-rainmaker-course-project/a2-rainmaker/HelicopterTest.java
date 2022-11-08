@@ -1,47 +1,69 @@
+
+/**
+ * @see https://www.oreilly.com/library/view/java-extreme-programming/0596003870/ch04s06.html
+ * @see http://etutorials.org/Programming/Java+extreme+programming/Chapter+4.+JUnit/4.6+Set+Up+and+Tear+Down/
+ * @see https://medium.com/feedzaitech/writing-testable-code-b3201d4538eb
+ * @see https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters
+ */
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-public class HelicopterTest {
+import junit.framework.TestCase;
+
+public class HelicopterTest extends TestCase {
+    private Game game;
+    private Helicopter helicopter;
+
+    @Override
+    protected void setUp() throws Exception {
+        this.game = new Game();
+        this.helicopter = new Helicopter();
+    }
 
     /**
-     * Test ability to toggle ignition on and off.
+     * @brief Test if helicopter is an instance of Helicopter class.
+     *        In having this test we can be sure that the class
+     *        can be instantiated.
      * 
+     * @summary Test Steps:
+     *          <ol>
+     *          <li>Instantiate a helicopter object.</li>
+     *          <li>Check if the object is an instance of
+     *          Helicopter class.</li>
+     *          </ol>
      */
     @Test
-    public void testToggleHelicopterIgnition() {
-        Helicopter helicopter = new Helicopter();
-        assertFalse(helicopter.isIgnitionOn());
-        helicopter.toggleHelicopterIgnition();
-        assertTrue(helicopter.isIgnitionOn());
-        helicopter.toggleHelicopterIgnition();
+    public void testHelicopter() {
+        assertTrue(helicopter instanceof Helicopter);
+    }
+
+    /**
+     * @brief Test if helicopter initial ignition on Instantiation is false.
+     * @summary Test Steps:
+     *          <ol>
+     *          <li>Assert that the helicopter ignition is false.</li>
+     *          </ol>
+     */
+    @Test
+    public void testHelicopterInitialIgnitionOnInstantiationFalse() {
         assertFalse(helicopter.isIgnitionOn());
     }
 
     /**
-     * Test acceleration of helicopter to increase speed from zero to 10.
+     * @brief Test if helicopter initial ignition on Instantiation is false.
+     * @summary Test Steps:
+     *          <ol>
+     *          <li>Assert that the helicopter ignition is false.</li>
+     *          </ol>
      */
     @Test
-    public void testAccelerateWhenIgnitionIsNotOn() {
-        Helicopter helicopter = new Helicopter();
-        assertFalse(helicopter.isIgnitionOn());
-        for (int i = 0; i < 10; i++) {
-            helicopter.accelerate();
-        }
-        assertTrue(helicopter.getSpeed() == 0.0);
+    public void testHelicopterToggleIgnitionTrue() {
+        helicopter.toggleIgnition();
+        assertTrue(helicopter.isIgnitionOn());
     }
 
-    /**
-     * Test acceleration of helicopter to increase speed from zero to 10.
-     */
-    @Test
-    public void testAccelerateWhenIgnitionIsOn() {
-        Helicopter helicopter = new Helicopter();
-        helicopter.toggleHelicopterIgnition();
-        assertTrue(helicopter.isIgnitionOn());
-        for (int i = 0; i < 1000; i++) {
-            helicopter.accelerate();
-        }
-        assertTrue("Speed: " + String.valueOf(helicopter.getHelicopter().getSpeed()), helicopter.getSpeed() <= 10.0);
+    @Override
+    protected void tearDown() throws Exception {
+        game.init();
     }
+
 }
