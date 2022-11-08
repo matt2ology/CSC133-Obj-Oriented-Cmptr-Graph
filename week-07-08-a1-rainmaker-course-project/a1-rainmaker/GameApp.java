@@ -983,6 +983,31 @@ class Utility {
     public static double genRandNumInRange(double min, double max) {
         return min + ((max - min) + 1) * random.nextDouble();
     }
+
+    /**
+     * Convert a direction and speed to a vector.
+     * The direction is in degrees and the speed is in pixels per second.
+     * 
+     * @param angleDegree - the direction in degrees
+     * @param speed       - the speed in pixels per second
+     * @return a vector in the form of a Point2D object
+     * 
+     * @TODO - Consider if this should be placed in Moveable class
+     */
+    public static Point2D directionToVector(double angleDegree, double speed) {
+        double angleRadian = Math.toRadians(angleDegree);
+        /**
+         * sin will calculate the x-component of the vector
+         * cos will calculate the y-component of the vector
+         * -cos is used because the y-axis is flipped
+         */
+        Point2D heading = new Point2D(
+                // sin because x-axis is not flipped
+                -speed * Math.sin(angleRadian),
+                // -cos because y-axis is flipped
+                speed * Math.cos(angleRadian));
+        return heading;
+    }
 }
 
 public class GameApp extends Application {
