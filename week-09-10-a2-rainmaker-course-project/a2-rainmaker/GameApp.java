@@ -28,9 +28,7 @@ abstract class GameObject extends Pane {
  */
 class Game extends Pane {
     public Game() {
-        /**
-         * Flip the y-axis so that up is positive and down is negative
-         */
+        // Flip the y-axis so that up is positive and down is negative
         super.setScaleY(-1);
     }
 }
