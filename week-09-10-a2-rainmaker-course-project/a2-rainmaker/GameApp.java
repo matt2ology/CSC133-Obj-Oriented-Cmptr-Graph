@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-class GameObject extends Pane {
+abstract class GameObject extends Pane {
     
 
 }
