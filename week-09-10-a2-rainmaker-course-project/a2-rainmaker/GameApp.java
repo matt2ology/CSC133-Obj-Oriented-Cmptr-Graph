@@ -58,9 +58,11 @@ public class GameApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Game game = new Game();
+
         // Set the scene with the game
         primaryStage.setScene(new Scene(
-                new Game(),
+                game,
                 Globals.GAME_APP_DIMENSIONS.getWidth(),
                 Globals.GAME_APP_DIMENSIONS.getHeight(),
                 Color.TAN));
