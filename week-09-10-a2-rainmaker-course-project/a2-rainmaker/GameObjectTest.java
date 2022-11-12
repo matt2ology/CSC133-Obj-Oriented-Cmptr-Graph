@@ -16,8 +16,13 @@ public class GameObjectTest {
 
     @Before
     public void setUp() throws Exception {
-        // Instantiate an anonymous subclass of GameObject to test.
-        gameObject = new GameObject() { }; 
+        /**
+         * Although GameObject is an abstract class, we can still instantiate
+         * it because we are not instantiating the abstract class itself,
+         * but rather an anonymous subclass of it.
+         */
+        gameObject = new GameObject() {
+        };
     }
 
     /**
