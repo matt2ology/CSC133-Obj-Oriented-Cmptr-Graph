@@ -16,7 +16,8 @@ public class GameObjectTest {
 
     @Before
     public void setUp() throws Exception {
-        this.gameObject = new GameObject();
+        // Instantiate an anonymous subclass of GameObject to test.
+        gameObject = new GameObject() { }; 
     }
 
     /**
