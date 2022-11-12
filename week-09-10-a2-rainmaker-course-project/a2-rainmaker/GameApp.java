@@ -5,6 +5,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * @brief Game Class is the base of our object hierarchy.
+ * @summary It contains methods and fields that manage the common aspects of
+ * all game objects in our game.
+ */
 abstract class GameObject extends Pane {
     
 
