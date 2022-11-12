@@ -69,7 +69,7 @@ public class GameApp extends Application {
                 Globals.GAME_APP_DIMENSIONS.getHeight(),
                 Color.TAN));
         primaryStage.setTitle("Game");
-        primaryStage.setResizable(false); // Game is not resizable
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
