@@ -27,9 +27,6 @@ abstract class GameObject extends Pane {
  *          </ol>
  */
 class Game extends Pane {
-    /**
-     * @brief Game constructor sets up the initial state of the game.
-     */
     public Game() {
         /**
          * Flip the y-axis so that up is positive and down is negative
