@@ -46,11 +46,17 @@ public class GameObjectTest {
         assertEquals(coordinates.getY(), gameObject.translate.getY(), 0.0);
     }
 
+    /**
+     * @brief Test adding a child to a GameObject.
+     */
     @Test
-    public void testGameObjectAdd() {
+    public void testGameObjectAdd_Objects() {
+        int count = 50;
+        for (int numOfObjs = 0; numOfObjs <= count; numOfObjs++) {
+            assertEquals(numOfObjs, gameObject.getChildren().size());
         gameObject.add(new GameObject() {
         });
-        assertEquals(1, gameObject.getChildren().size());
+        }
     }
 
 }
