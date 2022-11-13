@@ -54,8 +54,8 @@ public class GameObjectTest {
         int count = 50;
         for (int numOfObjs = 0; numOfObjs <= count; numOfObjs++) {
             assertEquals(numOfObjs, gameObject.getChildren().size());
-        gameObject.add(new GameObject() {
-        });
+            gameObject.add(new GameObject() {
+            });
         }
     }
 
