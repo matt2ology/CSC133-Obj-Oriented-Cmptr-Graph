@@ -1,8 +1,8 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
+import javafx.geometry.Point2D;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 // The Three Rules of TDD
 // 1. Write production code only to pass a failing unit test.
@@ -31,6 +31,18 @@ public class GameObjectTest {
     @Test
     public void testGameObjectCanBeInstantiated() {
         assertNotNull(this.gameObject);
+    }
+
+    /**
+     * @brief Test that GameObject can set its position in the constructor via the
+     *        builder design pattern.
+     */
+    @Test
+    public void testGameObjectCanSetPositionInConstructor() {
+        Point2D coordinates = new Point2D(99.0, 8.0);
+        gameObject.setPosition(coordinates);
+        assertEquals(coordinates.getX(), gameObject.translate.getX(), 0.0);
+        assertEquals(coordinates.getY(), gameObject.translate.getY(), 0.0);
     }
 
 }

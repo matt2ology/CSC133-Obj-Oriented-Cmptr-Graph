@@ -1,8 +1,11 @@
 import javafx.application.Application;
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 /**
@@ -11,7 +14,20 @@ import javafx.stage.Stage;
  *          all game objects in our game.
  */
 abstract class GameObject extends Pane {
-    
+    protected Translate translate;
+    protected Rotate rotate;
+
+    public GameObject() {
+        this.translate = new Translate();
+        this.rotate = new Rotate();
+        this.getTransforms().addAll(this.translate, this.rotate);
+    }
+
+    public GameObject setPosition(Point2D coordinates) {
+        this.translate.setX(coordinates.getX());
+        this.translate.setY(coordinates.getY());
+        return this;
+    }
 
 }
 
