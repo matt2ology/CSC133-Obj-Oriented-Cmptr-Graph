@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -35,6 +36,18 @@ abstract class GameObject extends Group implements Updatable {
         this.translate.setX(coordinates.getX());
         this.translate.setY(coordinates.getY());
         return this;
+    }
+
+    public void update() {
+        for (Node node : getChildren()) {
+            if (node instanceof Updatable) {
+                ((Updatable) node).update();
+            }
+        }
+    }
+
+    public void add(Node node) {
+        super.getChildren().add(node);
     }
 
 }

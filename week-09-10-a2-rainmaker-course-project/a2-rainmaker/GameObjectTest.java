@@ -23,6 +23,7 @@ public class GameObjectTest {
          */
         gameObject = new GameObject() {
         };
+
     }
 
     /**
@@ -43,6 +44,13 @@ public class GameObjectTest {
         gameObject.setPosition(coordinates);
         assertEquals(coordinates.getX(), gameObject.translate.getX(), 0.0);
         assertEquals(coordinates.getY(), gameObject.translate.getY(), 0.0);
+    }
+
+    @Test
+    public void testGameObjectAdd() {
+        gameObject.add(new GameObject() {
+        });
+        assertEquals(1, gameObject.getChildren().size());
     }
 
 }
