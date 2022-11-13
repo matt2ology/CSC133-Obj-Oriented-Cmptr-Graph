@@ -38,6 +38,11 @@ abstract class GameObject extends Group implements Updatable {
         return this;
     }
 
+
+    /**
+     * @brief update iterates through all
+     * children and calls their update method.
+     */
     public void update() {
         for (Node node : getChildren()) {
             if (node instanceof Updatable) {
