@@ -47,8 +47,7 @@ public class GameObjectTest {
     }
 
     /**
-     * @brief Test that GameObject can set its rotation angle after
-     * instantiation via the builder design pattern.
+     * @brief Test that GameObject can set rotation angle after instantiation.
      */
     @Test
     public void testGameObjectCanSetRotationAngleAfterInstantiation() {
