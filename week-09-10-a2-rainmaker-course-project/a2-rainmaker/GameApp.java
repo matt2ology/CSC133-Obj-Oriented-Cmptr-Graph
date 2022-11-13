@@ -46,6 +46,9 @@ abstract class GameObject extends Group implements Updatable {
         }
     }
 
+    /**
+     * @brief Add a child to this GameObject.
+     */
     public void add(Node node) {
         super.getChildren().add(node);
     }
