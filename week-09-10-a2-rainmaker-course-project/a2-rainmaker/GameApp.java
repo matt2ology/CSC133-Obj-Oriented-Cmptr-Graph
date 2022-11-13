@@ -21,7 +21,7 @@ interface Updatable {
  * @summary It contains methods and fields that manage the common aspects of
  *          all game objects in our game.
  */
-abstract class GameObject extends Group {
+abstract class GameObject extends Group implements Updatable {
     protected Translate translate;
     protected Rotate rotate;
 
