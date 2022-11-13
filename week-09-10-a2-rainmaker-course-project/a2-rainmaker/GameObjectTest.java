@@ -47,6 +47,18 @@ public class GameObjectTest {
     }
 
     /**
+     * @brief Test that GameObject can set its rotation angle after
+     * instantiation via the builder design pattern.
+     */
+    @Test
+    public void testGameObjectCanSetRotationAngleAfterInstantiation() {
+        for (int degrees = 0; degrees <= 361; degrees++) {
+            gameObject.rotate.setAngle(degrees);
+            assertEquals(degrees, gameObject.rotate.getAngle(), 0.0);
+        }
+    }
+
+    /**
      * @brief Test adding a child to a GameObject.
      */
     @Test
