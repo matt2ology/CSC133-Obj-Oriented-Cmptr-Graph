@@ -97,7 +97,6 @@ public class GameApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         Game game = new Game();
 
-        // Set the scene with the game
         primaryStage.setScene(new Scene(
                 game,
                 Globals.GAME_APP_DIMENSIONS.getWidth(),
