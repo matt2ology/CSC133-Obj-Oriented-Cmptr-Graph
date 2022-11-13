@@ -35,8 +35,8 @@ public class GameObjectTest {
     }
 
     /**
-     * @brief Test that GameObject can set its position in the constructor via the
-     *        builder design pattern.
+     * @brief Test that GameObject can set its position in the constructor via
+     *        the builder design pattern.
      */
     @Test
     public void testGameObjectCanSetPositionInConstructor() {
