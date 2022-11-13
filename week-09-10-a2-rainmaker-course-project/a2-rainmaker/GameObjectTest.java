@@ -35,8 +35,8 @@ public class GameObjectTest {
     }
 
     /**
-     * @brief Test that GameObject can set its position in the constructor via the
-     *        builder design pattern.
+     * @brief Test that GameObject can set its position in the constructor via
+     *        the builder design pattern.
      */
     @Test
     public void testGameObjectCanSetPositionInConstructor() {
@@ -48,7 +48,7 @@ public class GameObjectTest {
 
     /**
      * @brief Test that GameObject can set translation (location/position)
-     * after instantiation.
+     *        after instantiation.
      */
     @Test
     public void testGameObjectCanSetTranslateAfterInstantiation() {
@@ -57,7 +57,7 @@ public class GameObjectTest {
             gameObject.setPosition(new Point2D(coordinates, coordinates));
             assertEquals(coordinates, gameObject.translate.getX(), 0.0);
             assertEquals(coordinates, gameObject.translate.getY(), 0.0);
-          }
+        }
     }
 
     /**
