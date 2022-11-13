@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -9,11 +10,18 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 /**
+ * Updatable interface for objects that need to be updated every frame.
+ */
+interface Updatable {
+    public void update();
+}
+
+/**
  * @brief Game Class is the base of our object hierarchy.
  * @summary It contains methods and fields that manage the common aspects of
  *          all game objects in our game.
  */
-abstract class GameObject extends Pane {
+abstract class GameObject extends Group {
     protected Translate translate;
     protected Rotate rotate;
 
