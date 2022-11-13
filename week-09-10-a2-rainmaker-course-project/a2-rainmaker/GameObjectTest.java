@@ -47,6 +47,20 @@ public class GameObjectTest {
     }
 
     /**
+     * @brief Test that GameObject can set translation (location/position)
+     * after instantiation.
+     */
+    @Test
+    public void testGameObjectCanSetTranslateAfterInstantiation() {
+        double height = Globals.GAME_APP_DIMENSIONS.getHeight();
+        for (int coordinates = 0; coordinates <= height; coordinates++) {
+            gameObject.setPosition(new Point2D(coordinates, coordinates));
+            assertEquals(coordinates, gameObject.translate.getX(), 0.0);
+            assertEquals(coordinates, gameObject.translate.getY(), 0.0);
+          }
+    }
+
+    /**
      * @brief Test that GameObject can set rotation angle after instantiation.
      */
     @Test
