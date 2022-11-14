@@ -97,6 +97,11 @@ abstract class MoveableObject extends GameObject {
         this.velocityVector = this.headingVector.multiply(getSpeed());
     }
 
+    @Override
+    public void update() {
+        calculateHeadingDirection();
+        calculateVelocity();
+    }
 
     public double getSpeed() {
         return this.speed;
