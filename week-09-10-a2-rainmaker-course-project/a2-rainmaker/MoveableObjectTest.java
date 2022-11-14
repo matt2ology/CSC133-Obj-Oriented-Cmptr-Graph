@@ -43,5 +43,19 @@ public class MoveableObjectTest {
         }
     }
 
+    /**
+     * @brief Test that MoveableObject can set translation (location/position)
+     *        after instantiation.
+     */
+    @Test
+    public void setPosition_AfterInstantiation() {
+        for (int i = 0; i < Globals.GAME_APP_DIMENSIONS.getHeight(); i++) {
+            moveableObject.translate.setX(i);
+            moveableObject.translate.setY(i);
+            assertEquals(i, moveableObject.translate.getX(), 0.0);
+            assertEquals(i, moveableObject.translate.getY(), 0.0);
+        }
+    }
+
 
 }
