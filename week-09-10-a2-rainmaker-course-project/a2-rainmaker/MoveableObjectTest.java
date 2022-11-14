@@ -109,5 +109,18 @@ public class MoveableObjectTest {
         }
     }
 
+    /**
+     * @brief Test that MoveableObject can move.
+     */
+    @Test
+    public void calculate_VelocityVectors() {
+        for (int i = 0; i <= 100; i++) {
+            moveableObject.setSpeed(i);
+            moveableObject.rotate.setAngle(i);
+            moveableObject.update();
+            assertEquals(i * -Math.sin(Math.toRadians(i)), moveableObject.getVelocityVector().getX(), 0.001);
+            assertEquals(i * Math.cos(Math.toRadians(i)), moveableObject.getVelocityVector().getY(), 0.001);
+        }
+    }
 
 }
