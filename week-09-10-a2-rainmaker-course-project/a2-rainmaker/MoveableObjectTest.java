@@ -85,5 +85,16 @@ public class MoveableObjectTest {
         }
     }
 
+    /**
+     * @brief Test that MoveableObject can set its speed.
+     */
+    @Test
+    public void setSpeed() {
+        for (int i = 0; i <= 100; i++) {
+            moveableObject.setSpeed(i);
+            assertEquals(i, moveableObject.getSpeed(), 0.0);
+        }
+    }
+
 
 }
