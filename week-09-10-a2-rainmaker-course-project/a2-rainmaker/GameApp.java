@@ -166,6 +166,7 @@ class Globals {
  *          methods in Game.
  */
 public class GameApp extends Application {
+    Game game = new Game(); // the game model (state)
 
     @Override
     public void start(Stage primaryStage) throws Exception {
