@@ -69,5 +69,21 @@ public class MoveableObjectTest {
         }
     }
 
+    /**
+     * @brief test that MoveableObject can add objects to its children list.
+     */
+    @Test
+    public void add_ObjectsToChildrenList() {
+        int numOfObjs = 100;
+        for (int i = 0; i <= numOfObjs; i++) {
+            assertEquals(i, moveableObject.getChildren().size());
+            moveableObject.getChildren().add(new MoveableObject() {
+                @Override
+                public void move() {
+                }
+            });
+        }
+    }
+
 
 }
