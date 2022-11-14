@@ -57,5 +57,17 @@ public class MoveableObjectTest {
         }
     }
 
+    /**
+     * @brief Test that MoveableObject can set rotation angle after
+     *        instantiation.
+     */
+    @Test
+    public void setRotationAngle_AfterInstantiation() {
+        for (int i = 0; i <= 360; i++) {
+            moveableObject.rotate.setAngle(i);
+            assertEquals(i, moveableObject.rotate.getAngle(), 0.0);
+        }
+    }
+
 
 }
