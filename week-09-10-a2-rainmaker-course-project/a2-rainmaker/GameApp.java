@@ -15,6 +15,7 @@ import javafx.stage.Stage;
  */
 interface Steerable {
     public void steerLeft();
+
     public void steerRight();
 }
 
