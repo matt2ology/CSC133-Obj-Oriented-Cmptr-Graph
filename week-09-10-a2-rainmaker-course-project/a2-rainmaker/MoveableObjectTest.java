@@ -30,5 +30,18 @@ public class MoveableObjectTest {
         assertNotNull(this.moveableObject);
     }
 
+    /**
+     * @brief Test that MoveableObject can set its position in the
+     *        constructor via the builder design pattern.
+     */
+    @Test
+    public void setPosition_InConstructor() {
+        for (int i = 0; i < Globals.GAME_APP_DIMENSIONS.getHeight(); i++) {
+            moveableObject.setPosition(new Point2D(i, i));
+            assertEquals(i, moveableObject.translate.getX(), 0.0);
+            assertEquals(i, moveableObject.translate.getY(), 0.0);
+        }
+    }
+
 
 }
