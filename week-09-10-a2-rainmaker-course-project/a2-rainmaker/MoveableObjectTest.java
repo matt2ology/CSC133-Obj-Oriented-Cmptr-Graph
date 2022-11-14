@@ -104,8 +104,14 @@ public class MoveableObjectTest {
         for (int i = 0; i <= 360; i++) {
             moveableObject.rotate.setAngle(i);
             moveableObject.update();
-            assertEquals(-Math.sin(Math.toRadians(i)), moveableObject.getHeadingVector().getX(), 0.001);
-            assertEquals(Math.cos(Math.toRadians(i)), moveableObject.getHeadingVector().getY(), 0.001);
+            assertEquals(
+                    -Math.sin(Math.toRadians(i)),
+                    moveableObject.getHeadingVector().getX(),
+                    0.001);
+            assertEquals(
+                    Math.cos(Math.toRadians(i)),
+                    moveableObject.getHeadingVector().getY(),
+                    0.001);
         }
     }
 
@@ -118,8 +124,12 @@ public class MoveableObjectTest {
             moveableObject.setSpeed(i);
             moveableObject.rotate.setAngle(i);
             moveableObject.update();
-            assertEquals(i * -Math.sin(Math.toRadians(i)), moveableObject.getVelocityVector().getX(), 0.001);
-            assertEquals(i * Math.cos(Math.toRadians(i)), moveableObject.getVelocityVector().getY(), 0.001);
+            assertEquals(i * -Math.sin(Math.toRadians(i)),
+                    moveableObject.getVelocityVector().getX(),
+                    0.001);
+            assertEquals(i * Math.cos(Math.toRadians(i)),
+                    moveableObject.getVelocityVector().getY(),
+                    0.001);
         }
     }
 
