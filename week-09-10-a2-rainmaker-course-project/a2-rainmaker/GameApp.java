@@ -89,6 +89,14 @@ abstract class MoveableObject extends GameObject {
                 Math.cos(Math.toRadians(normalizedAngle)));
     }
 
+    /**
+     * @brief calculates the velocity in x and y components
+     *        from the speed and heading direction.
+     */
+    private void calculateVelocity() {
+        this.velocityVector = this.headingVector.multiply(getSpeed());
+    }
+
 
     public double getSpeed() {
         return this.speed;
