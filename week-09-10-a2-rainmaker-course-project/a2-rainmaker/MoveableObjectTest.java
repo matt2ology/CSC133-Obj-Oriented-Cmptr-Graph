@@ -96,5 +96,18 @@ public class MoveableObjectTest {
         }
     }
 
+    /**
+     * @brief Test that MoveableObject can set its heading direction.
+     */
+    @Test
+    public void calculate_HeadingDirectionVectors() {
+        for (int i = 0; i <= 360; i++) {
+            moveableObject.rotate.setAngle(i);
+            moveableObject.update();
+            assertEquals(-Math.sin(Math.toRadians(i)), moveableObject.getHeadingVector().getX(), 0.001);
+            assertEquals(Math.cos(Math.toRadians(i)), moveableObject.getHeadingVector().getY(), 0.001);
+        }
+    }
+
 
 }
