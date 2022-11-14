@@ -60,6 +60,25 @@ abstract class GameObject extends Group implements Updatable {
 }
 
 /**
+ * MoveableObject is a GameObject that can move.
+ */
+abstract class MoveableObject extends GameObject {
+    private double speed; // speed of travel (scalar)
+    private Point2D headingVector; // direction of travel (unit vector)
+    private Point2D velocityVector; // speed and direction of travel (vector)
+
+    abstract public void move(); // Not all MoveableObjects move the same way.
+
+    public MoveableObject() {
+        this.headingVector = new Point2D(0, 0); // set heading to north
+        this.rotate.setAngle(0); // set rotation angle to 0 (north)
+        this.speed = 0.0;
+        this.velocityVector = new Point2D(0.0, 0.0);
+    }
+
+}
+
+/**
  * @brief Game class provides the model for our game.
  * @summary It manages the changing state of our game as we interact with it.
  *          The Game does not know anything about where user input comes from
