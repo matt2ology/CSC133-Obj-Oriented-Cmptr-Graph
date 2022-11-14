@@ -151,9 +151,6 @@ class Game extends Pane {
  */
 class Globals {
     public static final String GAME_TITLE = "Rainmaker A2";
-    /**
-     * @brief The dimensions of the game application.
-     */
     public static final Dimension2D GAME_APP_DIMENSIONS = new Dimension2D(
             800,
             800);
