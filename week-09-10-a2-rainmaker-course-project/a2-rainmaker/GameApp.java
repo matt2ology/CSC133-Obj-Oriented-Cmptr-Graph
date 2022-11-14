@@ -105,6 +105,14 @@ abstract class MoveableObject extends GameObject {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
+
+    public Point2D getHeadingVector() {
+        return this.headingVector;
+    }
+
+    public Point2D getVelocityVector() {
+        return this.velocityVector;
+    }
 }
 
 /**
