@@ -11,6 +11,14 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 /**
+ * Steerable interface for all objects that are steerable in the game world.
+ */
+interface Steerable {
+    public void steerLeft();
+    public void steerRight();
+}
+
+/**
  * Updatable interface for objects that need to be updated every frame.
  */
 interface Updatable {
