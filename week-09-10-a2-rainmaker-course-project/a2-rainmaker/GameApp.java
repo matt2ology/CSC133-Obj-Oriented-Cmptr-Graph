@@ -76,6 +76,19 @@ abstract class MoveableObject extends GameObject {
         this.velocityVector = new Point2D(0.0, 0.0);
     }
 
+    /**
+     * @brief calculates the heading vector components
+     *        (x and y) from the rotation angle its direction.
+     */
+    private void calculateHeadingDirection() {
+        // normalize angle to 0-359 degrees
+        double normalizedAngle = this.rotate.getAngle() % 360;
+        this.headingVector = new Point2D(
+                // -sin(angle) because y-axis is inverted
+                -Math.sin(Math.toRadians(normalizedAngle)),
+                Math.cos(Math.toRadians(normalizedAngle)));
+    }
+
 
     public double getSpeed() {
         return this.speed;
