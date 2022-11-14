@@ -150,6 +150,7 @@ class Game extends Pane {
  * @brief Globals class provides a place to store global constants.
  */
 class Globals {
+    public static final String GAME_TITLE = "Rainmaker A2";
     /**
      * @brief The dimensions of the game application.
      */
@@ -178,7 +179,7 @@ public class GameApp extends Application {
                 Globals.GAME_APP_DIMENSIONS.getWidth(),
                 Globals.GAME_APP_DIMENSIONS.getHeight(),
                 Color.TAN));
-        primaryStage.setTitle("Game");
+        primaryStage.setTitle(Globals.GAME_TITLE);
         primaryStage.setResizable(false);
         primaryStage.show();
     }
