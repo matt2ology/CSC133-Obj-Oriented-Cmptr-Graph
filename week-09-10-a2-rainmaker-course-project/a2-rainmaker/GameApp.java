@@ -141,6 +141,68 @@ abstract class MoveableObject extends GameObject {
 }
 
 /**
+ * @brief Helicopter class is a MoveableObject that can be steered.
+ */
+class Helicopter extends MoveableObject implements Steerable {
+    public Helicopter(Point2D location, int fuelCapacity) {
+        super(location);
+
+    /**
+     * @brief increases the speed of the helicopter - clamp speed to max speed
+     *        if necessary (speed cannot be greater than max speed)
+     */
+    public void increaseSpeed() {
+        boolean isBelowMaxSpeed = Math.min(
+                this.getSpeed(),
+                MAX_SPEED) < MAX_SPEED;
+        if (isBelowMaxSpeed) {
+            this.setSpeed(this.getSpeed() + SPEED_INCREMENT);
+        }
+    }
+
+    /**
+     * @brief decreases the speed of the helicopter - clamp speed to min speed
+     *        if necessary (speed cannot be less than min speed)
+     */
+    public void decreaseSpeed() {
+        boolean isAboveMinSpeed = Math.max(
+                this.getSpeed(),
+                MIN_SPEED) > MIN_SPEED;
+        if (isAboveMinSpeed) {
+            this.setSpeed(this.getSpeed() - SPEED_BACKWARDS);
+        }
+    }
+
+
+    @Override
+    public void update() {
+        if (!isIgnitionOn) {
+            return;
+        }
+        move();
+        // burn fuel at a rate second and wont go below zero
+        setFuelGauge(Math.max(0, getFuelGauge() - FUEL_BURN_RATE));
+    }
+
+    public int getFuelGauge() {
+        return fuelGauge;
+    }
+
+    public void setFuelGauge(int fuel) {
+        this.fuelGauge = fuel;
+    }
+}
+
+    public boolean isIgnitionOn() {
+        return isIgnitionOn;
+    }
+
+    public void toggleIgnition() {
+        this.isIgnitionOn = !isIgnitionOn;
+    }
+
+}
+/**
  * @brief Game class provides the model for our game.
  * @summary It manages the changing state of our game as we interact with it.
  *          The Game does not know anything about where user input comes from
