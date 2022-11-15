@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -52,10 +55,10 @@ abstract class GameObject extends Group implements Updatable {
         this.getTransforms().addAll(this.translate, this.rotate);
     }
 
-    public GameObject setPosition(Point2D coordinates) {
-        this.translate.setX(coordinates.getX());
-        this.translate.setY(coordinates.getY());
-        return this;
+    public GameObject(Point2D location) {
+        this.translate = new Translate(location.getX(), location.getY());
+        this.rotate = new Rotate();
+        this.getTransforms().addAll(this.translate, this.rotate);
     }
 
     /**
@@ -80,6 +83,144 @@ abstract class GameObject extends Group implements Updatable {
 }
 
 /**
+ * GameText
+ */
+class GameText extends GameObject {
+    /**
+     * The default font size.
+     */
+    private static final int DEFAULT_FONT_SIZE = 15;
+    /**
+     * The text object.
+     */
+    private Text text;
+    /**
+     * The font of choice Helvetica because the tall x-height
+     * makes this font easier to read at a distance.
+     */
+    private String FONT_OF_CHOICE = "Helvetica";
+
+    /**
+     * Constructor for the GameText object.
+     * 
+     * @param text - the text to display.
+     */
+    public GameText(String text) {
+        this.text = new Text(text);
+        this.text.setFont(
+                Font.font(
+                        FONT_OF_CHOICE,
+                        FontWeight.BOLD,
+                        DEFAULT_FONT_SIZE));
+        this.text.setTextAlignment(TextAlignment.CENTER);
+        this.text.setFill(Color.WHITE);
+        this.text.setScaleY(-1);
+        // set origin to center of text
+        this.text.setX(getTextCenterX());
+        this.text.setY(getTextCenterY());
+        add(this.text);
+    }
+
+    /**
+     * Constructor for the GameText object that takes text and font size.
+     * 
+     * @param text         - the text to display.
+     * @param textFontSize - the font size of the text.
+     */
+    public GameText(String text, int textFontSize) {
+        this.text = new Text(text);
+        this.text.setFont(
+                Font.font(
+                        FONT_OF_CHOICE,
+                        FontWeight.BOLD,
+                        textFontSize));
+        this.text.setTextAlignment(TextAlignment.CENTER);
+        this.text.setFill(Color.WHITE);
+        this.text.setScaleY(-1);
+        // set origin to center of text
+        this.text.setX(getTextCenterX());
+        this.text.setY(getTextCenterY());
+        add(this.text);
+    }
+
+    /**
+     * The center y-axis coordinate is obtained by adding the height of the
+     * text to the y-axis coordinate of the text and dividing by four.
+     * Divided by four because the text is scaled by -1, so the y-axis
+     * coordinate is negative.
+     * 
+     * @return the center y-axis coordinate of the text.
+     */
+    private double getTextCenterY() {
+        return this.text.getY() + this.text.getBoundsInLocal().getHeight() / 3;
+    }
+
+    /**
+     * The center x-axis coordinate is obtained by subtracting
+     * the width of the text from the x-axis coordinate of the
+     * text and dividing by half.
+     * 
+     * @return the center x-axis coordinate of the text.
+     */
+    private double getTextCenterX() {
+        return this.text.getX() - this.text.getBoundsInLocal().getWidth() / 2;
+    }
+
+    /**
+     * Set the text to display.
+     * 
+     * @param text - the text to display.
+     */
+    public void setText(String text) {
+        this.text.setText(text);
+    }
+
+    /**
+     * Set the font size of the text.
+     * 
+     * @param size - the font size of the text.
+     */
+    public void setFontSize(int fontSize) {
+        this.text.setFont(
+                Font.font(
+                        FONT_OF_CHOICE,
+                        FontWeight.BOLD,
+                        fontSize));
+    }
+
+    public void setLocation(double x, double y) {
+        translate.setX(x);
+        translate.setY(y);
+    }
+
+    /**
+     * Return the text object.
+     */
+    public Text getText() {
+        return text;
+    }
+}
+
+/**
+ * FixedObject class for all fixed objects in the game world
+ * derived from this class.
+ */
+abstract class FixedObject extends GameObject {
+    protected Scale scale;
+
+    public FixedObject() {
+        scale = new Scale();
+        getTransforms().add(scale);
+    }
+
+    public FixedObject(Point2D location) {
+        super(location);
+        scale = new Scale();
+        getTransforms().add(scale);
+    }
+}
+
+/**
  * MoveableObject is a GameObject that can move.
  */
 abstract class MoveableObject extends GameObject {
@@ -89,7 +230,8 @@ abstract class MoveableObject extends GameObject {
 
     abstract public void move(); // Not all MoveableObjects move the same way.
 
-    public MoveableObject() {
+    public MoveableObject(Point2D location) {
+        super(location);
         this.headingVector = new Point2D(0, 0); // set heading to north
         this.rotate.setAngle(0); // set rotation angle to 0 (north)
         this.speed = 0.0;
@@ -144,8 +286,29 @@ abstract class MoveableObject extends GameObject {
  * @brief Helicopter class is a MoveableObject that can be steered.
  */
 class Helicopter extends MoveableObject implements Steerable {
+    private boolean isIgnitionOn;
+    private int fuelGauge;
+    private static final double MAX_SPEED = 10.0;
+    private static final double MIN_SPEED = 0.0;
+    private static final double SPEED_INCREMENT = (1.0/10.0);
+    private static final double SPEED_BACKWARDS = -2;
+    private static final double STEERING_ANGLE_INCREMENT = 15.0;
+    private static final int FUEL_BURN_RATE = 5;
+    private HelicopterBlipCircle blipCircle;
+    private HelicopterGameInfoText gameInfoText;
+
     public Helicopter(Point2D location, int fuelCapacity) {
         super(location);
+        this.isIgnitionOn = false;
+        this.setSpeed(0.0);
+        setFuelGauge(fuelCapacity);
+        super.add(new HelicopterHeadingIndicator());
+        super.add(blipCircle = new HelicopterBlipCircle());
+        super.add(gameInfoText = new HelicopterGameInfoText(
+                "Fuel:" + String.valueOf(getFuelGauge())));
+        rotate.setPivotX(blipCircle.getHelicopterBlipCircle().getCenterX());
+        rotate.setPivotY(blipCircle.getHelicopterBlipCircle().getCenterY());
+    }
 
     /**
      * @brief increases the speed of the helicopter - clamp speed to max speed
@@ -165,14 +328,32 @@ class Helicopter extends MoveableObject implements Steerable {
      *        if necessary (speed cannot be less than min speed)
      */
     public void decreaseSpeed() {
-        boolean isAboveMinSpeed = Math.max(
-                this.getSpeed(),
-                MIN_SPEED) > MIN_SPEED;
+        boolean isAboveMinSpeed = Math.max(MIN_SPEED,
+                this.getSpeed()) > MIN_SPEED;
         if (isAboveMinSpeed) {
             this.setSpeed(this.getSpeed() - SPEED_BACKWARDS);
         }
     }
 
+    @Override
+    public void move() {
+        this.translate.setX(
+                this.translate.getX() + this.getVelocityVector().getX());
+        this.translate.setY(
+                this.translate.getY() + this.getVelocityVector().getY());
+    }
+
+    @Override
+    public void steerLeft() {
+        this.rotate.setAngle(
+                (this.rotate.getAngle() + STEERING_ANGLE_INCREMENT) % 360);
+    }
+
+    @Override
+    public void steerRight() {
+        this.rotate.setAngle(
+                (this.rotate.getAngle() - STEERING_ANGLE_INCREMENT) % 360);
+    }
 
     @Override
     public void update() {
@@ -191,7 +372,6 @@ class Helicopter extends MoveableObject implements Steerable {
     public void setFuelGauge(int fuel) {
         this.fuelGauge = fuel;
     }
-}
 
     public boolean isIgnitionOn() {
         return isIgnitionOn;
@@ -201,7 +381,72 @@ class Helicopter extends MoveableObject implements Steerable {
         this.isIgnitionOn = !isIgnitionOn;
     }
 
+    @Override
+    public String toString() {
+        return "Helicopter{" +
+                "isIgnitionOn=" + isIgnitionOn +
+                ", fuelGauge=" + fuelGauge +
+                ", speed=" + getSpeed() +
+                ", headingVector=" + getHeadingVector() +
+                ", velocityVector=" + getVelocityVector() +
+                '}';
+    }
+
 }
+
+class HelicopterGameInfoText extends GameText {
+    public HelicopterGameInfoText(String text) {
+        super(text, 15);
+        this.getText().setFill(Color.RED);
+        this.setTranslateY(-20);
+    }
+}
+
+class HelicopterHeadingIndicator extends FixedObject {
+    /**
+     * The radius of the helicopter heading indicator on the map (in-game)
+     */
+    private static Dimension2D headingIndicator = new Dimension2D(
+            5,
+            30);
+
+    public HelicopterHeadingIndicator() {
+        super();
+        Rectangle rectangle = new Rectangle(
+                headingIndicator.getWidth(),
+                headingIndicator.getHeight());
+        rectangle.setFill(Color.YELLOW);
+        // set origin to center of rectangle
+        rectangle.setX(-headingIndicator.getWidth() / 2);
+        super.add(rectangle);
+    }
+
+    public Dimension2D getHeadingIndicatorDimensions() {
+        return headingIndicator;
+    }
+}
+
+/**
+ * HelicopterBlip class for the helicopter blip on the map.
+ */
+class HelicopterBlipCircle extends FixedObject {
+    private Circle blipCircle;
+    /**
+     * The radius of the helicopter blip on the map (in-game)
+     */
+    private static final double blibCircleRadius = 10;
+
+    public HelicopterBlipCircle() {
+        blipCircle = new Circle(blibCircleRadius);
+        blipCircle.setFill(Color.YELLOW);
+        super.add(blipCircle);
+    }
+
+    public Circle getHelicopterBlipCircle() {
+        return blipCircle;
+    }
+}
+
 /**
  * @brief Game class provides the model for our game.
  * @summary It manages the changing state of our game as we interact with it.
@@ -214,10 +459,73 @@ class Helicopter extends MoveableObject implements Steerable {
  *          </ol>
  */
 class Game extends Pane {
+    /**
+     * The initial fuel value is set for playability
+     */
+    private static final int INITIAL_FUEL = 25000;
+    /**
+     * Initialize Helicopter object in the game world.
+     * This is called composition because the helicopter
+     * is a part of the game world and not a subclass of it (inheritance)
+     */
+    private Helicopter helicopter;
+
     public Game() {
         // Flip the y-axis so that up is positive and down is negative
         super.setScaleY(-1);
     }
+
+    public void init() {
+        super.getChildren().clear();
+        super.getChildren().addAll(
+                helicopter = new Helicopter(
+                        new Point2D(Globals.GAME_APP_DIMENSIONS.getWidth() / 2,
+                                Globals.GAME_APP_DIMENSIONS.getHeight() / 2),
+                        INITIAL_FUEL));
+        // print out each object in the game world
+        super.getChildren().forEach(System.out::println);
+    }
+
+    public void play() {
+        AnimationTimer loop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                update();
+                System.err.println(helicopter.toString());
+            }
+        };
+        loop.start();
+    }
+
+    public void update() {
+        helicopter.update();
+    }
+
+    public Helicopter getHelicopter() {
+        return helicopter;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "helicopter=" + helicopter +
+                '}';
+    }
+}
+
+/**
+ * Utility
+ */
+class Utility {
+    /**
+     * @brief Utility to normalize angle to 0-360 degrees range (0-2pi radians)
+     * @param angle in degrees
+     * @return normalized angle in degrees
+     */
+    public static double normalizeAngle(double angle) {
+        return ((angle) % 360);
+    }
+
 }
 
 /**
@@ -244,8 +552,7 @@ public class GameApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Game game = new Game();
-
+        game.init();
         primaryStage.setScene(new Scene(
                 game,
                 Globals.GAME_APP_DIMENSIONS.getWidth(),
@@ -254,6 +561,59 @@ public class GameApp extends Application {
         primaryStage.setTitle(Globals.GAME_TITLE);
         primaryStage.setResizable(false);
         primaryStage.show();
+        // start game
+        game.play();
+
+        /**
+         * Key listener for key pressed events.
+         */
+        primaryStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                // Left Arrow Changes heading of the helicopter to the left.
+                if (event.getCode() == KeyCode.LEFT) {
+                    game.getHelicopter().steerLeft();
+                }
+
+                // Right Arrow Changes heading of the helicopter to the right.
+                if (event.getCode() == KeyCode.RIGHT) {
+                    game.getHelicopter().steerRight();
+                    // get helicopter in the game world according to their type (class)
+                }
+
+                // Up Arrow Increases the speed of the helicopter by 0.1.
+                if (event.getCode() == KeyCode.UP) {
+                    game.getHelicopter().increaseSpeed();
+                }
+
+                // Down Arrow Decreases the speed of the helicopter by 0.1.
+                if (event.getCode() == KeyCode.DOWN) {
+                    System.err.println("Down Arrow: v");
+                    game.getHelicopter().decreaseSpeed();
+                }
+
+                // 'i' Turns on the helicopter ignition.
+                if (event.getCode() == KeyCode.I) {
+                    game.getHelicopter().toggleIgnition();
+                    System.err.println("I - Toggles the helicopter ignition: "
+                            + game.getHelicopter().isIgnitionOn());
+
+                }
+
+                // 'b' [optional] shows bounding boxes around objects.
+                if (event.getCode() == KeyCode.B) {
+                    System.err.println(
+                            "B - shows bounding boxes around objects");
+                }
+
+                // 'r' Reinitialize the game
+                if (event.getCode() == KeyCode.R) {
+                    System.err.println();
+                    System.err.println("R - Reinitialize the game");
+                    game.init();
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {

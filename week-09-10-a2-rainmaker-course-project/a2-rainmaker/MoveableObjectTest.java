@@ -6,6 +6,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class MoveableObjectTest {
+    /**
+     *
+     */
+    private static final Point2D INITIAL_POINT2D_SETUP = new Point2D(0, 0);
     private MoveableObject moveableObject;
 
     @Before
@@ -15,7 +19,7 @@ public class MoveableObjectTest {
          * instantiate it because we are not instantiating the abstract
          * class itself, but rather an anonymous subclass of it.
          */
-        moveableObject = new MoveableObject() {
+        moveableObject = new MoveableObject(INITIAL_POINT2D_SETUP) {
             @Override
             public void move() {
             }
@@ -28,19 +32,6 @@ public class MoveableObjectTest {
     @Test
     public void canBeInstantiated() {
         assertNotNull(this.moveableObject);
-    }
-
-    /**
-     * @brief Test that MoveableObject can set its position in the
-     *        constructor via the builder design pattern.
-     */
-    @Test
-    public void setPosition_InConstructor() {
-        for (int i = 0; i < Globals.GAME_APP_DIMENSIONS.getHeight(); i++) {
-            moveableObject.setPosition(new Point2D(i, i));
-            assertEquals(i, moveableObject.translate.getX(), 0.0);
-            assertEquals(i, moveableObject.translate.getY(), 0.0);
-        }
     }
 
     /**
@@ -77,7 +68,7 @@ public class MoveableObjectTest {
         int numOfObjs = 100;
         for (int i = 0; i <= numOfObjs; i++) {
             assertEquals(i, moveableObject.getChildren().size());
-            moveableObject.getChildren().add(new MoveableObject() {
+            moveableObject.getChildren().add(new MoveableObject(INITIAL_POINT2D_SETUP) {
                 @Override
                 public void move() {
                 }

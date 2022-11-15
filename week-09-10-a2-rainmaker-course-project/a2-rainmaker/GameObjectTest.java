@@ -12,6 +12,10 @@ import static org.junit.Assert.assertNotNull;
 // the one failing unit test. 
 
 public class GameObjectTest {
+    /**
+     * @brief Test that GameObject can be instantiated.
+     */
+    private static final Point2D INITIAL_POINT2D_SETUP = new Point2D(0, 0);
     private GameObject gameObject;
 
     @Before
@@ -21,7 +25,7 @@ public class GameObjectTest {
          * it because we are not instantiating the abstract class itself,
          * but rather an anonymous subclass of it.
          */
-        gameObject = new GameObject() {
+        gameObject = new GameObject(INITIAL_POINT2D_SETUP) {
         };
 
     }
@@ -32,32 +36,6 @@ public class GameObjectTest {
     @Test
     public void testGameObjectCanBeInstantiated() {
         assertNotNull(this.gameObject);
-    }
-
-    /**
-     * @brief Test that GameObject can set its position in the constructor via
-     *        the builder design pattern.
-     */
-    @Test
-    public void testGameObjectCanSetPositionInConstructor() {
-        Point2D coordinates = new Point2D(99.0, 8.0);
-        gameObject.setPosition(coordinates);
-        assertEquals(coordinates.getX(), gameObject.translate.getX(), 0.0);
-        assertEquals(coordinates.getY(), gameObject.translate.getY(), 0.0);
-    }
-
-    /**
-     * @brief Test that GameObject can set translation (location/position)
-     *        after instantiation.
-     */
-    @Test
-    public void testGameObjectCanSetTranslateAfterInstantiation() {
-        double height = Globals.GAME_APP_DIMENSIONS.getHeight();
-        for (int coordinates = 0; coordinates <= height; coordinates++) {
-            gameObject.setPosition(new Point2D(coordinates, coordinates));
-            assertEquals(coordinates, gameObject.translate.getX(), 0.0);
-            assertEquals(coordinates, gameObject.translate.getY(), 0.0);
-        }
     }
 
     /**
@@ -79,9 +57,9 @@ public class GameObjectTest {
         int count = 50;
         for (int numOfObjs = 0; numOfObjs <= count; numOfObjs++) {
             assertEquals(numOfObjs, gameObject.getChildren().size());
-            gameObject.add(new GameObject() {
-            });
+            gameObject.getChildren()
+                    .add(new GameObject(INITIAL_POINT2D_SETUP) {
+                    });
         }
     }
-
 }
