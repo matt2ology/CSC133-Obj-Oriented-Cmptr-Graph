@@ -189,7 +189,10 @@ class Game extends Pane {
      */
     public void init() {
         super.getChildren().clear();
-        super.getChildren().addAll();
+        super.getChildren().addAll(
+                new Helipad(
+                        Globals.HELIPAD_COORDINATES,
+                        new Dimension2D(100, 100)));
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
@@ -256,6 +259,7 @@ public class GameApp extends Application {
         primaryStage.setTitle(Globals.GAME_TITLE);
         primaryStage.setResizable(false);
         primaryStage.show();
+        game.init();
     }
 
     public static void main(String[] args) {
