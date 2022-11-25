@@ -90,6 +90,69 @@ class GameText extends Text {
 }
 
 /**
+ * @see https://heliportlighting.com/heliport-design/
+ *      FATO must be at least 1.5 times the overall length of the helicopter
+ */
+class Helipad extends FixedObject {
+
+    public Helipad(Point2D location, Dimension2D size) {
+        super(location);
+        this.add(new HelipadFATOSquare(size));
+        this.add(new HelipadTLOFCircle(size));
+        this.add(new HelipadH());
+    }
+}
+
+/**
+ * @brief Represents the Final Approach and Takeoff (FATO) square of the
+ *        helipad.
+ */
+class HelipadFATOSquare extends Rectangle {
+
+    public HelipadFATOSquare(Dimension2D size) {
+        super(0, 0,
+                size.getWidth(),
+                size.getHeight());
+        this.setFill(Color.TRANSPARENT);
+        this.setStroke(Color.WHITE);
+        this.setStrokeWidth(5);
+        // Center of the square is at the center of the
+        // helipad by setTranslate because we want to
+        // translate the rectangle relative to the helipad object
+        this.setTranslateX(-size.getWidth() / 2);
+        this.setTranslateY(-size.getHeight() / 2);
+    }
+}
+
+/**
+ * @brief Represents the Touchdown and Liftoff (TLOF) circle of the
+ *        helipad.
+ * 
+ *        The Circle's diameter is based on the helipad's FATO square dimension.
+ */
+class HelipadTLOFCircle extends Circle {
+    private static final int PADDING_BETWEEN_SQUARE_AND_CIRCLE = 5;
+
+    public HelipadTLOFCircle(Dimension2D size) {
+        super(0,
+                0,
+                ((size.getWidth() / 2) - PADDING_BETWEEN_SQUARE_AND_CIRCLE));
+        this.setFill(Color.TRANSPARENT);
+        this.setStroke(Color.YELLOW);
+        this.setStrokeWidth(3);
+    }
+}
+
+class HelipadH extends GameText {
+
+    public HelipadH() {
+        super("H", 75);
+        // set font color to white
+        this.setFill(Color.WHITE);
+    }
+}
+
+/**
  * Game
  */
 class Game extends Pane {
