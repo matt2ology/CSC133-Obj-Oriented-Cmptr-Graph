@@ -9,6 +9,9 @@
     - [VSCode](#vscode)
   - [Learning and Resources That Helped During Course](#learning-and-resources-that-helped-during-course)
   - [Academic Schedule Log](#academic-schedule-log)
+  - [YouTube Channels of interest and resources found before and during this semester](#youtube-channels-of-interest-and-resources-found-before-and-during-this-semester)
+    - [Sites](#sites)
+    - [Video](#video)
 
 ## Admin
 
@@ -59,3 +62,19 @@
 - Academic Week 13 - Calendar Week 47 (11/21 - 11/25)
 - Academic Week 14 - Calendar Week 48 (11/27 - 12/02)
 - Academic Week 15 - Calendar Week 49 (12/05 - 12/09)
+
+## YouTube Channels of interest and resources found before and during this semester
+
+### Books
+
+- [Pro Java 9 Games Development Leveraging the JavaFX APIs — Wallace Jackson](https://library.kre.dp.ua/Books/2-4%20kurs/%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F%20%2B%20%D0%BC%D0%BE%D0%B2%D0%B8%20%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F/Java/Jackson_W_-_Pro_Java_9_Games_Development_-_2017%40bzd_channel.pdf)
+
+### Sites
+
+- [Getting started with FXGL game development](https://webtechie.be/post/2020-05-07-getting-started-with-fxgl/)
+- [Introduction to JavaFX for Game Development](https://gamedevelopment.tutsplus.com/tutorials/introduction-to-javafx-for-game-development--cms-23835)
+- [Larger application: Asteroids](https://java-programming.mooc.fi/part-14/3-larger-application-asteroids)
+
+### Video
+
+- [Designing a Better Aim Assist for 2D Games by t3ssel8r](https://www.youtube.com/watch?v=yGci-Lb87zs)
