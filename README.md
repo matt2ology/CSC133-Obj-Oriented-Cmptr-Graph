@@ -10,6 +10,7 @@
   - [Learning and Resources That Helped During Course](#learning-and-resources-that-helped-during-course)
   - [Academic Schedule Log](#academic-schedule-log)
   - [YouTube Channels of interest and resources found before and during this semester](#youtube-channels-of-interest-and-resources-found-before-and-during-this-semester)
+    - [Books](#books-1)
     - [Sites](#sites)
     - [Video](#video)
 
