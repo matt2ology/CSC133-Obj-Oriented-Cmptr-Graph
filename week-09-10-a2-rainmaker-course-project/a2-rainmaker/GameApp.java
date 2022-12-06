@@ -1,3 +1,6 @@
+import java.sql.Time;
+import java.util.Timer;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Dimension2D;
@@ -12,8 +15,16 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.Scene;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Reflection;
+import javafx.scene.effect.Shadow;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -27,6 +38,16 @@ import javafx.stage.Stage;
  */
 interface Updatable {
     public void update();
+}
+
+/**
+ * Steerable interface for objects that need to be steered.
+ */
+interface Steerable {
+
+    public void steerLeft();
+
+    public void steerRight();
 }
 
 /**
@@ -64,6 +85,181 @@ abstract class GameObject extends Group implements Updatable {
     }
 }
 
+/**
+ * @brief MoveableObject is a GameObject that can move.
+ */
+abstract class MoveableObject extends GameObject {
+    protected double speed;
+    protected double heading;
+
+    public MoveableObject(Point2D location) {
+        super(location);
+    }
+}
+
+class Helicopter extends MoveableObject {
+    HeloBody body = new HeloBody();
+    HeloBlade rotorMain = new HeloBlade();
+
+    public Helicopter(Point2D location) {
+        super(location);
+        this.add(body);
+        this.add(rotorMain);
+    }
+
+    @Override
+    public String toString() {
+        return "Helicopter: "
+                + "Dimensions[ Width: "
+                + this.getBoundsInLocal().getWidth()
+                + ", Height: "
+                + this.getBoundsInLocal().getHeight()
+                + " ]";
+    }
+
+    public Helicopter getHelicopter() {
+        return this;
+    }
+}
+
+class HeloBlade extends Rectangle {
+    private int bladeSpeed;
+
+    public HeloBlade() {
+        super(90, 4);
+        this.bladeSpeed = 0;
+        this.setFill(Color.GRAY);
+        this.setStroke(Color.BLACK);
+        this.setStrokeWidth(1);
+        // The origin of the rotation is the center of the rectangle.
+        this.setX(-this.getWidth() / 2);
+        this.setY(-this.getHeight() / 2);
+        // Helicopter Blade is self animating with it's own animation timer.
+        AnimationTimer timer = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                if (bladeSpeed <= 120) {
+                    bladeSpeed++;
+                }
+                HeloBlade.this.setRotate(HeloBlade.this.getRotate() + bladeSpeed);
+            }
+        };
+        timer.start();
+    }
+}
+
+class HeloBody extends Group {
+    private Color bodyColor = Color.DARKORANGE;
+    private static final int SKID_POSITION_X = 20;
+    private static final int SKID_POSITION_Y = -35;
+    private static final int SKID_CROSS_HEAD_POSITION_Y = -25;
+
+    HeloLandingSkid skidLeft = new HeloLandingSkid(bodyColor);
+    HeloLandingSkid skidRight = new HeloLandingSkid(bodyColor);
+    HeloLandingSkidCross skidCrossHead = new HeloLandingSkidCross(bodyColor);
+    HeloLandingSkidCross skidCrossTail = new HeloLandingSkidCross(bodyColor);
+    HeloCabin cabin = new HeloCabin(bodyColor);
+    HeloCockpit cockpit = new HeloCockpit();
+    HeloEngineComponent engine = new HeloEngineComponent(bodyColor);
+    HeloTailBoom tailBoom = new HeloTailBoom(bodyColor);
+
+    public HeloBody() {
+        super();
+        // 5 is magic number offset
+        skidLeft.setTranslateX(-SKID_POSITION_X - (5));
+        skidLeft.setTranslateY(SKID_POSITION_Y);
+        // 2 is a magic # offset
+        skidRight.setTranslateX(SKID_POSITION_X + (2));
+        skidRight.setTranslateY(SKID_POSITION_Y);
+        skidCrossHead.setTranslateY(SKID_CROSS_HEAD_POSITION_Y);
+        // 5 is magic number offset
+        cabin.setTranslateY(SKID_CROSS_HEAD_POSITION_Y + (5));
+        cockpit.setTranslateY(SKID_CROSS_HEAD_POSITION_Y);
+
+        getChildren()
+                .addAll(skidLeft,
+                        skidRight,
+                        skidCrossHead,
+                        skidCrossTail,
+                        cabin,
+                        cockpit,
+                        tailBoom,
+                        engine);
+    }
+}
+
+class HeloCabin extends Circle {
+    public HeloCabin(Color componentColor) {
+        super(18, componentColor);
+    }
+}
+
+class HeloCockpit extends Arc {
+    private LinearGradient cockpitGlass = new LinearGradient(
+            0,
+            0,
+            0,
+            1,
+            true,
+            CycleMethod.NO_CYCLE,
+            new Stop(1, Color.BLUE),
+            new Stop(0, Color.LIGHTBLUE));
+
+    public HeloCockpit() {
+        super(
+                0,
+                0,
+                13,
+                13,
+                0,
+                180);
+        setFill(cockpitGlass);
+    }
+}
+
+class HeloLandingSkidCross extends Rectangle {
+    public HeloLandingSkidCross(Color componentColor) {
+        super(45, 3);
+        setFill(componentColor);
+        // center the cross on the skid cross point (0,0)
+        setTranslateX(-getWidth() / 2);
+    }
+}
+
+class HeloLandingSkid extends Rectangle {
+
+    public HeloLandingSkid(Color componentColor) {
+        super(3, 50);
+        this.setFill(componentColor);
+    }
+}
+
+class HeloEngineComponent extends Rectangle {
+    public HeloEngineComponent(Color componentColor) {
+        super(36, 12, componentColor);
+        // set the origin to the center of the rectangle for rotation
+        this.setX(-this.getWidth() / 2);
+        this.setY(-this.getHeight() / 2);
+    }
+
+    // getter for the center of the engine component
+    public Point2D getCenter() {
+        return new Point2D(
+                this.getX()
+                        + (this.getWidth() / 2),
+                this.getY()
+                        + (this.getHeight() / 2));
+    }
+}
+
+class HeloTailBoom extends Rectangle {
+    public HeloTailBoom(Color componentColor) {
+        super(5, 40, componentColor);
+        this.setX(-this.getWidth() / 2);
+    }
+}
+
 abstract class FixedObject extends GameObject {
     protected Scale scale;
 
@@ -76,6 +272,7 @@ abstract class FixedObject extends GameObject {
 class GameText extends Text {
     private String FONT_OF_CHOICE = "Helvetica";
     private Scale scale = new Scale();
+
     public GameText(String text, int textFontSize) {
         super(text);
         this.setFont(Font.font(FONT_OF_CHOICE, textFontSize));
@@ -192,7 +389,8 @@ class Game extends Pane {
         super.getChildren().addAll(
                 new Helipad(
                         Globals.HELIPAD_COORDINATES,
-                        new Dimension2D(100, 100)));
+                        new Dimension2D(100, 100)),
+                new Helicopter(Globals.HELIPAD_COORDINATES));
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
@@ -230,7 +428,7 @@ class Globals {
             "textures/map/rainmaker_a2_map_dry_desert.png");
     /**
      * @brief The Helipad centered on half the width
-     *        and lower 1/8th the height of the game world.
+     *        and lower 1/7th the height of the game world.
      */
     public static final Point2D HELIPAD_COORDINATES = new Point2D(
             (GAME_APP_DIMENSIONS.getWidth() / 2),
