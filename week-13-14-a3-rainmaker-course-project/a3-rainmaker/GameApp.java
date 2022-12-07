@@ -1,12 +1,12 @@
-import java.sql.Time;
-import java.util.Timer;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -19,12 +19,8 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.Scene;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.Reflection;
-import javafx.scene.effect.Shadow;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -90,35 +86,147 @@ abstract class GameObject extends Group implements Updatable {
  */
 abstract class MoveableObject extends GameObject {
     protected double speed;
-    protected double heading;
+
+    abstract protected void move(); // all objects moves are differently
 
     public MoveableObject(Point2D location) {
         super(location);
+        this.speed = 0.0;
+        this.rotate.setAngle(0);
+    }
+
+    /**
+     * Converts a direction in degrees (0...360) to x and y coordinates.
+     * 
+     * @return A Point2D object with x and y coordinates of the vector.
+     */
+    protected Point2D directionToVector() {
+        double radians = Math.toRadians(this.rotate.getAngle());
+        // y is negative because y axis is inverted
+        return new Point2D(
+                (this.speed * Math.sin(radians)),
+                -(this.speed * Math.cos(radians)));
+    }
+
+    protected void setNormalizedAngle(double compassAngle) {
+        if (compassAngle < 0) {
+            compassAngle += 360;
+        } else if (compassAngle >= 360) {
+            compassAngle -= 360;
+        }
+        this.rotate.setAngle(compassAngle);
+    }
+
+    @Override
+    public void update() {
+        super.update();
     }
 }
 
-class Helicopter extends MoveableObject {
-    HeloBody body = new HeloBody();
-    HeloBlade rotorMain = new HeloBlade();
+class Helicopter extends MoveableObject implements Steerable {
+    private boolean isIgnitionOn;
+    private double HOVER_SPEED_0 = 0;
+    private double MAX_SPEED = 10.0;
+    private double MIN_SPEED = 2.0;
+    private double SPEED_STEP_VALUE = 0.5;
+    private double STEERING_ANGLE_INCREMENT = 5;
+    private int FUEL_BURN_RATE = 5;
+    private int fuelGauge;
 
-    public Helicopter(Point2D location) {
+    private HelicopterGameInfoText fuelText;
+
+    public Helicopter(Point2D location, int fuelCapacity) {
         super(location);
-        this.add(body);
-        this.add(rotorMain);
+        this.isIgnitionOn = false;
+        this.setFuelGauge(fuelCapacity);
+        this.add(new HeloBody());
+        this.add(new HeloBlade());
+        this.add(fuelText = new HelicopterGameInfoText(
+                "Fuel:" + String.valueOf(getFuelGauge())));
+    }
+
+    /**
+     * @brief increaseSpeed of the helicopter by specified step value
+     *        above 0 speed (hover) and below MAX_SPEED. If the helicopter
+     *        is in reverse increasing speed will put it in forward.
+     */
+    public void increaseSpeed() {
+        this.speed = (this.speed >= 0) // Are we in forward?
+                // increase speed by step value but not above max
+                ? Math.min((this.speed + SPEED_STEP_VALUE), MAX_SPEED)
+                : (this.speed + MIN_SPEED); // From reverse to 0 speed (hover)
+    }
+
+    /**
+     * @brief decreaseSpeed of the helicopter by specified step value
+     *        above 0 (hover). Decreasing the speed below 0 (hover) will
+     *        put the helicopter in reverse by the minimum speed.
+     */
+    public void decreaseSpeed() {
+        this.speed = (this.speed <= HOVER_SPEED_0) // Are we in reverse?
+                ? -MIN_SPEED // Put in reverse from 0 speed (hover)
+                // decrease speed by step value but not 0 (hover)
+                : Math.max(HOVER_SPEED_0, (this.speed - SPEED_STEP_VALUE));
+    }
+
+    public void toggleIgnition() {
+        this.isIgnitionOn = !isIgnitionOn;
+    }
+
+    public int getFuelGauge() {
+        return fuelGauge;
+    }
+
+    private void setFuelGauge(int fuel) {
+        this.fuelGauge = fuel;
+    }
+
+    @Override
+    public void steerLeft() {
+        setNormalizedAngle(this.rotate.getAngle() - STEERING_ANGLE_INCREMENT);
+    }
+
+    @Override
+    public void steerRight() {
+        setNormalizedAngle(this.rotate.getAngle() + STEERING_ANGLE_INCREMENT);
+    }
+
+    @Override
+    public void move() {
+        this.translate.setX(
+                this.translate.getX() + this.directionToVector().getX());
+        this.translate.setY(
+                this.translate.getY() + this.directionToVector().getY());
+    }
+
+    @Override
+    public void update() {
+        if (!isIgnitionOn) {
+            return;
+        }
+        this.move();
+        this.setFuelGauge(Math.max(0, getFuelGauge() - FUEL_BURN_RATE));
+        this.fuelText.setText("Fuel:" + String.valueOf(getFuelGauge()));
     }
 
     @Override
     public String toString() {
         return "Helicopter: "
-                + "Dimensions[ Width: "
-                + this.getBoundsInLocal().getWidth()
-                + ", Height: "
-                + this.getBoundsInLocal().getHeight()
-                + " ]";
+                + "isIgnitionOn: " + this.isIgnitionOn
+                + ", Angle: " + this.rotate.getAngle()
+                + ", Speed: " + this.speed
+                + ", Fuel Gauge: " + this.getFuelGauge();
     }
+}
 
-    public Helicopter getHelicopter() {
-        return this;
+class HelicopterGameInfoText extends GameText {
+    private Color FONT_COLOR = Color.RED;
+    private static int FONT_SIZE = 15;
+
+    public HelicopterGameInfoText(String text) {
+        super(text, FONT_SIZE);
+        this.setFill(FONT_COLOR);
+        this.setTranslateY(50);
     }
 }
 
@@ -142,7 +250,8 @@ class HeloBlade extends Rectangle {
                 if (bladeSpeed <= 120) {
                     bladeSpeed++;
                 }
-                HeloBlade.this.setRotate(HeloBlade.this.getRotate() + bladeSpeed);
+                HeloBlade.this.setRotate(
+                        HeloBlade.this.getRotate() + bladeSpeed);
             }
         };
         timer.start();
@@ -151,12 +260,13 @@ class HeloBlade extends Rectangle {
 
 class HeloBody extends Group {
     private Color bodyColor = Color.DARKORANGE;
+    private Color skidColor = Color.GRAY;
     private static final int SKID_POSITION_X = 20;
     private static final int SKID_POSITION_Y = -35;
     private static final int SKID_CROSS_HEAD_POSITION_Y = -25;
 
-    HeloLandingSkid skidLeft = new HeloLandingSkid(bodyColor);
-    HeloLandingSkid skidRight = new HeloLandingSkid(bodyColor);
+    HeloLandingSkid skidLeft = new HeloLandingSkid(skidColor);
+    HeloLandingSkid skidRight = new HeloLandingSkid(skidColor);
     HeloLandingSkidCross skidCrossHead = new HeloLandingSkidCross(bodyColor);
     HeloLandingSkidCross skidCrossTail = new HeloLandingSkidCross(bodyColor);
     HeloCabin cabin = new HeloCabin(bodyColor);
@@ -166,14 +276,14 @@ class HeloBody extends Group {
 
     public HeloBody() {
         super();
-        // 5 is magic number offset
-        skidLeft.setTranslateX(-SKID_POSITION_X - (5));
+        // magic number offset to center w/ skid cross attach point
+        skidLeft.setTranslateX((-SKID_POSITION_X) - (5));
         skidLeft.setTranslateY(SKID_POSITION_Y);
-        // 2 is a magic # offset
+        // magic number offset to center w/ skid cross attach point
         skidRight.setTranslateX(SKID_POSITION_X + (2));
         skidRight.setTranslateY(SKID_POSITION_Y);
         skidCrossHead.setTranslateY(SKID_CROSS_HEAD_POSITION_Y);
-        // 5 is magic number offset
+        // magic number offset for the cabin from the forward, head, skid cross
         cabin.setTranslateY(SKID_CROSS_HEAD_POSITION_Y + (5));
         cockpit.setTranslateY(SKID_CROSS_HEAD_POSITION_Y);
 
@@ -232,6 +342,8 @@ class HeloLandingSkid extends Rectangle {
     public HeloLandingSkid(Color componentColor) {
         super(3, 50);
         this.setFill(componentColor);
+        this.setStroke(Color.BLACK);
+        this.setStrokeWidth(1);
     }
 }
 
@@ -241,15 +353,6 @@ class HeloEngineComponent extends Rectangle {
         // set the origin to the center of the rectangle for rotation
         this.setX(-this.getWidth() / 2);
         this.setY(-this.getHeight() / 2);
-    }
-
-    // getter for the center of the engine component
-    public Point2D getCenter() {
-        return new Point2D(
-                this.getX()
-                        + (this.getWidth() / 2),
-                this.getY()
-                        + (this.getHeight() / 2));
     }
 }
 
@@ -276,7 +379,6 @@ class GameText extends Text {
     public GameText(String text, int textFontSize) {
         super(text);
         this.setFont(Font.font(FONT_OF_CHOICE, textFontSize));
-        this.scale.setY(-1);
         this.getTransforms().add(scale);
         // set the origin of the text to the center
         this.setX(-this.getLayoutBounds().getWidth() / 2);
@@ -288,7 +390,6 @@ class GameText extends Text {
 
 /**
  * @see https://heliportlighting.com/heliport-design/
- *      FATO must be at least 1.5 times the overall length of the helicopter
  */
 class Helipad extends FixedObject {
 
@@ -353,6 +454,11 @@ class HelipadH extends GameText {
  * Game
  */
 class Game extends Pane {
+    /**
+     * The initial fuel value is set for playability
+     */
+    private static final int HELICOPTER_INITIAL_FUEL_CAPACITY = 25000;
+    private Helicopter helicopter;
 
     public Game() {
         /*
@@ -367,7 +473,7 @@ class Game extends Pane {
      * with updated object states (e.g. position, velocity, etc.)
      */
     public void update() {
-
+        helicopter.update();
     }
 
     public void play() {
@@ -375,6 +481,7 @@ class Game extends Pane {
             @Override
             public void handle(long now) {
                 update();
+                System.err.println(helicopter.toString());
             }
         };
         loop.start();
@@ -390,7 +497,9 @@ class Game extends Pane {
                 new Helipad(
                         Globals.HELIPAD_COORDINATES,
                         new Dimension2D(100, 100)),
-                new Helicopter(Globals.HELIPAD_COORDINATES));
+                helicopter = new Helicopter(
+                        Globals.HELIPAD_COORDINATES,
+                        HELICOPTER_INITIAL_FUEL_CAPACITY));
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
@@ -414,18 +523,30 @@ class Game extends Pane {
                 BackgroundSize.DEFAULT); // fill the entire game world
         super.setBackground(new Background(bg));
     }
+
+    /**
+     * @brief Sets the helicopter for the game.
+     */
+    public Helicopter getHelicopter() {
+        return helicopter;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" + "helicopter=" + this.helicopter + '}';
+    }
 }
 
 /**
  * @brief Globals class provides a place to store all global/static constants.
  */
 class Globals {
-    public static final String GAME_TITLE = "Rainmaker A2";
+    public static final String GAME_TITLE = "Rainmaker A3";
     public static final Dimension2D GAME_APP_DIMENSIONS = new Dimension2D(
             800,
             800);
     public static final Image GAME_MAP_IMAGE = new Image(
-            "textures/map/rainmaker_a2_map_dry_desert.png");
+            "textures/map/rainmaker_a3_map_dry_desert.png");
     /**
      * @brief The Helipad centered on half the width
      *        and lower 1/7th the height of the game world.
@@ -458,6 +579,50 @@ public class GameApp extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
         game.init();
+        game.play();
+
+        primaryStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                // Left Arrow Changes heading of the helicopter to the left.
+                if (event.getCode() == KeyCode.LEFT) {
+                    game.getHelicopter().steerLeft();
+                }
+
+                // Right Arrow Changes heading of the helicopter to the right.
+                if (event.getCode() == KeyCode.RIGHT) {
+                    game.getHelicopter().steerRight();
+                }
+
+                // Up Arrow Increases the speed of the helicopter by 0.1.
+                if (event.getCode() == KeyCode.UP) {
+                    game.getHelicopter().increaseSpeed();
+                }
+
+                // Down Arrow Decreases the speed of the helicopter by 0.1.
+                if (event.getCode() == KeyCode.DOWN) {
+                    game.getHelicopter().decreaseSpeed();
+                }
+
+                // 'i' Turns on the helicopter ignition.
+                if (event.getCode() == KeyCode.I) {
+                    game.getHelicopter().toggleIgnition();
+                }
+
+                // 'b' [optional] shows bounding boxes around objects.
+                if (event.getCode() == KeyCode.B) {
+                    System.err.println(
+                            "B - shows bounding boxes around objects");
+                }
+
+                // 'r' Reinitialize the game
+                if (event.getCode() == KeyCode.R) {
+                    System.err.println();
+                    System.err.println("R - Reinitialize the game");
+                    game.init();
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
