@@ -126,8 +126,8 @@ abstract class MoveableObject extends GameObject {
 class Helicopter extends MoveableObject implements Steerable {
     private boolean isIgnitionOn;
     private double HOVER_SPEED_0 = 0;
-    private double MAX_SPEED = 10.0;
-    private double MIN_SPEED = 2.0;
+    private double MAX_FORWARD_SPEED = 10.0;
+    private double MAX_REVERSE_SPEED = 2.0;
     private double SPEED_STEP_VALUE = 0.5;
     private double STEERING_ANGLE_INCREMENT = 5;
     private int FUEL_BURN_RATE = 5;
@@ -153,8 +153,9 @@ class Helicopter extends MoveableObject implements Steerable {
     public void increaseSpeed() {
         this.speed = (this.speed >= 0) // Are we in forward?
                 // increase speed by step value but not above max
-                ? Math.min((this.speed + SPEED_STEP_VALUE), MAX_SPEED)
-                : (this.speed + MIN_SPEED); // From reverse to 0 speed (hover)
+                ? Math.min((this.speed + SPEED_STEP_VALUE), MAX_FORWARD_SPEED)
+                // From reverse to 0 speed (hover)
+                : (this.speed + MAX_REVERSE_SPEED);
     }
 
     /**
@@ -164,7 +165,7 @@ class Helicopter extends MoveableObject implements Steerable {
      */
     public void decreaseSpeed() {
         this.speed = (this.speed <= HOVER_SPEED_0) // Are we in reverse?
-                ? -MIN_SPEED // Put in reverse from 0 speed (hover)
+                ? -MAX_REVERSE_SPEED // Put in reverse from 0 speed (hover)
                 // decrease speed by step value but not 0 (hover)
                 : Math.max(HOVER_SPEED_0, (this.speed - SPEED_STEP_VALUE));
     }
