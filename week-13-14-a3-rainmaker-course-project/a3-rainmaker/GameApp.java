@@ -373,6 +373,26 @@ abstract class FixedObject extends GameObject {
     }
 }
 
+class Pond extends FixedObject {
+    private Circle pond;
+
+    private final Color POND_COLOR = Color.BLUE;
+    private final double CLOUD_SIZE_LOWER_BOUND = 30.0;
+    private final double CLOUD_SIZE_UPPER_BOUND = 50.0;
+
+    public Pond(Point2D location) {
+        super(location);
+        this.pond = new Circle(
+                Utility.generateRandomNumberInRange(
+                        CLOUD_SIZE_LOWER_BOUND,
+                        CLOUD_SIZE_UPPER_BOUND));
+        this.pond.setFill(POND_COLOR);
+        this.pond.setStroke(Color.BLACK);
+        this.pond.setStrokeWidth(1);
+        this.add(pond);
+    }
+}
+
 class GameText extends Text {
     private String FONT_OF_CHOICE = "Helvetica";
     private Scale scale = new Scale();
@@ -500,7 +520,12 @@ class Game extends Pane {
                         new Dimension2D(100, 100)),
                 helicopter = new Helicopter(
                         Globals.HELIPAD_COORDINATES,
-                        HELICOPTER_INITIAL_FUEL_CAPACITY));
+                        HELICOPTER_INITIAL_FUEL_CAPACITY),
+                new Pond(new Point2D(
+                        Utility.generateRandomNumberInRange(
+                                0, Globals.POND_COORDINATES.getX()),
+                        Utility.generateRandomNumberInRange(
+                                0, Globals.POND_COORDINATES.getY()))));
         // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
