@@ -151,11 +151,9 @@ class Helicopter extends MoveableObject implements Steerable {
      *        is in reverse increasing speed will put it in forward.
      */
     public void increaseSpeed() {
-        this.speed = (this.speed >= 0) // Are we in forward?
-                // increase speed by step value but not above max
-                ? Math.min((this.speed + SPEED_STEP_VALUE), MAX_FORWARD_SPEED)
-                // From reverse to 0 speed (hover)
-                : (this.speed + MAX_REVERSE_SPEED);
+        this.speed = Math.min(
+                Math.max(HOVER_SPEED_0, this.speed + SPEED_STEP_VALUE),
+                MAX_FORWARD_SPEED);
     }
 
     /**
