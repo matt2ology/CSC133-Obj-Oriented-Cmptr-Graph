@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -554,6 +556,28 @@ class Globals {
             (GAME_APP_DIMENSIONS.getWidth() / 2),
             (GAME_APP_DIMENSIONS.getHeight()
                     - (GAME_APP_DIMENSIONS.getHeight() / 7)));
+    public static Point2D POND_COORDINATES = new Point2D((GAME_APP_DIMENSIONS.getWidth()),
+            (GAME_APP_DIMENSIONS.getHeight() - (GAME_APP_DIMENSIONS.getHeight() / 3)));
+}
+
+/**
+ * Utility
+ */
+class Utility {
+    private static Random random = new Random();
+
+    /**
+     * @brief Generates a random number in the inclusive range [min, max]
+     *        regardless of the order of min and max arguments passed in.
+     * @param a the first number in the range (min or max)
+     * @param b the second number in the range (min or max)
+     * @return a random number in the inclusive range [min, max]
+     */
+    public static double generateRandomNumberInRange(double a, double b) {
+        double min = Math.min(a, b);
+        double max = Math.max(a, b);
+        return ((random.nextDouble() * (max - min)) + min);
+    }
 }
 
 /**
