@@ -1,5 +1,4 @@
 import java.util.Random;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -25,6 +24,7 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
@@ -127,15 +127,15 @@ abstract class MoveableObject extends GameObject {
 
 class Helicopter extends MoveableObject implements Steerable {
     private boolean isIgnitionOn;
-    private double HOVER_SPEED_0 = 0;
-    private double MAX_FORWARD_SPEED = 10.0;
-    private double MAX_REVERSE_SPEED = 2.0;
-    private double SPEED_STEP_VALUE = 0.5;
-    private double STEERING_ANGLE_INCREMENT = 5;
-    private int FUEL_BURN_RATE = 5;
+    private final double HOVER_SPEED_0 = 0;
+    private final double MAX_FORWARD_SPEED = 10.0;
+    private final double MAX_REVERSE_SPEED = 2.0;
+    private final double SPEED_STEP_VALUE = 0.5;
+    private final double STEERING_ANGLE_INCREMENT = 5;
+    private final int FUEL_BURN_RATE = 5;
     private int fuelGauge;
 
-    private HelicopterGameInfoText fuelText;
+    private HelicopterGameInfoText fuelText; // fuel gauge text object
 
     public Helicopter(Point2D location, int fuelCapacity) {
         super(location);
@@ -222,20 +222,22 @@ class Helicopter extends MoveableObject implements Steerable {
 
 class HelicopterGameInfoText extends GameText {
     private Color FONT_COLOR = Color.RED;
+    private static final int INFO_STATUS_TEXT_OFFSET = 50;
     private static int FONT_SIZE = 15;
 
     public HelicopterGameInfoText(String text) {
         super(text, FONT_SIZE);
         this.setFill(FONT_COLOR);
-        this.setTranslateY(50);
+        this.setTranslateY(INFO_STATUS_TEXT_OFFSET);
     }
 }
 
 class HeloBlade extends Rectangle {
     private int bladeSpeed;
+    private static Dimension2D BLADE_DIMENSION = new Dimension2D(90, 4);
 
     public HeloBlade() {
-        super(90, 4);
+        super(BLADE_DIMENSION.getWidth(), BLADE_DIMENSION.getHeight());
         this.bladeSpeed = 0;
         this.setFill(Color.GRAY);
         this.setStroke(Color.BLACK);
@@ -245,7 +247,6 @@ class HeloBlade extends Rectangle {
         this.setY(-this.getHeight() / 2);
         // Helicopter Blade is self animating with it's own animation timer.
         AnimationTimer timer = new AnimationTimer() {
-
             @Override
             public void handle(long now) {
                 if (bladeSpeed <= 120) {
@@ -301,12 +302,18 @@ class HeloBody extends Group {
 }
 
 class HeloCabin extends Circle {
+    private static final int HELICOPTER_CABIN_SIZE = 18;
+
     public HeloCabin(Color componentColor) {
-        super(18, componentColor);
+        super(HELICOPTER_CABIN_SIZE, componentColor);
     }
 }
 
 class HeloCockpit extends Arc {
+
+    /**
+     * The cockpit glass is a linear gradient that goes from blue to light blue
+     */
     private LinearGradient cockpitGlass = new LinearGradient(
             0,
             0,
@@ -318,8 +325,7 @@ class HeloCockpit extends Arc {
             new Stop(0, Color.LIGHTBLUE));
 
     public HeloCockpit() {
-        super(
-                0,
+        super(0,
                 0,
                 13,
                 13,
@@ -375,21 +381,63 @@ abstract class FixedObject extends GameObject {
 
 class Pond extends FixedObject {
     private Circle pond;
-
+    private double pondPercentage;
     private final Color POND_COLOR = Color.BLUE;
-    private final double CLOUD_SIZE_LOWER_BOUND = 30.0;
-    private final double CLOUD_SIZE_UPPER_BOUND = 50.0;
+    private final double CLOUD_SIZE_LOWER_BOUND = 15.0;
+    private final double CLOUD_SIZE_UPPER_BOUND = 25.0;
+
+    private PondPercentageInfoText pondPercentageInfoText;
 
     public Pond(Point2D location) {
         super(location);
-        this.pond = new Circle(
-                Utility.generateRandomNumberInRange(
-                        CLOUD_SIZE_LOWER_BOUND,
-                        CLOUD_SIZE_UPPER_BOUND));
+        this.pondPercentage = Utility.generateRandomNumberInRange(
+                CLOUD_SIZE_LOWER_BOUND,
+                CLOUD_SIZE_UPPER_BOUND);
+        this.pond = new Circle(pondPercentage);
         this.pond.setFill(POND_COLOR);
         this.pond.setStroke(Color.BLACK);
         this.pond.setStrokeWidth(1);
         this.add(pond);
+        pondPercentageInfoText = new PondPercentageInfoText(pondPercentage);
+        this.add(pondPercentageInfoText);
+    }
+
+    private double getPondPercentage() {
+        return pondPercentage;
+    }
+
+    private void setPondPercentage(double pondPercentage) {
+        this.pondPercentage += pondPercentage;
+    }
+
+    private Scale getScale() {
+        return scale;
+    }
+
+    private void setScale(Scale scale) {
+        this.scale = scale;
+    }
+
+    @Override
+    public void update() {
+        // update pond percentage text to reflect current pond percentage
+        pondPercentageInfoText.setText(String.format("%.0f", getPondPercentage()) + "%");
+        // update scale of pond
+        pond.getTransforms().add(scale);
+    }
+}
+
+class PondPercentageInfoText extends GameText {
+    private final Color TEXT_COLOR = Color.WHITE;
+    private static final int TEXT_FONT_SIZE = 15;
+
+    public PondPercentageInfoText(double text) {
+        // append a percent sign to the text string to indicate it is a percentage value
+        super(String.format("%.0f", text) + "%", TEXT_FONT_SIZE);
+        this.setFill(TEXT_COLOR);
+        this.setFont(Font.font(this.getFont().getFamily(),
+                FontWeight.BOLD,
+                this.getFont().getSize()));
     }
 }
 
@@ -480,6 +528,7 @@ class Game extends Pane {
      */
     private static final int HELICOPTER_INITIAL_FUEL_CAPACITY = 25000;
     private Helicopter helicopter;
+    private Pond pond;
 
     public Game() {
         /*
@@ -495,12 +544,16 @@ class Game extends Pane {
      */
     public void update() {
         helicopter.update();
+        pond.update();
     }
 
     public void play() {
+        double previousTime = 0;
+
         AnimationTimer loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+
                 update();
                 System.err.println(helicopter.toString());
             }
@@ -521,12 +574,13 @@ class Game extends Pane {
                 helicopter = new Helicopter(
                         Globals.HELIPAD_COORDINATES,
                         HELICOPTER_INITIAL_FUEL_CAPACITY),
-                new Pond(new Point2D(
+                pond = new Pond(new Point2D(
                         Utility.generateRandomNumberInRange(
                                 0, Globals.POND_COORDINATES.getX()),
                         Utility.generateRandomNumberInRange(
-                                0, Globals.POND_COORDINATES.getY()))));
-        // print out each object in the game world
+                                0, Globals.POND_COORDINATES.getY()))) // end Pond
+        ); // end addAll
+           // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
 
