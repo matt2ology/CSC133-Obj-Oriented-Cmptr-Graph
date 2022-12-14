@@ -580,7 +580,7 @@ class Game extends Pane {
                 helicopter = new Helicopter(
                         Globals.HELIPAD_COORDINATES,
                         HELICOPTER_INITIAL_FUEL_CAPACITY)); // end addAll
-           // print out each object in the game world
+        // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
 
