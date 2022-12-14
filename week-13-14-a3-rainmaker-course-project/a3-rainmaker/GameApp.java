@@ -421,7 +421,8 @@ class Pond extends FixedObject {
     @Override
     public void update() {
         // update pond percentage text to reflect current pond percentage
-        pondPercentageInfoText.setText(String.format("%.0f", getPondPercentage()) + "%");
+        pondPercentageInfoText.setText(
+                String.format("%.0f", getPondPercentage()) + "%");
         // update scale of pond
         pond.getTransforms().add(scale);
     }
@@ -634,8 +635,10 @@ class Globals {
             (GAME_APP_DIMENSIONS.getWidth() / 2),
             (GAME_APP_DIMENSIONS.getHeight()
                     - (GAME_APP_DIMENSIONS.getHeight() / 7)));
-    public static Point2D POND_COORDINATES = new Point2D((GAME_APP_DIMENSIONS.getWidth()),
-            (GAME_APP_DIMENSIONS.getHeight() - (GAME_APP_DIMENSIONS.getHeight() / 3)));
+    public static Point2D POND_COORDINATES = new Point2D(
+            (GAME_APP_DIMENSIONS.getWidth()),
+            (GAME_APP_DIMENSIONS.getHeight()
+                    - (GAME_APP_DIMENSIONS.getHeight() / 3)));
 }
 
 /**
