@@ -571,15 +571,14 @@ class Game extends Pane {
                 new Helipad(
                         Globals.HELIPAD_COORDINATES,
                         new Dimension2D(100, 100)),
-                helicopter = new Helicopter(
-                        Globals.HELIPAD_COORDINATES,
-                        HELICOPTER_INITIAL_FUEL_CAPACITY),
                 pond = new Pond(new Point2D(
                         Utility.generateRandomNumberInRange(
                                 0, Globals.POND_COORDINATES.getX()),
                         Utility.generateRandomNumberInRange(
-                                0, Globals.POND_COORDINATES.getY()))) // end Pond
-        ); // end addAll
+                                0, Globals.POND_COORDINATES.getY()))),
+                helicopter = new Helicopter(
+                        Globals.HELIPAD_COORDINATES,
+                        HELICOPTER_INITIAL_FUEL_CAPACITY)); // end addAll
            // print out each object in the game world
         super.getChildren().forEach(System.out::println);
     }
