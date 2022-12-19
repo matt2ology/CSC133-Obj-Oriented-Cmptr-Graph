@@ -11,7 +11,7 @@ public class HelicopterTest {
 
     @Before
     public void setUp() throws Exception {
-        this.helicopter = new Helicopter(new Point2D(0, 0));
+        this.helicopter = new Helicopter(new Point2D(0, 0), 100);
     }
 
     /**
