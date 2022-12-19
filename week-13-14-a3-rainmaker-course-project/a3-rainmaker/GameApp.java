@@ -725,6 +725,12 @@ public class GameApp extends Application {
                     System.err.println("R - Reinitialize the game");
                     game.init();
                 }
+
+                // 'space' Seeding the cloud
+                if (event.getCode() == KeyCode.SPACE) {
+                    System.err.println();
+                    System.err.println("SPACE - Seeding the cloud");
+                }
             }
         });
     }
