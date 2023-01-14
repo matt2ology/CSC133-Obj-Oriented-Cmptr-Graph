@@ -32,6 +32,11 @@
 
 ## Setup
 
+javac 18.0.2.1
+openjdk 18.0.2.1 2022-08-18
+OpenJDK Runtime Environment Zulu18.32+13-CA (build 18.0.2.1+1)
+OpenJDK 64-Bit Server VM Zulu18.32+13-CA (build 18.0.2.1+1, mixed mode, sharing)
+
 ### On M1 Mac
 
 1. Install [Azul JavaFX .dmg](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=arm-64-bit&package=jdk-fx)
